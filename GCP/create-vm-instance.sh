@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -eu
+
 _USER=m0nius
 _TEMPLATE=xvm
 ZONE_S0=us-west2-b
@@ -7,9 +9,14 @@ ZONE_S1=asia-east1-b
 ZONE_S2=asia-northeast1-b
 XPASS=/tmp/xvm
 
-USER=${USER:_USER}
-ZONE=${ZONE:ZONE_S1}
-TEMPLATE=${TEMPLATE:_TEMPLATE}
+USER="${3:-$_USER}"
+ZONE="${2:-$ZONE_S1}"
+TEMPLATE="${1:-_TEMPLATE}"
+
+echo "$USER"
+echo "$ZONE"
+echo "$TEMPLATE"
+
 
 rm -rf "$XPASS"
 

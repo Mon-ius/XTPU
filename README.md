@@ -9,7 +9,8 @@ Boost AI application dev on TPU.
 
 ```bash
 # Run on Cloud Shell Terminal
-curl -fsSL bit.ly/new-gcp-vm-instance | sh -s -- -TEMPLATE=xvm -ZONE=asia-east1-b -USER=m0nius
+## Here, TEMPLATE=xvm ZONE=asia-east1-b USER=m0nius
+curl -fsSL bit.ly/new-gcp-vm-instance | sh -s -- xvm asia-east1-b m0nius
 ```
 
 it will produce a file `/tmp/xvm` for remote ssh connection!
