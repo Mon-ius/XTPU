@@ -20,7 +20,7 @@ do
     _ip=$(gcloud compute instances describe "$VM_INSTANCE" --zone $ZONE_S1 | grep "natIP" | awk '{print $2}')
 
 cat >> "$XPASS" <<-EOF
-Host z$i
+Host x$i
     User m0nius
     Hostname $_ip
     Port 22
