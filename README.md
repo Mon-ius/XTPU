@@ -33,3 +33,17 @@ ssh x0
 # ssh x3
 # ...
 ```
+
+### 2. Create multiple TPUv2-8 nodes
+
+```bash
+# Run on Cloud Shell Terminal
+curl -fsSL bit.ly/new-tpu-v2-node | bash
+```
+
+### 3. Create TPUv4-8 nodes in a queue
+
+```bash
+# Run on Cloud Shell Terminal
+curl -fsSL bit.ly/new-tpu-v4-queue | bash
+```
