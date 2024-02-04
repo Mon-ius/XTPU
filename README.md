@@ -16,14 +16,11 @@ it will produce a file `/tmp/xvm` for remote ssh connection!
 
 ### 2. Copy or Download the ssh config file.
 
+Download the file `/tmp/xvm` to local, or just copy the content, then
+
 ```bash
 # Run on local machine
 mv /tmp/xvm ~/.ssh/config.d
-ssh x0
-# ssh x1
-# ssh x2
-# ssh x3
-# ...
 ```
 
 ### 3. Go for work :P
