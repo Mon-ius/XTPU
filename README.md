@@ -3,7 +3,7 @@
 Boost AI application dev on TPU.
 
 
-## I. Usage
+## I. Usage on VM Instance
 
 ### 1. Create on VM instance on GCP(Google Cloud Platform)
 
@@ -34,14 +34,16 @@ ssh x0
 # ...
 ```
 
-### 2. Create multiple TPUv2-8 nodes
+## II. Usage on TPU computing resource
+
+### 1. Create multiple TPUv2-8 nodes
 
 ```bash
 # Run on Cloud Shell Terminal
 curl -fsSL bit.ly/new-tpu-v2-node | bash
 ```
 
-### 3. Create TPUv4-8 nodes in a queue
+### 2. Create TPUv4-8 nodes in a queue
 
 ```bash
 # Run on Cloud Shell Terminal
