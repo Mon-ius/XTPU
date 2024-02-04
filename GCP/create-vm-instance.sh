@@ -13,9 +13,9 @@ USER="${3:-$_USER}"
 ZONE="${2:-$ZONE_S1}"
 TEMPLATE="${1:-_TEMPLATE}"
 
-echo "$USER"
-echo "$ZONE"
-echo "$TEMPLATE"
+# echo "$USER"
+# echo "$ZONE"
+# echo "$TEMPLATE"
 
 
 rm -rf "$XPASS"
