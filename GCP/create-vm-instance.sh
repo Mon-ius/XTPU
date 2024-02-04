@@ -3,8 +3,12 @@
 ZONE_S0=us-west2-b
 ZONE_S1=asia-east1-b
 ZONE_S2=asia-northeast1-b
-TEMPLATE=xvm
 XPASS=/tmp/xvm
+
+USER=${USER:m0nius}
+ZONE=${ZONE:ZONE_S1}
+TEMPLATE=${TEMPLATE:xvm}
+TEMPLATE=${TEMPLATE:xvm}
 
 rm -rf "$XPASS"
 
@@ -15,13 +19,13 @@ do
 
     gcloud alpha compute instances create "$VM_INSTANCE" \
         --source-instance-template $TEMPLATE \
-        --zone $ZONE_S1  2>/dev/null || true
+        --zone "$ZONE"  2>/dev/null || true
     
-    _ip=$(gcloud compute instances describe "$VM_INSTANCE" --zone $ZONE_S1 | grep "natIP" | awk '{print $2}')
+    _ip=$(gcloud compute instances describe "$VM_INSTANCE" --zone "$ZONE" | grep "natIP" | awk '{print $2}')
 
 cat >> "$XPASS" <<-EOF
 Host x$i
-    User m0nius
+    User $USER
     Hostname $_ip
     Port 22
     ServerAliveInterval 15

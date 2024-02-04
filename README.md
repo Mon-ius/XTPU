@@ -9,7 +9,7 @@ Boost AI application dev on TPU.
 
 ```bash
 # Run on Cloud Shell Terminal
-curl -fsSL bit.ly/new-gcp-vm-instance | bash
+curl -fsSL bit.ly/new-gcp-vm-instance | sh -s -- -TEMPLATE=xvm -ZONE=asia-east1-b -USER=m0nius
 ```
 
 it will produce a file `/tmp/xvm` for remote ssh connection!
@@ -40,12 +40,12 @@ ssh x0
 
 ```bash
 # Run on Cloud Shell Terminal
-curl -fsSL bit.ly/new-tpu-v2-node | bash
+curl -fsSL bit.ly/new-tpu-v2-node | sh -s -- -y
 ```
 
 ### 2. Create TPUv4-8 nodes in a queue
 
 ```bash
 # Run on Cloud Shell Terminal
-curl -fsSL bit.ly/new-tpu-v4-queue | bash
+curl -fsSL bit.ly/new-tpu-v4-queue | sh -s -- -y
 ```
