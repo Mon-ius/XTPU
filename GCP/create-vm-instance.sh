@@ -8,7 +8,6 @@ XPASS=/tmp/xvm
 USER=${USER:m0nius}
 ZONE=${ZONE:ZONE_S1}
 TEMPLATE=${TEMPLATE:xvm}
-TEMPLATE=${TEMPLATE:xvm}
 
 rm -rf "$XPASS"
 
@@ -18,7 +17,7 @@ do
     echo "Creating ${VM_INSTANCE}..."
 
     gcloud alpha compute instances create "$VM_INSTANCE" \
-        --source-instance-template $TEMPLATE \
+        --source-instance-template "$TEMPLATE" \
         --zone "$ZONE"  2>/dev/null || true
     
     _ip=$(gcloud compute instances describe "$VM_INSTANCE" --zone "$ZONE" | grep "natIP" | awk '{print $2}')
