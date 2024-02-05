@@ -13,7 +13,7 @@ Boost AI application dev on TPU.
 curl -fsSL bit.ly/new-gcp-vm-instance | sh -s -- xvm asia-east1-b m0nius
 ```
 
-it will produce a file `/tmp/xvm` for remote ssh connection!
+it will produce a file `/tmp/xvm` contains information for easy remote ssh connection!
 
 ### 2. Copy or Download the ssh config file.
 

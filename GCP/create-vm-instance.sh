@@ -17,7 +17,6 @@ TEMPLATE="${1:-_TEMPLATE}"
 # echo "$ZONE"
 # echo "$TEMPLATE"
 
-
 rm -rf "$XPASS"
 
 for i in {0..7}
