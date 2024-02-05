@@ -5,7 +5,16 @@ Boost AI application dev on TPU.
 
 ## I. Usage on VM Instance
 
-### 1. Create on VM instance on GCP(Google Cloud Platform)
+### 1. Create VM instance on GCP(Google Cloud Platform)
+
+```bash
+# Run on Cloud Shell Terminal
+curl -fsSL bit.ly/new-gcp-vm-instance | sh
+```
+
+it will produce a file `/tmp/xvm` contains information for easy remote ssh connection!
+
+### 2. Advanced VM instance creation with external arguments (Optional)
 
 ```bash
 # Run on Cloud Shell Terminal
@@ -13,9 +22,7 @@ Boost AI application dev on TPU.
 curl -fsSL bit.ly/new-gcp-vm-instance | sh -s -- xvm asia-east1-b m0nius
 ```
 
-it will produce a file `/tmp/xvm` contains information for easy remote ssh connection!
-
-### 2. Copy or Download the ssh config file.
+### 3. Copy or Download the ssh config file.
 
 Download the file `/tmp/xvm` to local, or just copy the content, then
 
@@ -24,7 +31,7 @@ Download the file `/tmp/xvm` to local, or just copy the content, then
 mv /tmp/xvm ~/.ssh/config.d
 ```
 
-### 3. Go for work :P
+### 4. Go for work :P
 
 ```bash
 # Run on local machine
