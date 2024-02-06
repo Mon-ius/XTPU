@@ -4,17 +4,14 @@ set -eu
 
 _USER=m0nius
 _TEMPLATE=xvm
-ZONE_S0=us-west2-b
-ZONE_S1=asia-east1-b
-ZONE_S2=asia-northeast1-b
+_ZONE_S0=us-west2-b
+_ZONE_S1=asia-east1-b
+_ZONE_S2=asia-northeast1-b
 
 USER="${3:-$_USER}"
-ZONE="${2:-$ZONE_S1}"
+ZONE="${2:-$_ZONE_S1}"
 TEMPLATE="${1:-_TEMPLATE}"
 XPASS="/tmp/$TEMPLATE"
-# echo "$USER"
-# echo "$ZONE"
-# echo "$TEMPLATE"
 
 rm -rf "$XPASS"
 
