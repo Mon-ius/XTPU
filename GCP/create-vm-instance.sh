@@ -10,7 +10,7 @@ _ZONE_S2=asia-northeast1-b
 
 USER="${3:-$_USER}"
 ZONE="${2:-$_ZONE_S1}"
-TEMPLATE="${1:-_TEMPLATE}"
+TEMPLATE="${1:-$_TEMPLATE}"
 XPASS="/tmp/$TEMPLATE"
 
 rm -rf "$XPASS"
