@@ -17,7 +17,16 @@ curl -fsSL bit.ly/new-gcp-vm-instance | sh
 curl -fsSL bit.ly/new-gcp-vm-instance | sh -s -- xvm asia-east1-b m0nius
 ```
 
-### 2. ⛓ TPUv2, TPUv3, TPUv4, TPUv5 nodes
+### 2. 💽 Attach vm disk
+
+```bash
+# Run on Cloud Shell Terminal
+curl -fsSL bit.ly/new-gcp-vm-instance | sh
+## Here, VM_NAME=xvm-1 ZONE=asia-east1-b DISK=disk-01
+curl -fsSL bit.ly/new-gcp-vm-instance | sh -s -- xvm-1 asia-east1-b disk-01
+```
+
+### 3. ⛓ TPUv2, TPUv3, TPUv4, TPUv5 nodes
 
 ```bash
 # Run on Cloud Shell Terminal, TPUv2
@@ -26,7 +35,7 @@ curl -fsSL bit.ly/new-tpu-v2-node | sh -s -- -y
 curl -fsSL bit.ly/new-tpu-v4-queue | sh -s -- -y
 ```
 
-### 3. 🫧 LLM training
+### 4. 🫧 LLM training
 
 ```bash
 # Run on Cloud Shell Terminal, TPUv2
