@@ -23,3 +23,5 @@ curl -fsSL bit.ly/new-tpu-v2-node | sh -s -- -y
 # Run on Cloud Shell Terminal, queued TPUv4
 curl -fsSL bit.ly/new-tpu-v4-queue | sh -s -- -y
 ```
+
+### 🫧 LLM training
