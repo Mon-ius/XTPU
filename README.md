@@ -6,7 +6,9 @@ Boost AI and LLM application dev on TPU.
 
 🚧 Buiding in 2024.. 🚧
 
-### ⚙ New vm instance
+---
+
+### 1. ⚙ New vm instance
 
 ```bash
 # Run on Cloud Shell Terminal
@@ -15,7 +17,7 @@ curl -fsSL bit.ly/new-gcp-vm-instance | sh
 curl -fsSL bit.ly/new-gcp-vm-instance | sh -s -- xvm asia-east1-b m0nius
 ```
 
-### ⛓ TPUv2, TPUv3, TPUv4, TPUv5 nodes
+### 2. ⛓ TPUv2, TPUv3, TPUv4, TPUv5 nodes
 
 ```bash
 # Run on Cloud Shell Terminal, TPUv2
@@ -24,4 +26,11 @@ curl -fsSL bit.ly/new-tpu-v2-node | sh -s -- -y
 curl -fsSL bit.ly/new-tpu-v4-queue | sh -s -- -y
 ```
 
-### 🫧 LLM training
+### 3. 🫧 LLM training
+
+```bash
+# Run on Cloud Shell Terminal, TPUv2
+curl -fsSL bit.ly/new-LLM-TPUv2-train | sh -s -- -y
+# Run on Cloud Shell Terminal, queued TPUv4
+curl -fsSL bit.ly/new-LLM-TPUv4-train | sh -s -- -y
+```
