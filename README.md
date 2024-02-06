@@ -22,8 +22,8 @@ curl -fsSL bit.ly/new-gcp-vm-instance | sh -s -- xvm asia-east1-b m0nius
 ```bash
 # Run on Cloud Shell Terminal
 curl -fsSL bit.ly/attach-gcp-vm-disk  | sh
-## Here, VM_NAME=xvm-1 ZONE=asia-east1-b DISK=disk-01
-curl -fsSL bit.ly/attach-gcp-vm-disk | sh -s -- xvm-1 asia-east1-b disk-01
+## Here, DISK=disk-1 ZONE=asia-east1-b VM_NAME=xvm-1
+curl -fsSL bit.ly/attach-gcp-vm-disk | sh -s -- disk-1 asia-east1-b xvm-1
 ```
 
 ### 3. ⛓ TPUv2, TPUv3, TPUv4, TPUv5 nodes
