@@ -15,10 +15,14 @@ PROMPT 0
 TIMEOUT 50
 
 LABEL syslinux
-        MENU LABEL Boot in Syslinux
-        LINUX ../vmlinuz-6.1.0-9-amd64
-        APPEND root=$ROOT net.ifnames=0 rw
-        INITRD ../initrd.img-6.1.0-9-amd64
+    MENU LABEL Boot in Syslinux
+    LINUX ../vmlinuz-$(uname -r)
+    APPEND root=$ROOT net.ifnames=0 rw
+    INITRD ../initrd.img-$(uname -r)
+EOF
+
+cat <<EOF | sudo tee /etc/fstab
+$ROOT / ext4 rw,discard,errors=remount-ro 0 1
 EOF
 
 sudo extlinux --install "$BOOT_LD" > /dev/null 2>&1
