@@ -5,7 +5,7 @@ sudo apt-get -qq remove grub* && sudo apt-get -qq autoremove --purge
 
 ROOT=$(findmnt -no SOURCE /)
 ROOT_DEV="/dev/$(sudo lsblk -ndo pkname "$ROOT")"
-UUID=$(sudo blkid -s UUID -o value "$ROOT")
+ROOT_UUID=$(sudo blkid -s UUID -o value "$ROOT")
 BOOT_LD="/boot/syslinux"
 BOOT_LIB="/usr/lib/syslinux"
 
@@ -16,10 +16,14 @@ PROMPT 0
 TIMEOUT 50
 
 LABEL syslinux
-        MENU LABEL Boot in Syslinux
-        LINUX ../vmlinuz-6.1.0-9-amd64
-        APPEND root=UUID=$UUID net.ifnames=0 rw
-        INITRD ../initrd.img-6.1.0-9-amd64
+    MENU LABEL Boot in Syslinux
+    LINUX ../vmlinuz-$(uname -r)
+    APPEND root=UUID=$ROOT_UUID net.ifnames=0 rw
+    INITRD ../initrd.img-$(uname -r)
+EOF
+
+cat <<EOF | sudo tee /etc/fstab
+UUID=$ROOT_UUID / ext4 rw,discard,errors=remount-ro 0 1
 EOF
 
 cp -a "$BOOT_LIB"/modules/bios/*.c32 "$BOOT_LD"
