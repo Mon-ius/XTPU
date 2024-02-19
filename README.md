@@ -13,8 +13,8 @@ Boost AI and LLM application dev on TPU.
 ```bash
 # Run on Cloud Shell Terminal
 curl -fsSL bit.ly/new-gcp-vm-instance | sh
-## Here, TEMPLATE=xvm ZONE=asia-east1-b USER=m0nius
-curl -fsSL bit.ly/new-gcp-vm-instance | sh -s -- xvm asia-east1-b m0nius
+## Here, USER=m0nius ZONE=asia-east1-b  TEMPLATE=xvm
+curl -fsSL bit.ly/new-gcp-vm-instance | sh -s -- m0nius asia-east1-b xvm
 ```
 
 ### 2. 💽 Attach vm disk

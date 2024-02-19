@@ -8,9 +8,9 @@ _ZONE_S0=us-west2-b
 _ZONE_S1=asia-east1-b
 _ZONE_S2=asia-northeast1-b
 
-USER="${3:-$_USER}"
+USER="${1:-$_USER}"
 ZONE="${2:-$_ZONE_S1}"
-TEMPLATE="${1:-$_TEMPLATE}"
+TEMPLATE="${3:-$_TEMPLATE}"
 XPASS="/tmp/$TEMPLATE"
 
 rm -rf "$XPASS"
