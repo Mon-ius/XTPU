@@ -48,5 +48,12 @@ curl -fsSL bit.ly/new-LLM-TPUv4-train | sh -s -- -y
 
 ```bash
 # Replace OS of the VM to Alpine Linux 
-curl -fsSL bit.ly/os-LLM-Alpine-acc | sh -s -- -y 3.19
+curl -fsSL bit.ly/os-LLM-Alpine-acc | sh -s -- 3.19
+```
+
+### 6. 🪢 Dataset Mount
+
+```bash
+# Mount remote dataset
+curl -fsSL bit.ly/remote-LLM-dataset-mount | sh -s -- dataset
 ```
