@@ -43,3 +43,10 @@ curl -fsSL bit.ly/new-LLM-TPUv2-train | sh -s -- -y
 # Run on Cloud Shell Terminal, queued TPUv4
 curl -fsSL bit.ly/new-LLM-TPUv4-train | sh -s -- -y
 ```
+
+### 5. 🥋 Optimize HW
+
+```bash
+# Replace OS of the VM to Alpine Linux 
+curl -fsSL bit.ly/os-LLM-Alpine-acc | sh -s -- -y 3.19
+```
