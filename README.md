@@ -29,6 +29,8 @@ curl -fsSL bit.ly/attach-gcp-vm-disk | sh -s -- disk-1 asia-east1-b xvm-1
 ### 3. ⛓ TPUv2, TPUv3, TPUv4, TPUv5 nodes
 
 ```bash
+# Clean all queued TPU nodes
+curl -fsSL bit.ly/clean-tpu-nodes | sh -s -- proj_name asia-east1-b
 # Run on Cloud Shell Terminal, TPUv2
 curl -fsSL bit.ly/new-tpu-v2-node | sh -s -- -y
 # Run on Cloud Shell Terminal, queued TPUv4
