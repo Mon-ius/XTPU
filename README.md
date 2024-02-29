@@ -15,6 +15,9 @@ Boost AI and LLM application dev on TPU.
 curl -fsSL bit.ly/new-gcp-vm-instance | sh
 ## Here, USER=m0nius ZONE=asia-east1-b  TEMPLATE=xvm
 curl -fsSL bit.ly/new-gcp-vm-instance | sh -s -- m0nius asia-east1-b xvm
+
+# Generate new ssh key
+curl -fsSL bit.ly/ssh-vm-gen | sh
 ```
 
 ### 2. 💽 Attach vm disk
