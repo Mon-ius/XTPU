@@ -42,6 +42,12 @@ curl -fsSL bit.ly/new-tpu-v4-queue | sh -s -- -y
 
 ### 4. 🫧 LLM training
 
+#### 4.1 Miniconda Environment
+```bash
+curl -fsSL bit.ly/tpu-torch-xla | sh
+```
+#### 4.2 Model Training
+
 ```bash
 # Run on Cloud Shell Terminal, TPUv2
 curl -fsSL bit.ly/new-LLM-TPUv2-train | sh -s -- -y
