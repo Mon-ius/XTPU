@@ -100,4 +100,4 @@ else
     export PATH="$CONDA_ROOT_PREFIX/bin:$PATH"
 fi
 EOF
-chsh -s /bin/zsh
+chsh -s /bin/zsh && sudo reboot
