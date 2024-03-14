@@ -63,25 +63,7 @@ curl -fsSL https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 sudo mkdir -p $DEV_PREFIX && sudo chown -R "$USER:$USER" $DEV_PREFIX
 sudo chmod +x conda.sh && bash conda.sh -b -p $CONDA_ROOT_PREFIX && rm conda.sh
 
-cat <<'EOF' | tee "$HOME"/.zshrc
-export DEV_PREFIX=/opt/dev
-export CONDA_ROOT_PREFIX=$DEV_PREFIX/conda
-
-if [[ -r "$HOME/.cache/p10k-instant-prompt-$USER.zsh" ]]; then
-    source "$HOME/.cache/p10k-instant-prompt-$USER.zsh"
-fi
-. $HOME/.antidote/antidote.zsh
-antidote load
-[[ ! -f $HOME/.p10k.zsh ]] || source $HOME/.p10k.zsh
-
-if [ -f "$CONDA_ROOT_PREFIX/etc/profile.d/conda.sh" ]; then
-    . "$CONDA_ROOT_PREFIX/etc/profile.d/conda.sh"
-else
-    export PATH="$CONDA_ROOT_PREFIX/bin:$PATH"
-fi
-EOF
-
-chsh -s /bin/zsh && zsh
+. "$CONDA_ROOT_PREFIX/etc/profile.d/conda.sh"
 
 conda create -n xla python=3.11 torchvision torchaudio transformers bitsandbytes diffusers segment-anything imageio scipy numpy pyglet trimesh gradio fire -c conda-forge -c pytorch -y
 conda activate xla && conda env config vars set LD_LIBRARY_PATH="$CONDA_PREFIX/lib"
@@ -100,3 +82,22 @@ t2 = torch.randn(3,3,device=dev)
 print(t1 + t2)
 EOF
 PJRT_DEVICE=TPU python /tmp/run.py
+
+cat <<'EOF' | tee "$HOME"/.zshrc
+export DEV_PREFIX=/opt/dev
+export CONDA_ROOT_PREFIX=$DEV_PREFIX/conda
+
+if [[ -r "$HOME/.cache/p10k-instant-prompt-$USER.zsh" ]]; then
+    source "$HOME/.cache/p10k-instant-prompt-$USER.zsh"
+fi
+. $HOME/.antidote/antidote.zsh
+antidote load
+[[ ! -f $HOME/.p10k.zsh ]] || source $HOME/.p10k.zsh
+
+if [ -f "$CONDA_ROOT_PREFIX/etc/profile.d/conda.sh" ]; then
+    . "$CONDA_ROOT_PREFIX/etc/profile.d/conda.sh"
+else
+    export PATH="$CONDA_ROOT_PREFIX/bin:$PATH"
+fi
+EOF
+chsh -s /bin/zsh
