@@ -72,7 +72,7 @@ conda env config vars set PJRT_DEVICE=TPU
 conda env config vars set XLA_USE_BF16=1
 conda deactivate && conda activate xla
 
-pip install 'torch_xla[tpu]' -f https://storage.googleapis.com/libtpu-releases/index.html
+pip install torch 'torch_xla[tpu]' -f https://storage.googleapis.com/libtpu-releases/index.html
 
 python -c "import torch; import torch_xla.core.xla_model as xm;"
 cat <<'EOF' | tee /tmp/run.py
