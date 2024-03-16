@@ -65,8 +65,11 @@ sudo chmod +x conda.sh && bash conda.sh -b -p $CONDA_ROOT_PREFIX && rm conda.sh
 
 . "$CONDA_ROOT_PREFIX/etc/profile.d/conda.sh"
 
-conda create -n xla python=3.11 torchvision torchaudio transformers bitsandbytes diffusers segment-anything imageio scipy numpy pyglet trimesh gradio fire -c conda-forge -c pytorch -y
-conda activate xla && conda env config vars set LD_LIBRARY_PATH="$CONDA_PREFIX/lib"
+conda create -n xla python=3.11 datasets accelerate evaluate scikit-learn torchvision torchaudio transformers bitsandbytes diffusers segment-anything imageio scipy numpy pyglet trimesh gradio fire -c conda-forge -c pytorch -y
+conda activate xla
+conda env config vars set LD_LIBRARY_PATH="$CONDA_PREFIX/lib"
+conda env config vars set PJRT_DEVICE=TPU
+conda env config vars set XLA_USE_BF16=1
 conda deactivate && conda activate xla
 
 pip install 'torch_xla[tpu]' -f https://storage.googleapis.com/libtpu-releases/index.html
