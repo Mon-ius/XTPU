@@ -72,3 +72,4 @@ curl -fsSL bit.ly/remote-LLM-dataset-mount | sh -s -- dataset
 ## Refrence
 
 1. https://github.com/pytorch-tpu/transformers/blob/llama2-google-next-training/SPMD_USER_GUIDE.md
+2. https://huggingface.co/blog/accelerate-large-models
