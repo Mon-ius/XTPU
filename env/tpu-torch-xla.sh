@@ -72,8 +72,8 @@ conda env config vars set PJRT_DEVICE=TPU
 conda env config vars set XLA_USE_BF16=1
 conda deactivate && conda activate xla
 
-pip install torch~=2.1.0 --index-url https://download.pytorch.org/whl/cpu
-pip install torch_xla[tpu]~=2.1.0 -f https://storage.googleapis.com/libtpu-releases/index.html
+pip install torch~=2.2.0 --index-url https://download.pytorch.org/whl/cpu
+pip install torch_xla[tpu]~=2.2.0 -f https://storage.googleapis.com/libtpu-releases/index.html
 
 python -c "import torch; print(torch.__version__);"
 python -c "import torch_xla; print(torch_xla.__version__);"
