@@ -74,8 +74,11 @@ conda deactivate && conda activate xla
 
 pip install torch 'torch_xla[tpu]' -f https://storage.googleapis.com/libtpu-releases/index.html
 
-python -c "import torch; import torch_xla.core.xla_model as xm;"
+python -c "import torch; print(torch.__version__);"
 python -c "import torch_xla; print(torch_xla.__version__);"
+python -c "import accelerate; print(accelerate.__version__);"
+
+python -c "import torch; import torch_xla.core.xla_model as xm;"
 cat <<'EOF' | tee /tmp/run.py
 import torch
 import torch_xla.core.xla_model as xm
