@@ -71,6 +71,7 @@ conda env config vars set LD_LIBRARY_PATH="$CONDA_PREFIX/lib"
 conda env config vars set HF_HOME="/dev/shm"
 conda env config vars set PJRT_DEVICE=TPU
 conda env config vars set XLA_USE_BF16=1
+conda env config vars set XLA_USE_SPMD=1
 conda deactivate && conda activate xla
 
 pip install torch~=2.2.0 --index-url https://download.pytorch.org/whl/cpu
