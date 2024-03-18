@@ -1,6 +1,6 @@
 from transformers import AutoTokenizer, AutoModelForCausalLM
 
-token='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'
+token='YOUR_TOKEN'
 tokenizer = AutoTokenizer.from_pretrained("google/gemma-7b", token=token)
 model = AutoModelForCausalLM.from_pretrained("google/gemma-7b", 
                                             device_map='auto',
