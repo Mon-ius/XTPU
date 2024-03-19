@@ -85,15 +85,14 @@ python -c "import accelerate; print(accelerate.__version__);"
 python -c "from accelerate import Accelerator; accelerator = Accelerator();"
 
 python -c "import torch; import torch_xla.core.xla_model as xm;"
-cat <<'EOF' | tee /tmp/run.py
-import torch
+echo 'import torch
 import torch_xla.core.xla_model as xm
 
 dev = xm.xla_device()
 t1 = torch.randn(3,3,device=dev)
 t2 = torch.randn(3,3,device=dev)
-print(t1 + t2)
-EOF
+print(t1 + t2)' | tee /tmp/run.py
+
 PJRT_DEVICE=TPU python /tmp/run.py
 
 cat <<'EOF' | tee "$HOME"/.zshrc
