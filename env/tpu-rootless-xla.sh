@@ -89,7 +89,11 @@ python -c "import torch; import torch_xla.core.xla_model as xm;"
 echo 'import torch
 import torch_xla.core.xla_model as xm
 
-dev = xm.xla_device()
+devices = xm.get_xla_supported_devices()
+for device in devices:
+    print(f"- {device}")
+
+dev = devices[0]
 t1 = torch.randn(3,3,device=dev)
 t2 = torch.randn(3,3,device=dev)
 print(t1 + t2)' | tee /tmp/run.py
