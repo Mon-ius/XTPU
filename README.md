@@ -45,6 +45,8 @@ curl -fsSL bit.ly/new-tpu-v4-queue | sh -s -- -y
 #### 4.1 Miniconda Environment
 ```bash
 curl -fsSL bit.ly/tpu-torch-xla | sh
+#OR
+curl -fsSL bit.ly/tpu-rootless-xla | sh
 ```
 #### 4.2 Model Training
 
