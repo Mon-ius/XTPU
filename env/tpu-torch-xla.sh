@@ -76,10 +76,13 @@ conda deactivate && conda activate xla
 
 pip install 'torch~=2.2.0' --index-url https://download.pytorch.org/whl/cpu
 pip install 'torch_xla[tpu]~=2.2.0' -f https://storage.googleapis.com/libtpu-releases/index.html
+pip uninstall -y accelerate
+pip install git+https://github.com/huggingface/accelerate
 
 python -c "import torch; print(torch.__version__);"
 python -c "import torch_xla; print(torch_xla.__version__);"
 python -c "import accelerate; print(accelerate.__version__);"
+python -c "from accelerate import Accelerator; accelerator = Accelerator();"
 
 python -c "import torch; import torch_xla.core.xla_model as xm;"
 cat <<'EOF' | tee /tmp/run.py
