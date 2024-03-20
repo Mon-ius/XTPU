@@ -72,6 +72,7 @@ conda activate xla
 conda env config vars set LD_LIBRARY_PATH="$CONDA_PREFIX/lib"
 conda env config vars set HF_HOME="/dev/shm"
 conda env config vars set PJRT_DEVICE=CUDA
+conda env config vars set GPU_NUM_DEVICES=4
 # conda env config vars set XLA_USE_BF16=1
 # conda env config vars set XLA_USE_SPMD=1
 conda deactivate && sleep 5 
@@ -98,10 +99,10 @@ t1 = torch.randn(3,3,device=dev)
 t2 = torch.randn(3,3,device=dev)
 print(t1 + t2)' | tee /tmp/run.py
 
-PJRT_DEVICE=CUDA CUDA_NUM_DEVICES=4 python /tmp/run.py
+PJRT_DEVICE=CUDA GPU_NUM_DEVICES=4 python /tmp/run.py
 
 git clone -j8 --depth 1 --branch main https://github.com/pytorch/xla.git
-PJRT_DEVICE=CUDA CUDA_NUM_DEVICES=4 python xla/test/test_train_mp_imagenet.py --fake_data
+PJRT_DEVICE=CUDA GPU_NUM_DEVICES=4 python xla/test/test_train_mp_imagenet.py --fake_data
 
 cat <<'EOF' | tee "$HOME"/.zshrc
 export DEV_PREFIX=/opt/dev
