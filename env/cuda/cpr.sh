@@ -16,3 +16,4 @@ git clone -j8 --depth 1 --branch main https://github.com/google/gemma_pytorch.gi
 cd /tmp/gemma_pytorch && git clone git@hf.co:google/gemma-2b-pytorch
 mv /tmp/gemma_pytorch/scripts/run_xla.py .
 PJRT_DEVICE=CUDA CUDA_NUM_DEVICES=4 python run_xla.py --ckp ./gemma-2b-pytorch/gemma-2b.ckpt
+
