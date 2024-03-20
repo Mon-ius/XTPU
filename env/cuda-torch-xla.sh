@@ -102,8 +102,9 @@ print(t1 + t2)' | tee /tmp/run.py
 
 PJRT_DEVICE=CUDA GPU_NUM_DEVICES=4 python /tmp/run.py
 
-git clone -j8 --depth 1 --branch main https://github.com/pytorch/xla.git
-PJRT_DEVICE=CUDA GPU_NUM_DEVICES=4 python xla/test/test_train_mp_imagenet.py --fake_data
+rm -rf /tmp/xla 
+git clone -j8 --depth 1 --branch main https://github.com/pytorch/xla.git /tmp/xla
+PJRT_DEVICE=CUDA GPU_NUM_DEVICES=4 python /tmp/xla/test/test_train_mp_imagenet.py --fake_data
 
 cat <<'EOF' | tee "$HOME"/.zshrc
 export DEV_PREFIX=/opt/dev
