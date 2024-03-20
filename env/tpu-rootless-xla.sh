@@ -2,7 +2,7 @@
 
 export DEBIAN_FRONTEND=noninteractive
 export NEEDRESTART_MODE=a
-export DEV_ROOT=/tmp
+export DEV_ROOT=$HOME
 export DEV_PREFIX=$DEV_ROOT/opt/dev
 export CONDA_ROOT_PREFIX=$DEV_PREFIX/conda
 
