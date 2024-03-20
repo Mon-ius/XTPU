@@ -9,11 +9,8 @@ conda env config vars set PJRT_DEVICE=CUDA
 conda env config vars set GPU_NUM_DEVICES=4
 # conda env config vars set XLA_USE_BF16=1
 # conda env config vars set XLA_USE_SPMD=1
-conda deactivate && sleep 5
-conda activate xla
 
-pip install torch==2.3.0.dev20240315+cu121 --index-url https://download.pytorch.org/whl/nightly/cu121
-pip install https://storage.googleapis.com/pytorch-xla-releases/wheels/cuda/12.1/torch_xla-2.3.0rc2-cp310-cp310-linux_x86_64.whl
+pip install https://storage.googleapis.com/pytorch-xla-releases/wheels/cuda/12.1/torch_xla-2.2.0-cp310-cp310-manylinux_2_28_x86_64.whl
 pip uninstall -y accelerate
 pip install git+https://github.com/huggingface/accelerate
 
@@ -25,15 +22,16 @@ python -c "import torch; import torch_xla.core.xla_model as xm;"
 
 echo 'import torch
 import torch_xla.core.xla_model as xm
-import torch_xla.runtime as xr
-num_devices = xr.global_runtime_device_count()
-print(num_devices)
 
-dev = xm.xla_device()
+devices = xm.get_xla_supported_devices()
+for device in devices:
+    print(f"- {device}")
+
+dev = devices[0]
 t1 = torch.randn(3,3,device=dev)
 t2 = torch.randn(3,3,device=dev)
 print(t1 + t2)' | tee /tmp/run.py
 
 PJRT_DEVICE=CUDA GPU_NUM_DEVICES=4 python /tmp/run.py
-git clone -j8 --depth 1 --branch main https://github.com/pytorch/xla.git
-PJRT_DEVICE=CUDA GPU_NUM_DEVICES=4 python xla/test/test_train_mp_imagenet.py --fake_data
+git clone -j8 --depth 1 --branch main https://github.com/pytorch/xla.git /tmp/xla
+PJRT_DEVICE=CUDA GPU_NUM_DEVICES=4 python /tmp/xla/test/test_train_mp_imagenet.py --fake_data
