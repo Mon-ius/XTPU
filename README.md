@@ -78,8 +78,9 @@ curl -fsSL bit.ly/os-LLM-Alpine-acc | sh -s -- 3.19
 curl -fsSL bit.ly/remote-LLM-dataset-mount | sh -s -- dataset
 ```
 
-## Refrence
+## Reference
 
 1. https://github.com/pytorch-tpu/transformers/blob/llama2-google-next-training/SPMD_USER_GUIDE.md
 2. https://huggingface.co/blog/accelerate-large-models
 3. https://pytorch.org/blog/path-achieve-low-inference-latency/?utm_content=254892693&utm_medium=social&utm_source=linkedin&hss_channel=lcp-78618366
+4. https://github.com/ronghanghu/vit_10b_fsdp_example
