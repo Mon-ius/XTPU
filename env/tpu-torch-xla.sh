@@ -100,8 +100,8 @@ print(t1 + t2)' | tee /tmp/run.py
 PJRT_DEVICE=TPU python /tmp/run.py
 
 cat <<'EOF' | tee "$HOME"/.zshrc
-export DEV_PREFIX=$DEV_PREFIX
-export CONDA_ROOT_PREFIX=$CONDA_ROOT_PREFIX
+export DEV_PREFIX=/opt/dev
+export CONDA_ROOT_PREFIX=$DEV_PREFIX/conda
 
 if [[ -r "$HOME/.cache/p10k-instant-prompt-$USER.zsh" ]]; then
     source "$HOME/.cache/p10k-instant-prompt-$USER.zsh"

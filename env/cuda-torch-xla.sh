@@ -2,7 +2,7 @@
 
 export DEBIAN_FRONTEND=noninteractive
 export NEEDRESTART_MODE=a
-export DEV_ROOT=/tmp
+export DEV_ROOT=$HOME
 export DEV_PREFIX=$DEV_ROOT/opt/dev
 export CONDA_ROOT_PREFIX=$DEV_PREFIX/conda
 
@@ -107,7 +107,8 @@ git clone -j8 --depth 1 --branch main https://github.com/pytorch/xla.git /tmp/xl
 PJRT_DEVICE=CUDA GPU_NUM_DEVICES=4 python /tmp/xla/test/test_train_mp_imagenet.py --fake_data
 
 cat <<'EOF' | tee "$HOME"/.zshrc
-export DEV_PREFIX=/opt/dev
+export DEV_ROOT=$HOME
+export DEV_PREFIX=$DEV_ROOT/opt/dev
 export CONDA_ROOT_PREFIX=$DEV_PREFIX/conda
 
 if [[ -r "$HOME/.cache/p10k-instant-prompt-$USER.zsh" ]]; then
