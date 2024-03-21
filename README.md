@@ -43,10 +43,17 @@ curl -fsSL bit.ly/new-tpu-v4-queue | sh -s -- -y
 ### 4. 🫧 LLM training
 
 #### 4.1 Miniconda Environment
+TPU
 ```bash
 curl -fsSL bit.ly/tpu-torch-xla | sh
 #OR
 curl -fsSL bit.ly/tpu-rootless-xla | sh
+```
+CUDA
+```bash
+curl -fsSL bit.ly/cuda-torch-xla | sh
+#OR
+curl -fsSL bit.ly/cuda-rootless-xla | sh
 ```
 #### 4.2 Model Training
 
