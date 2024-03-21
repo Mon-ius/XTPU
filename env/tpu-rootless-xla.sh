@@ -66,7 +66,7 @@ bash $DEV_ROOT/conda.sh -b -p $CONDA_ROOT_PREFIX && rm $DEV_ROOT/conda.sh
 
 . "$CONDA_ROOT_PREFIX/etc/profile.d/conda.sh"
 
-conda create -n xla python=3.11 datasets accelerate evaluate scikit-learn torchvision torchaudio transformers bitsandbytes diffusers segment-anything sentencepiece imageio scipy numpy pyglet trimesh gradio fire -c conda-forge -c pytorch -y
+conda create -n xla python=3.11 datasets accelerate evaluate scikit-learn torchvision torchaudio transformers bitsandbytes diffusers segment-anything sentencepiece imageio scipy numpy pyglet trimesh open3d gradio fire -c conda-forge -c pytorch -y
 conda activate xla
 conda env config vars set LD_LIBRARY_PATH="$CONDA_PREFIX/lib"
 conda env config vars set HF_HOME="/dev/shm"
