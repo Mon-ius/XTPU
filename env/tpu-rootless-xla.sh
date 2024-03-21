@@ -14,7 +14,7 @@ sudo apt-get -qq \
     --allow-remove-essential \
     --allow-change-held-packages  \
     dist-upgrade
-sudo apt-get -qq install net-tools tmux mosh zsh rclone fuse3 curl git bzip2 git-lfs
+sudo apt-get -qq install net-tools tmux mosh zsh rclone fuse3 curl git bzip2 git-lfs libgl1-mesa-glx
 sudo apt-get -qq autoremove --purge
 sudo mkdir -p $DEV_PREFIX && sudo chown -R "$USER:$USER" $DEV_PREFIX
 sudo sed -i 's/#user_allow_other/user_allow_other/' /etc/fuse.conf
@@ -66,7 +66,7 @@ bash $DEV_ROOT/conda.sh -b -p $CONDA_ROOT_PREFIX && rm $DEV_ROOT/conda.sh
 
 . "$CONDA_ROOT_PREFIX/etc/profile.d/conda.sh"
 
-conda create -n xla python=3.11 datasets accelerate evaluate scikit-learn torchvision torchaudio transformers bitsandbytes diffusers segment-anything sentencepiece imageio scipy numpy pyglet trimesh open3d gradio fire -c conda-forge -c pytorch -y
+conda create -n xla python=3.11 datasets accelerate evaluate scikit-learn torchvision torchaudio transformers bitsandbytes diffusers segment-anything sentencepiece imageio scipy numpy pyglet gradio open3d fire -c conda-forge -c pytorch -y
 conda activate xla
 conda env config vars set LD_LIBRARY_PATH="$CONDA_PREFIX/lib"
 conda env config vars set HF_HOME="/dev/shm"
