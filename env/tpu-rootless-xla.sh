@@ -71,7 +71,38 @@ start_time = time.time()
 print(net(s0).shape, f"xla in {time.time() - start_time}")
 ' | tee /tmp/xla_bench.py
 
+echo 'import torch, time
+import torch.nn as nn
+import torch.nn.functional as F
+
+in_channels = 2
+out_channels = 32
+net = torch.nn.Sequential(
+    torch.nn.Linear(3, 8192),
+    torch.nn.Conv2d(2, 32, kernel_size=1),
+    torch.nn.MaxPool2d(kernel_size=2)
+)
+shape = (16, 2, 8192, 3)
+s0 = torch.randn(shape).float()
+
+start_time = time.time()
+print(s0.shape)
+print(net(s0).shape, f"cpu in {time.time() - start_time}")
+
+import torch_xla.core.xla_model as xm
+
+xla = xm.xla_device()
+s0 = torch.randn(shape).float().to(xla)
+net = torch.nn.Sequential(
+    torch.nn.Linear(3, 8192),
+    torch.nn.Conv2d(2, 32, kernel_size=1),
+    torch.nn.MaxPool2d(kernel_size=2)
+).to(xla)
+print(net(s0).shape, f"xla in {time.time() - start_time}")
+' | tee /tmp/rb_bench.py
+
 PJRT_DEVICE=TPU python /tmp/run.py
 python /tmp/cpu_bench.py
 PJRT_DEVICE=TPU python /tmp/xla_bench.py
 PJRT_DEVICE=TPU XLA_USE_BF16=1 python /tmp/xla_bench.py
+PJRT_DEVICE=TPU XLA_USE_BF16=1 python /tmp/rb_bench.py
