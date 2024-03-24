@@ -109,3 +109,16 @@ python /tmp/cpu_bench.py
 PJRT_DEVICE=TPU python /tmp/xla_bench.py
 PJRT_DEVICE=TPU XLA_USE_BF16=1 python /tmp/xla_bench.py
 PJRT_DEVICE=TPU XLA_USE_BF16=1 python /tmp/rb_bench.py
+
+cat <<'EOF' | tee -a "$HOME"/.bashrc
+export DEV_ROOT=$HOME
+export DEV_PREFIX=$DEV_ROOT/opt/dev
+export CONDA_ROOT_PREFIX=$DEV_PREFIX/conda
+
+
+if [ -f "$CONDA_ROOT_PREFIX/etc/profile.d/conda.sh" ]; then
+    . "$CONDA_ROOT_PREFIX/etc/profile.d/conda.sh"
+else
+    export PATH="$CONDA_ROOT_PREFIX/bin:$PATH"
+fi
+EOF
