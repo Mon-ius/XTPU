@@ -80,7 +80,23 @@ curl -fsSL bit.ly/remote-LLM-dataset-mount | sh -s -- dataset
 
 ## Reference
 
-1. https://github.com/pytorch-tpu/transformers/blob/llama2-google-next-training/SPMD_USER_GUIDE.md
+### Basic
+
+1. https://pytorch.org/blog/scaling-pytorch-models-on-cloud-tpus-with-fsdp
 2. https://huggingface.co/blog/accelerate-large-models
-3. https://pytorch.org/blog/path-achieve-low-inference-latency/?utm_content=254892693&utm_medium=social&utm_source=linkedin&hss_channel=lcp-78618366
-4. https://github.com/ronghanghu/vit_10b_fsdp_example
+3. https://pytorch.org/blog/path-achieve-low-inference-latency
+
+### SPMD
+
+- https://pytorch.org/blog/high-performance-llama-2
+    1. https://pytorch.org/blog/pytorch-xla-spmd
+    2. https://huggingface.co/blog/llama2
+    3. https://github.com/pytorch/xla/blob/master/docs/spmd.md
+
+- https://github.com/pytorch-tpu/transformers/blob/llama2-google-next-training/SPMD_USER_GUIDE.md
+
+### FSDP
+
+1. https://github.com/ronghanghu/vit_10b_fsdp_example
+2. https://pytorch.org/blog/large-scale-training-hugging-face
+3. https://github.com/pytorch/xla/blob/master/docs/fsdp.md
