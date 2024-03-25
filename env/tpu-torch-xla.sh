@@ -99,7 +99,7 @@ print(t1 + t2)' | tee /tmp/run.py
 
 PJRT_DEVICE=TPU python /tmp/run.py
 
-cat <<'EOF' | tee "$HOME"/.zshrc
+cat <<'EOF' | tee -a "$HOME"/.zshrc
 export DEV_PREFIX=/opt/dev
 export CONDA_ROOT_PREFIX=$DEV_PREFIX/conda
 
