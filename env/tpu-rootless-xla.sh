@@ -115,7 +115,7 @@ export DEV_ROOT=$HOME
 export DEV_PREFIX=$DEV_ROOT/opt/dev
 export CONDA_ROOT_PREFIX=$DEV_PREFIX/conda
 
-
+DISABLE_MAGIC_FUNCTIONS=true
 if [ -f "$CONDA_ROOT_PREFIX/etc/profile.d/conda.sh" ]; then
     . "$CONDA_ROOT_PREFIX/etc/profile.d/conda.sh"
 else

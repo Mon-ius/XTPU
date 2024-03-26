@@ -110,7 +110,7 @@ cat <<'EOF' | tee "$HOME"/.zshrc
 export DEV_ROOT=$HOME
 export DEV_PREFIX=$DEV_ROOT/opt/dev
 export CONDA_ROOT_PREFIX=$DEV_PREFIX/conda
-
+DISABLE_MAGIC_FUNCTIONS=true
 if [[ -r "$HOME/.cache/p10k-instant-prompt-$USER.zsh" ]]; then
     source "$HOME/.cache/p10k-instant-prompt-$USER.zsh"
 fi
