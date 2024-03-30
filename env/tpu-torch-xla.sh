@@ -77,6 +77,10 @@ conda deactivate && conda activate xla
 
 # pip install 'torch~=2.2.0' --index-url https://download.pytorch.org/whl/cpu
 pip install 'torch_xla[tpu]~=2.2.0' -f https://storage.googleapis.com/libtpu-releases/index.html
+pip uninstall -y transformers
+pip install git+https://github.com/huggingface/transformers
+pip uninstall -y diffusers
+pip install git+https://github.com/huggingface/diffusers
 pip uninstall -y accelerate
 pip install git+https://github.com/huggingface/accelerate
 
