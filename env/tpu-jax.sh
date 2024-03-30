@@ -65,11 +65,14 @@ sudo chmod +x conda.sh && bash conda.sh -b -p $CONDA_ROOT_PREFIX && rm conda.sh
 
 . "$CONDA_ROOT_PREFIX/etc/profile.d/conda.sh"
 
-conda create -n jax python=3.12 flax transformers diffusers datasets accelerate ftfy safetensors -c conda-forge -y
+conda create -n jax python=3.12 -c conda-forge -y
 conda activate jax
 conda env config vars set HF_HOME="/dev/shm"
-pip install -U "jax[tpu]" -f https://storage.googleapis.com/jax-releases/libtpu_releases.html
 
+pip install flax
+pip install transformers
+pip install -U "diffusers[torch]"
+pip install -U "jax[tpu]" -f https://storage.googleapis.com/jax-releases/libtpu_releases.html
 
 cat <<'EOF' | tee -a "$HOME"/.zshrc
 export DEV_PREFIX=/opt/dev
