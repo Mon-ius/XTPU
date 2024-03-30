@@ -5,6 +5,7 @@ conda create -n xla python=3.10 datasets accelerate evaluate scikit-learn torchv
 conda activate xla
 conda env config vars set LD_LIBRARY_PATH="$CONDA_PREFIX/lib"
 conda env config vars set HF_HOME=/dev/shm
+conda env config vars set HF_DATASETS_CACHE="/dev/shm"
 conda env config vars set PJRT_DEVICE=CUDA
 conda env config vars set GPU_NUM_DEVICES=4
 # conda env config vars set XLA_USE_BF16=1

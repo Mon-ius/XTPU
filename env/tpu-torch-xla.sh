@@ -70,6 +70,7 @@ conda create -n xla python=3.11 transformers diffusers datasets accelerate evalu
 conda activate xla
 conda env config vars set LD_LIBRARY_PATH="$CONDA_PREFIX/lib"
 conda env config vars set HF_HOME="/dev/shm"
+conda env config vars set HF_DATASETS_CACHE="/dev/shm"
 conda env config vars set PJRT_DEVICE=TPU
 # conda env config vars set XLA_USE_BF16=1
 # conda env config vars set XLA_USE_SPMD=1
