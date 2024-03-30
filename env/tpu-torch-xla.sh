@@ -65,7 +65,7 @@ sudo chmod +x conda.sh && bash conda.sh -b -p $CONDA_ROOT_PREFIX && rm conda.sh
 
 . "$CONDA_ROOT_PREFIX/etc/profile.d/conda.sh"
 
-conda create -n xla python=3.11 transformers diffusers datasets accelerate evaluate torchvision torchaudio  bitsandbytes safetensors sentencepiece imageio scipy numpy pyglet gradio open3d fire rich -c conda-forge -c pytorch -y
+conda create -n xla python=3.11 transformers diffusers datasets accelerate evaluate peft bitsandbytes safetensors sentencepiece imageio scipy numpy pyglet gradio open3d fire rich torchvision torchaudio -c conda-forge -c pytorch -y
 
 conda activate xla
 conda env config vars set LD_LIBRARY_PATH="$CONDA_PREFIX/lib"
@@ -83,6 +83,7 @@ pip uninstall -y diffusers
 pip install git+https://github.com/huggingface/diffusers
 pip uninstall -y accelerate
 pip install git+https://github.com/huggingface/accelerate
+pip install git+https://github.com/huggingface/trl.git
 
 python -c "import torch; print(torch.__version__);"
 python -c "import torch_xla; print(torch_xla.__version__);"
