@@ -71,10 +71,8 @@ conda env config vars set HF_HOME="/dev/shm"
 conda env config vars set HF_DATASETS_CACHE="/dev/shm"
 conda env config vars set LD_LIBRARY_PATH="$CONDA_PREFIX/lib"
 
-
-pip install flax
+pip install flax transformers rembg gradio
 pip install -U "jax[tpu]" -f https://storage.googleapis.com/jax-releases/libtpu_releases.html
-pip install transformers
 pip install -U "diffusers[torch]"
 
 cat <<'EOF' | tee -a "$HOME"/.zshrc

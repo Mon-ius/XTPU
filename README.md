@@ -100,3 +100,7 @@ curl -fsSL bit.ly/remote-LLM-dataset-mount | sh -s -- dataset
 1. https://github.com/ronghanghu/vit_10b_fsdp_example
 2. https://pytorch.org/blog/large-scale-training-hugging-face
 3. https://github.com/pytorch/xla/blob/master/docs/fsdp.md
+
+### Finetune
+
+1. https://huggingface.co/blog/gemma-peft
