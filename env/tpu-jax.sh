@@ -73,7 +73,7 @@ conda env config vars set LD_LIBRARY_PATH="$CONDA_PREFIX/lib"
 
 pip install flax transformers rembg gradio
 pip install -U "jax[tpu]" -f https://storage.googleapis.com/jax-releases/libtpu_releases.html
-pip install -U "diffusers[torch]"
+pip install -U "diffusers[flax]"
 
 cat <<'EOF' | tee -a "$HOME"/.zshrc
 export DEV_PREFIX=/opt/dev
