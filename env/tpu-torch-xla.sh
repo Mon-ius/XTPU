@@ -27,6 +27,8 @@ unqualified-search-registries = ["docker.io"]
 EOF
 
 cat <<EOF | sudo tee -a /etc/security/limits.conf
+root soft nofile 100000
+root hard nofile 100000
 *       hard    nofile  100000
 *       soft    nofile  100000
 EOF
