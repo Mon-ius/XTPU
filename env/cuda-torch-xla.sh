@@ -83,8 +83,8 @@ conda deactivate && sleep 5
 conda activate xla
 
 pip install https://storage.googleapis.com/pytorch-xla-releases/wheels/cuda/12.1/torch_xla-2.2.0-cp310-cp310-manylinux_2_28_x86_64.whl
-pip uninstall -y accelerate
-pip install git+https://github.com/huggingface/accelerate
+# pip uninstall -y accelerate
+# pip install git+https://github.com/huggingface/accelerate
 
 python -c "import torch; print(torch.__version__, torch.version.cuda);"
 python -c "import torch_xla; print(torch_xla.__version__);"
@@ -104,7 +104,7 @@ t1 = torch.randn(3,3,device=dev)
 t2 = torch.randn(3,3,device=dev)
 print(t1 + t2)' | tee /tmp/run.py
 
-PJRT_DEVICE=CUDA GPU_NUM_DEVICES=4 python /tmp/run.py
+PJRT_DEVICE=CUDA python /tmp/run.py
 
 rm -rf /tmp/xla 
 git clone -j8 --depth 1 --branch main https://github.com/pytorch/xla.git /tmp/xla
