@@ -94,6 +94,7 @@ curl -fsSL bit.ly/remote-LLM-dataset-mount | sh -s -- dataset
     3. https://github.com/pytorch/xla/blob/master/docs/spmd.md
 
 - https://github.com/pytorch-tpu/transformers/blob/llama2-google-next-training/SPMD_USER_GUIDE.md
+- https://github.com/pytorch/xla/blob/master/docs/spmd.md#spmd-debugging-tool
 
 ### FSDP
 
