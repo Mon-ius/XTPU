@@ -78,6 +78,13 @@ curl -fsSL bit.ly/os-LLM-Alpine-acc | sh -s -- 3.19
 curl -fsSL bit.ly/remote-LLM-dataset-mount | sh -s -- dataset
 ```
 
+### 7. API Test
+
+```bash
+
+curl -fsSL bit.ly/vertex-test | sh -s -- project_name
+```
+
 ## Reference
 
 ### Basic
