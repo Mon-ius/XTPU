@@ -82,7 +82,7 @@ curl -fsSL bit.ly/remote-LLM-dataset-mount | sh -s -- dataset
 
 ```bash
 
-curl -fsSL bit.ly/vertex-test | sh -s -- project_name
+curl -fsSL bit.ly/vertex-test | sh -s -- project_name model_name
 ```
 
 ## Reference

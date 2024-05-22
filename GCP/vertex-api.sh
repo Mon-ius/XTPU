@@ -1,10 +1,11 @@
 #!/bin/bash
 
 set -eu
-_PROJECT=proj_code
+_PROJECT="proj_code"
+_MODEL="gemini-1.5-pro-preview-0514"
 
 PROJECT="${1:-$_PROJECT}"
-MODEL="gemini-1.5-pro-preview-0514"
+MODEL="${2:-$_MODEL}"
 API="$(gcloud auth print-access-token)"
 
 curl -X POST \
