@@ -3,6 +3,7 @@
 set -eu
 _PROJECT="proj_code"
 _MODEL="gemini-1.5-pro-preview-0514"
+_MODEL2="gemini-1.5-flash-preview-0514"
 
 PROJECT="${1:-$_PROJECT}"
 MODEL="${2:-$_MODEL}"
