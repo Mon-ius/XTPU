@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/dash
 
 set -eu
 _PROJECT="proj_code"
@@ -11,19 +11,24 @@ API="${2:-$_API}"
 MODEL="${3:-$_MODEL}"
 
 
-curl -X POST \
--H "Authorization: Bearer ${API}" \
--H "Content-Type: application/json" \
-"https://us-central1-aiplatform.googleapis.com/v1/projects/${PROJECT}/locations/us-central1/publishers/google/models/${MODEL}:generateContent" -d \
-$'{
+PAYLOAD=$(cat <<EOF
+{
     "contents": {
         "role": "user",
         "parts": [
             {
-                "text": "What\'s a good name for a flower shop that specializes in selling bouquets of dried flowers?"
+                "text": "What's a good name for a flower shop that specializes in selling bouquets of dried flowers?"
             }
         ]
     }
-}'
+}
+EOF
+)
+
+curl -X POST \
+-H "Authorization: Bearer ${API}" \
+-H "Content-Type: application/json" \
+-d "${PAYLOAD}" \
+"https://us-central1-aiplatform.googleapis.com/v1/projects/${PROJECT}/locations/us-central1/publishers/google/models/${MODEL}:generateContent"
 
 echo "$PROJECT" "$API"
