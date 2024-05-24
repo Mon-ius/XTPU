@@ -4,10 +4,12 @@ set -eu
 _PROJECT="proj_code"
 _MODEL="gemini-1.5-pro-preview-0514"
 _MODEL2="gemini-1.5-flash-preview-0514"
+_API="$(gcloud auth print-access-token)"
 
 PROJECT="${1:-$_PROJECT}"
-MODEL="${2:-$_MODEL}"
-API="$(gcloud auth print-access-token)"
+API="${2:-$_API}"
+MODEL="${3:-$_MODEL}"
+
 
 curl -X POST \
 -H "Authorization: Bearer ${API}" \

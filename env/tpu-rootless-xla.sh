@@ -4,20 +4,18 @@ export DEV_ROOT=$HOME
 export DEV_PREFIX=$DEV_ROOT/opt/dev
 export CONDA_ROOT_PREFIX=$DEV_PREFIX/conda
 
-curl -fsSL https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -o $DEV_ROOT/conda.sh
-mkdir -p $DEV_PREFIX && chmod +x $DEV_ROOT/conda.sh
-bash $DEV_ROOT/conda.sh -b -p $CONDA_ROOT_PREFIX && rm $DEV_ROOT/conda.sh
+curl -fsSL https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -o "$DEV_ROOT/conda.sh"
+mkdir -p "$DEV_PREFIX" && chmod +x "$DEV_ROOT/conda.sh"
+bash "$DEV_ROOT/conda.sh" -b -p "$CONDA_ROOT_PREFIX" && rm "$DEV_ROOT/conda.sh"
 
 . "$CONDA_ROOT_PREFIX/etc/profile.d/conda.sh"
 
-conda create -n xl python=3.11 numpy -c conda-forge -y
+conda create -n xl python=3.12 numpy -c conda-forge -y
 conda activate xl
 conda env config vars set LD_LIBRARY_PATH="$CONDA_PREFIX/lib"
 conda env config vars set HF_HOME="/dev/shm"
 conda env config vars set HF_DATASETS_CACHE="/dev/shm"
 conda env config vars set PJRT_DEVICE=TPU
-# conda env config vars set XLA_USE_BF16=1
-# conda env config vars set XLA_USE_SPMD=1
 conda deactivate && conda activate xl
 
 pip install 'torch~=2.2.0' --index-url https://download.pytorch.org/whl/cpu

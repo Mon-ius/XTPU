@@ -1,3 +1,5 @@
+# pip install google-cloud-storage
+
 from google.cloud import storage
 
 client = storage.Client()
