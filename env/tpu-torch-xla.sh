@@ -13,6 +13,7 @@ sudo apt-get -qq \
     --allow-remove-essential \
     --allow-change-held-packages  \
     dist-upgrade
+
 sudo apt-get -qq install net-tools tmux mosh zsh rclone fuse3 curl git bzip2 git-lfs libgl1-mesa-glx
 sudo apt-get -qq autoremove --purge
 sudo mkdir -p $DEV_PREFIX && sudo chown -R "$USER:$USER" $DEV_PREFIX
