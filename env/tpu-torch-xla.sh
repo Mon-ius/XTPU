@@ -68,6 +68,7 @@ sudo chmod +x conda.sh && bash conda.sh -b -p $CONDA_ROOT_PREFIX && rm conda.sh
 
 . "$CONDA_ROOT_PREFIX/etc/profile.d/conda.sh"
 
+
 conda create -n xla python=3.11 transformers diffusers datasets accelerate evaluate peft bitsandbytes safetensors sentencepiece imageio scipy numpy pyglet gradio open3d fire rich torchvision torchaudio -c conda-forge -c pytorch -y
 
 conda activate xla
@@ -79,7 +80,7 @@ conda env config vars set PJRT_DEVICE=TPU
 # conda env config vars set XLA_USE_SPMD=1
 conda deactivate && conda activate xla
 
-# pip install 'torch~=2.2.0' --index-url https://download.pytorch.org/whl/cpu
+pip install 'torch~=2.2.0' --index-url https://download.pytorch.org/whl/cpu
 pip install 'torch_xla[tpu]~=2.2.0' -f https://storage.googleapis.com/libtpu-releases/index.html
 pip uninstall -y transformers
 pip install git+https://github.com/huggingface/transformers

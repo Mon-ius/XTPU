@@ -29,6 +29,8 @@ EOF
 cat <<EOF | sudo tee -a /etc/security/limits.conf
 *       hard    nofile  100000
 *       soft    nofile  100000
+root soft nofile 100000
+root hard nofile 100000
 EOF
 
 cat <<EOF | sudo tee "$HOME"/.zsh_plugins.txt

@@ -12,15 +12,16 @@ bash "$DEV_ROOT/conda.sh" -b -p "$CONDA_ROOT_PREFIX" && rm "$DEV_ROOT/conda.sh"
 
 conda create -n x4 python=3.11 pytorch torchvision accelerate pytorch-cuda=12.1 cuda -c pytorch -c nvidia -c conda-forge -y
 conda activate x4
-conda env config vars set LD_LIBRARY_PATH="$CONDA_PREFIX/lib"
-conda env config vars set XLA_FLAGS="--xla_gpu_cuda_data_dir=$CONDA_PREFIX"
+
+conda env config vars set LD_LIBRARY_PATH=$CONDA_PREFIX/lib
+conda env config vars set XLA_FLAGS=--xla_gpu_cuda_data_dir=$CONDA_PREFIX
 conda env config vars set HF_HOME=/dev/shm
-conda env config vars set HF_DATASETS_CACHE="/dev/shm"
-conda env config vars set HF_ENDPOINT="https://hf-mirror.com"
+conda env config vars set HF_DATASETS_CACHE=/dev/shm
+conda env config vars set HF_ENDPOINT=https://hf-mirror.com
 conda env config vars set PJRT_DEVICE=CUDA
 conda env config vars set GPU_NUM_DEVICES=4
 
-conda deactivate && sleep 5 
+conda deactivate && sleep 5
 conda activate x4
 
 pip install https://storage.googleapis.com/pytorch-xla-releases/wheels/cuda/12.1/torch_xla-2.3.0-cp311-cp311-manylinux_2_28_x86_64.whl

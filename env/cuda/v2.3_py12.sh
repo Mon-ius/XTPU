@@ -10,7 +10,7 @@ bash "$DEV_ROOT/conda.sh" -b -p "$CONDA_ROOT_PREFIX" && rm "$DEV_ROOT/conda.sh"
 
 . "$CONDA_ROOT_PREFIX/etc/profile.d/conda.sh"
 
-conda create -n x3 python=3.11 pytorch torchvision diffusers datasets evaluate peft bitsandbytes safetensors sentencepiece imageio scipy numpy open3d gradio fire rich accelerate transformers opencv pytorch-cuda=12.1 cuda -c pytorch -c nvidia -c conda-forge -y
+conda create -n x3 python=3.11 pytorch torchvision diffusers datasets evaluate peft bitsandbytes safetensors sentencepiece imageio scipy numpy open3d gradio fire rich accelerate transformers av timm pytorch-cuda=12.1 cuda -c pytorch -c nvidia -c conda-forge -y
 
 conda activate x3
 conda env config vars set LD_LIBRARY_PATH="$CONDA_PREFIX/lib"
