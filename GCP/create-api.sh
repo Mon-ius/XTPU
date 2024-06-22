@@ -1,8 +1,8 @@
 #!/bin/bash
 
+_PROJECT_ID='My First Project'
+_KEY_NUM=10
 _TARGET=generativelanguage.googleapis.com
-_PROJECT_ID=g-api
-_KEY_NUM=5
 
 PROJECT_ID="${1:-$_PROJECT_ID}"
 KEY_NUM="${2:-$_KEY_NUM}"
