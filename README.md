@@ -85,7 +85,7 @@ curl -fsSL bit.ly/remote-LLM-dataset-mount | sh -s -- dataset
 curl -fsSL bit.ly/new-gcp-api | sh -s -- project_name api_num api_target
 ```
 
-### 7. API Test
+### 8. API Test
 
 ```bash
 
