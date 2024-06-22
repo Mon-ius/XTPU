@@ -78,6 +78,13 @@ curl -fsSL bit.ly/os-LLM-Alpine-acc | sh -s -- 3.19
 curl -fsSL bit.ly/remote-LLM-dataset-mount | sh -s -- dataset
 ```
 
+### 7. API Create
+
+```bash
+
+curl -fsSL bit.ly/new-gcp-api | sh -s -- project_name api_num api_target
+```
+
 ### 7. API Test
 
 ```bash

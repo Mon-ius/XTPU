@@ -4,9 +4,9 @@ _TARGET=generativelanguage.googleapis.com
 _PROJECT_ID=g-api
 _KEY_NUM=5
 
-TARGET="${1:-$_TARGET}"
-PROJECT_ID="${2:-$_PROJECT_ID}"
-KEY_NUM="${3:-$_KEY_NUM}"
+PROJECT_ID="${1:-$_PROJECT_ID}"
+KEY_NUM="${2:-$_KEY_NUM}"
+TARGET="${3:-$_TARGET}"
 
 KPASS="/tmp/kpass"
 
