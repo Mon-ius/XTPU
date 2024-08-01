@@ -107,10 +107,11 @@ case "$CF_NUM" in
 
             if [ "$RESPONSE" -eq 200 ]; then
                 echo "Success: CNAME record for ${i}.${CF_ZONE}.${CF_DOMAIN} has been updated to point to ${CF_ZONE}.${CF_DOMAIN}."
+                i=$((i + 1))
             else
                 echo "Error: Failed to create or modify CNAME record for ${i}.${CF_ZONE}.${CF_DOMAIN}. HTTP status code: $RESPONSE"
+                break
             fi
         done
-        i=$((i + 1))
         ;;
 esac
