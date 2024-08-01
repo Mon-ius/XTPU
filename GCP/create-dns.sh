@@ -70,7 +70,7 @@ fi
 
 case "$CF_NUM" in
     ''|*[!0-9]*) 
-        echo "Invalid value for n: $CF_NUM. Please provide a valid non-negative integer."
+        echo "Invalid value for CF_NUM: $CF_NUM. Please provide a valid non-negative integer."
         exit 1
         ;;
     *)
