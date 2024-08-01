@@ -14,7 +14,7 @@ if [ -z "$CF_IP" ]; then
     exit 1
 fi
 
-echo "External IP: $CF_IP"
+echo "External IP: $CF_IP, $CF_TOKEN, $CF_DOMAIN, $CF_ZONE"
 
 CF_ZONE_ID=$(curl -s -X GET -H "Authorization: Bearer $CF_TOKEN" \
     "https://api.cloudflare.com/client/v4/zones?name=$CF_DOMAIN" | grep -o '"id":"[^"]*"' | head -n 1 | awk -F: '{print $2}' | tr -d '"')
