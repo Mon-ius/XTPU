@@ -3,11 +3,12 @@
 _CF_ZONE="sub"
 _CF_DOMAIN="example.com"
 _CF_TOKEN="jdqgyu2g3u1309i09i0"
-_N=0
+_CF_NUM=0
 
 CF_TOKEN="${1:-$_CF_TOKEN}"
 CF_DOMAIN="${2:-$_CF_DOMAIN}"
 CF_ZONE="${3:-$_CF_ZONE}"
+CF_NUM="${4:-$_CF_NUM}"
 
 CF_IP=$(curl -s http://ipinfo.io/ip)
 if [ -z "$CF_IP" ]; then
@@ -67,14 +68,14 @@ else
     exit 1
 fi
 
-case "$N" in
+case "$CF_NUM" in
     ''|*[!0-9]*) 
-        echo "Invalid value for n: $N. Please provide a valid non-negative integer."
+        echo "Invalid value for n: $CF_NUM. Please provide a valid non-negative integer."
         exit 1
         ;;
     *)
         i=0
-        while [ $i -lt "$N" ]; do
+        while [ $i -lt "$CF_NUM" ]; do
             DNS_RECORD_ID=$(curl -s -X GET -H "Authorization: Bearer $CF_TOKEN" \
                 "https://api.cloudflare.com/client/v4/zones/${CF_ZONE_ID}/dns_records?name=${i}.${CF_ZONE}.${CF_DOMAIN}&type=CNAME" \
                 | grep -o '"id":"[^"]*"' | head -n 1 | awk -F: '{print $2}' | tr -d '"')
