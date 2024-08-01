@@ -11,16 +11,21 @@ TARGET="${3:-$_TARGET}"
 KPASS="/tmp/$PROJECT_ID"
 
 gcloud services enable "$TARGET"
+# gcloud services list --enabled
 
 for i in $(seq 1 "$KEY_NUM"); do
-    key_data=$(gcloud services api-keys create \
+    _data=$(gcloud services api-keys create \
         --project="$PROJECT_ID" \
         --display-name="G-$i" \
         --api-target=service="$TARGET" \
         --format="json"
     )
+    key=$(echo "$_data" | jq -r '.response.keyString')
 
-    echo "$key_data" | jq -r '.response.keyString' | tee -a "$KPASS"
+cat >> "$KPASS" <<-EOF
+['https://$TARGET', '$key', 'gemini-1.5-pro-latest'],
+EOF
+
 done
 
 cat "$KPASS"
