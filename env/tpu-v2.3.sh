@@ -37,5 +37,5 @@ t2 = torch.randn(3,3,device=dev)
 print(t1 + t2)' | tee /tmp/run.py
 
 PJRT_DEVICE=TPU python /tmp/run.py
-git clone -j8 --depth 1 --branch main https://github.com/pytorch/xla.git /tmp/xla
+git clone -j8 --depth 1 --branch master https://github.com/pytorch/xla.git /tmp/xla
 PJRT_DEVICE=TPU python /tmp/xla/test/test_train_mp_imagenet.py --fake_data

@@ -57,5 +57,5 @@ print(t1 + t2)' | tee /tmp/run.py
 PJRT_DEVICE=CUDA python /tmp/run.py
 
 rm -rf /tmp/xla 
-git clone -j8 --depth 1 --branch main https://github.com/pytorch/xla.git /tmp/xla
+git clone -j8 --depth 1 --branch master https://github.com/pytorch/xla.git /tmp/xla
 PJRT_DEVICE=CUDA GPU_NUM_DEVICES=8 python /tmp/xla/test/test_train_mp_imagenet.py --fake_data

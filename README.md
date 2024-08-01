@@ -8,7 +8,7 @@ Boost AI and LLM application dev on TPU.
 
 ---
 
-### 1. ⚙ New vm instance
+### 1. ⚙ New vm instance and user
 
 ```bash
 # Run on Cloud Shell Terminal

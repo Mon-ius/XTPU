@@ -33,7 +33,7 @@ python -c "import torch; import torch_xla.core.xla_model as xm;"
 python -c "import accelerate; print(accelerate.__version__);"
 python -c "from accelerate import Accelerator; accelerator = Accelerator();"
 
-git clone -j8 --depth 1 --branch main https://github.com/pytorch/xla.git /tmp/xla
+git clone -j8 --depth 1 --branch master https://github.com/pytorch/xla.git /tmp/xla
 PJRT_DEVICE=CUDA GPU_NUM_DEVICES=4 python /tmp/xla/test/test_train_mp_imagenet.py --fake_data
 
 cat <<'EOF' | tee -a "$HOME"/.bashrc
