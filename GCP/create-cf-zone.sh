@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/dash
 
 _CF_ZONE="sub"
 _CF_DOMAIN="example.com"
@@ -26,22 +26,42 @@ fi
 
 echo "Zone ID: $CF_ZONE_ID"
 
-RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X POST "https://api.cloudflare.com/client/v4/zones/${CF_ZONE_ID}/dns_records" \
-    -H "Content-Type: application/json" \
-    -H "Authorization: Bearer ${CF_TOKEN}" \
-    -d '{
-        "content": "'"${CF_IP}"'",
-        "name": "'"${CF_ZONE}.${CF_DOMAIN}"'",
-        "proxied": false,
-        "type": "A",
-        "comment": "",
-        "tags": [],
-        "ttl": 60
-    }')
+DNS_RECORD=$(curl -s -X GET -H "Authorization: Bearer $CF_TOKEN" \
+    "https://api.cloudflare.com/client/v4/zones/${CF_ZONE_ID}/dns_records?name=${CF_ZONE}.${CF_DOMAIN}" | grep -o '"id":"[^"]*"' | head -n 1 | awk -F: '{print $2}' | tr -d '"')
+
+if [ -z "$DNS_RECORD" ]; then
+    echo "DNS record not found. Creating a new DNS record..."
+    RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X POST "https://api.cloudflare.com/client/v4/zones/${CF_ZONE_ID}/dns_records" \
+        -H "Content-Type: application/json" \
+        -H "Authorization: Bearer ${CF_TOKEN}" \
+        -d '{
+            "content": "'"${CF_IP}"'",
+            "name": "'"${CF_ZONE}.${CF_DOMAIN}"'",
+            "proxied": false,
+            "type": "A",
+            "comment": "",
+            "tags": [],
+            "ttl": 60
+        }')
+else
+    echo "DNS record found. Modifying the existing DNS record..."
+    RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X PUT "https://api.cloudflare.com/client/v4/zones/${CF_ZONE_ID}/dns_records/${DNS_RECORD}" \
+        -H "Content-Type: application/json" \
+        -H "Authorization: Bearer ${CF_TOKEN}" \
+        -d '{
+            "content": "'"${CF_IP}"'",
+            "name": "'"${CF_ZONE}.${CF_DOMAIN}"'",
+            "proxied": false,
+            "type": "A",
+            "comment": "",
+            "tags": [],
+            "ttl": 60
+        }')
+fi
 
 if [ "$RESPONSE" -eq 200 ]; then
-    echo "Success: DNS record created for ${CF_ZONE}.${CF_DOMAIN} with IP ${CF_IP}."
+    echo "Success: DNS record for ${CF_ZONE}.${CF_DOMAIN} has been updated with IP ${CF_IP}."
 else
-    echo "Error: Failed to create DNS record. HTTP status code: $RESPONSE"
+    echo "Error: Failed to create or modify DNS record. HTTP status code: $RESPONSE"
     exit 1
 fi
