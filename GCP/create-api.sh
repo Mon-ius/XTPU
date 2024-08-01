@@ -11,7 +11,6 @@ TARGET="${3:-$_TARGET}"
 KPASS="/tmp/$PROJECT_ID"
 
 gcloud services enable "$TARGET"
-gcloud services list --enabled
 
 for i in $(seq 1 "$KEY_NUM"); do
     key_data=$(gcloud services api-keys create \
