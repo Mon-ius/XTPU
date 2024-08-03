@@ -15,5 +15,5 @@ RESPONSE=$(curl -fsSL -X POST $END_POINT \
         "tos":"'$(date +"%Y-%m-%dT%H:%M:%S.000Z")'"
     }')
 
-echo "private_key: $private_key"
+echo "\"private_key\":\"$private_key\""
 echo "$RESPONSE"
