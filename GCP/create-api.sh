@@ -23,7 +23,7 @@ for i in $(seq 1 "$KEY_NUM"); do
     key=$(echo "$_data" | jq -r '.response.keyString')
 
 cat >> "$KPASS" <<-EOF
-['https://$TARGET', '$key', 'gemini-1.5-pro-latest'],
+{ key = '$key', model = 'gemini-1.5-pro-latest', url = 'https://$TARGET' },
 EOF
 
 done
