@@ -5,12 +5,13 @@ END_POINT="https://api.cloudflareclient.com/v0a2077"
 REG_URL="$END_POINT/reg"
 
 seed="${1:-$SEED}"
-key="$(date "+%Y-%m-%dT%H:%M:%S" | sha256sum | head -c 43)="
+tos=$(date +"%Y-%m-%dT%H:%M:%S.000Z")
+key="$(echo "$tos" | sha256sum | head -c 43)="
 
 RESPONSE=$(curl -fsSL $REG_URL \
     -d '{
         "key":"'${key}'",
-        "tos":"'$(date +"%Y-%m-%dT%H:%M:%S.000Z")'"
+        "tos":"'${tos}'"
     }')
 
 id=$(echo "$RESPONSE" | grep -oP '"id":"\K[^"]+' | head -n 1) 
