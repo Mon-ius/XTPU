@@ -5,13 +5,11 @@ END_POINT="https://api.cloudflareclient.com/v0a2077"
 REG_URL="$END_POINT/reg"
 
 seed="${1:-$SEED}"
-keypair=$(openssl genpkey -algorithm X25519)
-private_key=$(echo "$keypair" | openssl pkey -outform DER | tail -c 32 | base64)
-public_key=$(echo "$keypair" | openssl pkey -pubout -outform DER | tail -c 32 | base64)
+key="$(date "+%Y-%m-%dT%H:%M:%S" | sha256sum | head -c 43)="
 
 RESPONSE=$(curl -fsSL $REG_URL \
     -d '{
-        "key":"'${public_key}'",
+        "key":"'${key}'",
         "tos":"'$(date +"%Y-%m-%dT%H:%M:%S.000Z")'"
     }')
 
