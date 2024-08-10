@@ -1,6 +1,6 @@
 #!/bin/dash
 
-ROOT_LICENSE="3M570GHu-R08s71zq-pW790g1q"
+ROOT_LICENSE="E79m26YG-2I6d1Fl3-I2G4w7f5"
 END_POINT="https://api.cloudflareclient.com/v0a2077"
 REG_URL="$END_POINT/reg"
 
