@@ -1,9 +1,10 @@
 #!/bin/dash
 
-ROOT_LICENSE="s7h3lp64-096AWpD7-9fsd847e"
+SEED="s7h3lp64-096AWpD7-9fsd847e"
 END_POINT="https://api.cloudflareclient.com/v0a2077"
 REG_URL="$END_POINT/reg"
 
+seed="${1:-$SEED}"
 keypair=$(openssl genpkey -algorithm X25519)
 private_key=$(echo "$keypair" | openssl pkey -outform DER | tail -c 32 | base64)
 public_key=$(echo "$keypair" | openssl pkey -pubout -outform DER | tail -c 32 | base64)
@@ -22,7 +23,7 @@ curl -fsSL -o /dev/null -X PUT "$REG_URL/$id/account" \
     -H "Authorization: Bearer $token" \
     -H "Content-Type: application/json" \
     -d '{
-        "license":"'${ROOT_LICENSE}'"
+        "license":"'${seed}'"
     }'
 
 curl -fsSL -o /dev/null -X PUT "$REG_URL/$id/account" \
@@ -32,11 +33,14 @@ curl -fsSL -o /dev/null -X PUT "$REG_URL/$id/account" \
         "license":"'${license}'"
     }'
 
-INFO=$(curl -fsSL "$REG_URL/$id/account" -H "Authorization: Bearer $token")
-quota=$(echo "$INFO" | grep -oP '"quota":\K\d+')
+curl -fsSL -o /dev/null -X DELETE "$REG_URL/$id" \
+    -H "Authorization: Bearer $token"
 
-echo "\"id\":\"$id\""
-echo "\"token\":\"$token\""
+# INFO=$(curl -fsSL "$REG_URL/$id/account" -H "Authorization: Bearer $token")
+# quota=$(echo "$INFO" | grep -oP '"quota":\K\d+')
+
+# echo "\"id\":\"$id\""
+# echo "\"token\":\"$token\""
 echo "\"license\":\"$license\""
-echo "\"quota\":\"$quota\""
+# echo "\"quota\":\"$quota\""
 # echo "$RESPONSE"
