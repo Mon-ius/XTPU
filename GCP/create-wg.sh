@@ -13,5 +13,11 @@ RESPONSE=$(curl -fsSL $REG_URL \
         "tos":"'$(date +"%Y-%m-%dT%H:%M:%S.000Z")'"
     }')
 
-echo "\"private_key\":\"$private_key\""
-echo "$RESPONSE"
+id=$(echo "$RESPONSE" | grep -oP '"id":"\K[^"]+' | head -n 1) 
+token=$(echo "$RESPONSE" | grep -oP '"token":"\K[^"]+' | head -n 1) 
+license=$(echo "$RESPONSE" | grep -oP '"license":"\K[^"]+' | head -n 1)
+
+echo "\"id\":\"$id\""
+echo "\"token\":\"$token\""
+echo "\"license\":\"$license\""
+# echo "$RESPONSE"
