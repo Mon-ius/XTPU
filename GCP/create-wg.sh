@@ -1,5 +1,6 @@
 #!/bin/dash
 
+ROOT_KEY="3M570GHu-R08s71zq-pW790g1q"
 END_POINT="https://api.cloudflareclient.com/v0a2077"
 REG_URL="$END_POINT/reg"
 
@@ -17,7 +18,18 @@ id=$(echo "$RESPONSE" | grep -oP '"id":"\K[^"]+' | head -n 1)
 token=$(echo "$RESPONSE" | grep -oP '"token":"\K[^"]+' | head -n 1) 
 license=$(echo "$RESPONSE" | grep -oP '"license":"\K[^"]+' | head -n 1)
 
+curl -fsSL -X PUT "$REG_URL/$id/account" \
+    -H "Authorization: Bearer $token" \
+    -H "Content-Type: application/json" \
+    -d '{
+        "license":"'${ROOT_KEY}'"
+    }'
+
+INFO=$(curl -fsSL "$REG_URL/$id/account" -H "Authorization: Bearer $token")
+quota=$(echo "$INFO" | grep -oP '"quota":\K\d+')
+
 echo "\"id\":\"$id\""
 echo "\"token\":\"$token\""
 echo "\"license\":\"$license\""
+echo "\"quota\":\"$quota\""
 # echo "$RESPONSE"
