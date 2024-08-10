@@ -1,6 +1,6 @@
 #!/bin/dash
 
-ROOT_KEY="3M570GHu-R08s71zq-pW790g1q"
+ROOT_LICENSE="3M570GHu-R08s71zq-pW790g1q"
 END_POINT="https://api.cloudflareclient.com/v0a2077"
 REG_URL="$END_POINT/reg"
 
@@ -22,7 +22,14 @@ curl -fsSL -o /dev/null -X PUT "$REG_URL/$id/account" \
     -H "Authorization: Bearer $token" \
     -H "Content-Type: application/json" \
     -d '{
-        "license":"'${ROOT_KEY}'"
+        "license":'"${ROOT_LICENSE}"'
+    }'
+
+curl -fsSL -o /dev/null -X PUT "$REG_URL/$id/account" \
+    -H "Authorization: Bearer $token" \
+    -H "Content-Type: application/json" \
+    -d '{
+        "license":"'"${license}"'"
     }'
 
 INFO=$(curl -fsSL "$REG_URL/$id/account" -H "Authorization: Bearer $token")
