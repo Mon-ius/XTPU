@@ -33,14 +33,14 @@ curl -fsSL -o /dev/null -X PUT "$REG_URL/$id/account" \
         "license":"'${license}'"
     }'
 
+INFO=$(curl -fsSL "$REG_URL/$id/account" -H "Authorization: Bearer $token")
+quota=$(echo "$INFO" | grep -oP '"quota":\K\d+')
+
+echo "\"id\":\"$id\""
+echo "\"token\":\"$token\""
+echo "\"license\":\"$license\""
+echo "\"quota\":\"$quota\""
+# echo "$RESPONSE"
+
 curl -fsSL -o /dev/null -X DELETE "$REG_URL/$id" \
     -H "Authorization: Bearer $token"
-
-# INFO=$(curl -fsSL "$REG_URL/$id/account" -H "Authorization: Bearer $token")
-# quota=$(echo "$INFO" | grep -oP '"quota":\K\d+')
-
-# echo "\"id\":\"$id\""
-# echo "\"token\":\"$token\""
-echo "\"license\":\"$license\""
-# echo "\"quota\":\"$quota\""
-# echo "$RESPONSE"
