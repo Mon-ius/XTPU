@@ -18,7 +18,7 @@ id=$(echo "$RESPONSE" | grep -oP '"id":"\K[^"]+' | head -n 1)
 token=$(echo "$RESPONSE" | grep -oP '"token":"\K[^"]+' | head -n 1) 
 license=$(echo "$RESPONSE" | grep -oP '"license":"\K[^"]+' | head -n 1)
 
-curl -fsSL -X PUT "$REG_URL/$id/account" \
+curl -fsSL -o /dev/null -X PUT "$REG_URL/$id/account" \
     -H "Authorization: Bearer $token" \
     -H "Content-Type: application/json" \
     -d '{
