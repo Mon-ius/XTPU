@@ -1,6 +1,6 @@
 #!/bin/dash
 
-SEED="s7h3lp64-096AWpD7-9fsd847e"
+SEED="2f33026e-003e-4f9e-a319-2ace161bac4d"
 END_POINT="https://api.cloudflareclient.com/v0a2077"
 REG_URL="$END_POINT/reg"
 
