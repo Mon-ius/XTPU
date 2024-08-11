@@ -42,5 +42,5 @@ quota=$(echo "$INFO" | grep -oP '"quota":\K\d+')
 # echo "\"token\":\"$token\""
 # echo "\"license\":\"$license\""
 # echo "\"quota\":\"$quota\""
-echo "$token"
+echo "$license"
 
