@@ -49,5 +49,6 @@ RPASS=$(echo "$PUBKEY" | md5sum | awk '{ print $1 }')
 echo "$RUSER:$RPASS" | sudo chpasswd
 
 echo "Finished..."
-echo ">  user: $RUSER"
-echo ">  password: $RPASS"
+echo ">  Login username: $RUSER"
+echo ">  Password login disabled: $RPASS"
+echo ">  Use private key to ssh this machine!"
