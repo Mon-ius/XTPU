@@ -51,5 +51,5 @@ echo "$RUSER:$RPASS" | sudo chpasswd
 echo "Finished..."
 echo ">  Login username: $RUSER"
 echo ">  Password login disabled: $RPASS"
-echo ">  Use private key to ssh this machine!"
+echo ">  Use private key to ssh $RUSER@127.0.0.1 -p 22 -i $RUSER this machine!"
 sudo cat "$ROOT_KEYS/id_ed25519_$RUSER"
