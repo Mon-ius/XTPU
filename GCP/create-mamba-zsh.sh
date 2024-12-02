@@ -2,6 +2,8 @@
 
 DEV_PREFIX=$HOME/.dev
 
+sudo apt update && sudo apt install zsh -y
+
 mkdir -p "$DEV_PREFIX" || exit
 
 curl -fsSL https://micro.mamba.pm/api/micromamba/linux-64/latest | tar -xvj bin/micromamba

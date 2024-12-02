@@ -19,8 +19,11 @@ curl -fsSL bit.ly/new-gcp-vm-instance | sh -s -- m0nius asia-east1-b xvm
 # Generate new ssh key
 curl -fsSL bit.ly/ssh-vm-gen | sh
 
-# New rootless mamba environment with zsh
+# New mamba environment with zsh
 curl -fsSL bit.ly/create-mamba-zsh | sh
+
+# New rootless mamba environment with zsh
+curl -fsSL bit.ly/create-mamba-zsh-rootless | sh
 ```
 
 ### 2. 💽 Attach vm disk
