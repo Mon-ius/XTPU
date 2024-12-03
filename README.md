@@ -19,6 +19,9 @@ curl -fsSL bit.ly/new-gcp-vm-instance | sh -s -- m0nius asia-east1-b xvm
 # Generate new ssh key
 curl -fsSL bit.ly/ssh-vm-gen | sh
 
+# New ssh server with secure config
+curl -fsSL bit.ly/create-sshd | sh
+
 # New mamba environment with zsh
 curl -fsSL bit.ly/create-mamba-zsh | sh
 
@@ -70,6 +73,16 @@ curl -fsSL bit.ly/new-LLM-TPUv2-train | sh -s -- -y
 curl -fsSL bit.ly/new-LLM-TPUv4-train | sh -s -- -y
 ```
 
+#### 4.3 Docker Container
+
+```bash
+# Run with Docker Official
+curl -fsSL bit.ly/create-docker | sh
+
+# Run with Docker THU Mirror
+curl -fsSL bit.ly/create-docker-mirror | sh
+```
+
 ### 5. 🥋 Optimize HW
 
 ```bash
@@ -94,6 +107,7 @@ curl -fsSL bit.ly/new-gcp-sb | sh -s -- cf_token cf_domain cf_zone
 curl -fsSL bit.ly/new-gcp-wg | sh -s -- license
 curl -fsSL bit.ly/create-vm-user | sh -s -- username
 curl -fsSL bit.ly/create-ssh-tun | sh -s -- username
+curl -fsSL bit.ly/create-tun-proxy | sh -s -- remote passwd 
 ```
 
 ### 8. API Test
