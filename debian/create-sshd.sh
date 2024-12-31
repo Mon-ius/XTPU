@@ -19,3 +19,5 @@ GatewayPorts yes
 ClientAliveInterval 60
 ClientAliveCountMax 3
 EOF
+
+sudo systemctl restart sshd
