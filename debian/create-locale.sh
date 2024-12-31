@@ -3,6 +3,7 @@
 cat <<EOF | sudo tee /etc/default/locale
 LANG="en_US.UTF-8"
 LANGUAGE="en_US.UTF-8"
+LC_ALL="en_US.UTF-8"
 LC_NUMERIC="en_US.UTF-8"
 LC_TIME="en_US.UTF-8"
 LC_COLLATE="en_US.UTF-8"
