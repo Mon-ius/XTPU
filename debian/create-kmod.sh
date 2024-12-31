@@ -25,3 +25,6 @@ net.core.rmem_max = 26214400
 fs.file-max = 65535
 EOF
 
+cat <<EOF | sudo tee /etc/sysctl.d/99-allow-ping.conf
+net.ipv4.ping_group_range=1001 10001
+EOF
