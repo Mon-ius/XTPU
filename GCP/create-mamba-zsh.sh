@@ -10,8 +10,8 @@ curl -fsSL https://micro.mamba.pm/api/micromamba/linux-64/latest | tar -xvj bin/
 chmod +x bin/micromamba && mv bin/micromamba bin/conda
 sudo mv bin/conda /usr/bin/mamba
 
-git clone --depth=1 https://github.com/AUTOM77/dotfile /tmp/dotfile
-find /tmp/dotfile/.zsh/ -mindepth 1 -maxdepth 1 -exec mv -v {} "$HOME" \;
+git clone --depth=1 https://github.com/AUTOM77/dotfile ~/dotfile
+find ~/dotfile/.zsh/ -mindepth 1 -maxdepth 1 -exec mv -v {} "$HOME" \;
 
 s1="export DEV_PREFIX=$HOME/.dev"
 
