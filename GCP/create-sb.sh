@@ -40,7 +40,9 @@ cat <<EOF | sudo tee /etc/sing-box/config.json
                 "password": "$OBFS"
             },
             "users": [
-                "password": "$CF_TOKEN"
+                {
+                    "password": "$CF_TOKEN"
+                }
             ],
             "tls": {
                 "enabled": true,
