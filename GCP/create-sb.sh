@@ -33,8 +33,8 @@ cat <<EOF | sudo tee /etc/sing-box/config.json
             "type": "hysteria2",
             "listen": "::",
             "listen_port": 443,
-            "up_mbps": 1000,
-            "down_mbps": 1000,
+            "up_mbps": 10000,
+            "down_mbps": 10000,
             "obfs": {
                 "type": "salamander",
                 "password": "$OBFS"
