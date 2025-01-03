@@ -17,7 +17,7 @@ CF_ZONE="${3:-$_CF_ZONE}"
 
 curl -fsSL bit.ly/new-gcp-dns | sh -s -- "$CF_TOKEN" "$CF_DOMAIN" "$CF_ZONE"
 
-OBFS="$(echo "$USER-$_CF_TOKEN" | base64)"
+OBFS="$(echo "$USER-$CF_TOKEN" | base64)"
 cat <<EOF | sudo tee /etc/sing-box/config.json
 {
     "outbounds": [
