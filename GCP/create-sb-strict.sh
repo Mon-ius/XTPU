@@ -17,6 +17,9 @@ CF_ZONE="${3:-$_CF_ZONE}"
 
 curl -fsSL bit.ly/new-gcp-dns | sh -s -- "$CF_TOKEN" "$CF_DOMAIN" "$CF_ZONE"
 
+OBFS="$(echo "$USER-$CF_TOKEN" | base64)"
+# echo "$USER-$CF_TOKEN"
+# echo "$OBFS"
 cat <<EOF | sudo tee /etc/sing-box/config.json
 {
     "outbounds": [
@@ -26,6 +29,18 @@ cat <<EOF | sudo tee /etc/sing-box/config.json
             "type": "direct"
         }
     ],
+    "route": {
+        "rules": [
+            {
+                "inbound": "hy2-in",
+                "action": "sniff",
+            },
+            {
+                "protocol": "dns",
+                "action": "hijack-dns"
+            }
+        ]
+    },
     "inbounds": [
         {   
             "type": "hysteria2",
@@ -34,6 +49,10 @@ cat <<EOF | sudo tee /etc/sing-box/config.json
             "listen_port": 443,
             "up_mbps": 10000,
             "down_mbps": 10000,
+            "obfs": {
+                "type": "salamander",
+                "password": "$OBFS"
+            },
             "users": [
                 {
                     "password": "$CF_TOKEN"
