@@ -24,8 +24,9 @@ cat <<EOF | sudo tee /etc/sing-box/config.json
 {
     "outbounds": [
         {
-            "type": "direct",
-            "tag": "direct"
+            "tag": "direct-out",
+            "udp_fragment": true,
+            "type": "direct"
         }
     ],
     "inbounds": [
