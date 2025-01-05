@@ -55,6 +55,7 @@ cat <<EOF | sudo tee /etc/sing-box/config.json
             },
             "users": [
                 {
+                    "name": "admin"
                     "password": "$CF_TOKEN"
                 }
             ],
