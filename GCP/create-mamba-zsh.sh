@@ -2,7 +2,7 @@
 
 DEV_PREFIX=$HOME/.dev
 
-sudo apt update && sudo apt install zsh bzip2 -y
+sudo apt update && sudo apt install git zsh bzip2 -y
 
 mkdir -p "$DEV_PREFIX" || exit
 
