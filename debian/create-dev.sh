@@ -7,9 +7,3 @@ apt-get install sudo net-tools zsh locales htop git git-lfs openssl gnupg2 dnsut
 
 git config --global http.sslVerify false
 git config --global http.postBuffer 1048576000
-
-
-
-
-
-
