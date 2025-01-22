@@ -24,6 +24,7 @@ net.core.wmem_max = 26214400
 net.core.rmem_max = 26214400
 fs.file-max = 2097152
 fs.inode-max = 4194304
+vm.max_map_count = 524288
 EOT
 
 sudo tee /etc/sysctl.d/99-allow-ping.conf > /dev/null <<EOT

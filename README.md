@@ -117,6 +117,11 @@ curl -fsSL bit.ly/create-tun-proxy | sh -s -- remote passwd
 curl -fsSL bit.ly/vertex-test | sh -s -- project_name model_name
 ```
 
+### 9. Debian System Init
+
+- create-cron
+- create-kmod
+
 ## Reference
 
 ### Basic
