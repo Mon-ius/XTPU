@@ -2,29 +2,30 @@
 
 sudo apt-get update && sudo apt install kmod -y
 
-cat <<EOF | sudo tee -a /etc/security/limits.conf
+sudo tee -a /etc/security/limits.conf > /dev/null <<EOT
 root soft nofile 100000
 root hard nofile 100000
 *       hard    nofile  100000
 *       soft    nofile  100000
-EOF
+EOT
 
-cat <<EOF | sudo tee -a /etc/modules
+sudo tee -a /etc/modules > /dev/null <<EOT
 tun
 loop
 ip_tables
 tcp_bbr
-EOF
+EOT
 
-cat <<EOF | sudo tee /etc/sysctl.d/bbr.conf
+sudo tee /etc/sysctl.d/bbr.conf > /dev/null <<EOT
 net.core.default_qdisc=fq_codel
 net.ipv4.tcp_congestion_control=bbr
 net.ipv4.tcp_moderate_rcvbuf = 1
 net.core.wmem_max = 26214400
 net.core.rmem_max = 26214400
-fs.file-max = 65535
-EOF
+fs.file-max = 655350
+fs.inode-max = 6553500
+EOT
 
-cat <<EOF | sudo tee /etc/sysctl.d/99-allow-ping.conf
+sudo tee /etc/sysctl.d/99-allow-ping.conf > /dev/null <<EOT
 net.ipv4.ping_group_range=1001 10001
-EOF
+EOT
