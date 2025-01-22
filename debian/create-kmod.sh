@@ -22,8 +22,8 @@ net.ipv4.tcp_congestion_control=bbr
 net.ipv4.tcp_moderate_rcvbuf = 1
 net.core.wmem_max = 26214400
 net.core.rmem_max = 26214400
-fs.file-max = 655350
-fs.inode-max = 6553500
+fs.file-max = 2097152
+fs.inode-max = 4194304
 EOT
 
 sudo tee /etc/sysctl.d/99-allow-ping.conf > /dev/null <<EOT
