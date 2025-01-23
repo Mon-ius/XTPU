@@ -2,11 +2,11 @@
 
 sudo apt-get update && sudo apt install kmod -y
 
-sudo tee -a /etc/security/limits.conf > /dev/null <<EOT
-root soft nofile 100000
-root hard nofile 100000
-*       hard    nofile  100000
-*       soft    nofile  100000
+sudo tee /etc/security/limits.conf > /dev/null <<EOT
+root soft nofile 2000000
+root hard nofile 2000000
+*       hard    nofile  2000000
+*       soft    nofile  2000000
 EOT
 
 sudo tee -a /etc/modules > /dev/null <<EOT
@@ -18,12 +18,26 @@ EOT
 
 sudo tee /etc/sysctl.d/bbr.conf > /dev/null <<EOT
 net.core.default_qdisc=fq_codel
-net.ipv4.tcp_congestion_control=bbr
-net.ipv4.tcp_moderate_rcvbuf = 1
+net.core.optmem_max = 25165824
 net.core.wmem_max = 26214400
 net.core.rmem_max = 26214400
+net.core.somaxconn = 65535
+net.core.netdev_max_backlog = 65535
+net.ipv4.tcp_fastopen = 3
+net.ipv4.tcp_tw_reuse = 1
+net.ipv4.tcp_moderate_rcvbuf = 1
+net.ipv4.tcp_timestamps = 0
+net.ipv4.tcp_fin_timeout = 15
+net.ipv4.tcp_congestion_control=bbr
+net.ipv4.tcp_max_syn_backlog = 65535
+net.ipv4.tcp_max_tw_buckets = 2000000
+net.ipv4.tcp_keepalive_time = 1200
+net.ipv4.tcp_keepalive_intvl = 60
+net.ipv4.tcp_keepalive_probes = 5
+net.netfilter.nf_conntrack_max = 1048576
 fs.file-max = 2097152
 fs.inode-max = 4194304
+fs.nr_open = 1073741816
 vm.max_map_count = 524288
 EOT
 
