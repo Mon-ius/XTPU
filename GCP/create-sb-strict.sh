@@ -29,18 +29,6 @@ cat <<EOF | sudo tee /etc/sing-box/config.json
             "type": "direct"
         }
     ],
-    "route": {
-        "rules": [
-            {
-                "inbound": "hy2-in",
-                "action": "sniff",
-            },
-            {
-                "protocol": "dns",
-                "action": "hijack-dns"
-            }
-        ]
-    },
     "inbounds": [
         {   
             "type": "hysteria2",
@@ -55,7 +43,7 @@ cat <<EOF | sudo tee /etc/sing-box/config.json
             },
             "users": [
                 {
-                    "name": "admin"
+                    "name": "admin",
                     "password": "$CF_TOKEN"
                 }
             ],

@@ -73,6 +73,7 @@ $WARP_PART
             "down_mbps": 10000,
             "users": [
                 {
+                    "name": "admin",
                     "password": "$CF_TOKEN"
                 }
             ],
