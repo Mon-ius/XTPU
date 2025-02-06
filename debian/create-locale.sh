@@ -2,7 +2,7 @@
 
 sudo apt-get update && sudo apt-get install locales -y
 
-cat <<EOF | sudo tee /etc/default/locale
+sudo tee /etc/default/locale > /dev/null << 'EOF'
 LANG="en_US.UTF-8"
 LANGUAGE="en_US.UTF-8"
 LC_ALL="en_US.UTF-8"

@@ -2,7 +2,7 @@
 
 sudo apt-get update && sudo apt install openssh-server -y
 
-cat <<'EOF' | sudo tee /etc/ssh/sshd_config
+sudo tee /etc/ssh/sshd_config > /dev/null << 'EOF'
 Include /etc/ssh/sshd_config.d/*.conf
 KbdInteractiveAuthentication no
 UsePAM yes
