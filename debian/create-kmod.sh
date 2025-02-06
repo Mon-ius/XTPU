@@ -1,6 +1,8 @@
 #!/bin/dash
 
-sudo apt-get update && sudo apt install kmod -y
+export DEBIAN_FRONTEND=noninteractive
+sudo -E apt-get -qq update
+sudo -E apt-get -qq install -o Dpkg::Options::="--force-confold" -y kmod
 
 sudo tee /etc/security/limits.conf > /dev/null << 'EOF'
 root soft nofile 2000000
