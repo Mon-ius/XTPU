@@ -1,7 +1,9 @@
 #!/bin/dash
 
-DEBIAN_FRONTEND=noninteractive sudo -E apt-get -qq update
-DEBIAN_FRONTEND=noninteractive sudo -E apt-get -qq install -y openssh-server
+export DEBIAN_FRONTEND=noninteractive
+
+sudo -E apt-get -qq update
+sudo -E apt-get -qq install -o Dpkg::Options::="--force-confold" --force-yes -y openssh-server
 
 sudo tee /etc/ssh/sshd_config > /dev/null << 'EOF'
 Include /etc/ssh/sshd_config.d/*.conf
