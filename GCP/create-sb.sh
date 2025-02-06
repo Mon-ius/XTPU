@@ -30,7 +30,8 @@ public_key=$(echo "$RESPONSE" | sed -n 's/.*"public_key":"\([^"]*\)".*/\1/p')
 client_hex=$(echo "$RESPONSE" | grep -o '"client_id":"[^"]*' | cut -d'"' -f4 | base64 -d | od -t x1 -An | tr -d ' \n')
 reserved_dec=$(echo "$client_hex" | awk '{printf "[%d, %d, %d]", "0x"substr($0,1,2), "0x"substr($0,3,2), "0x"substr($0,5,2)}')
 
-WARP_PART=$(cat <<EOF
+OLD_WARP_PART=$(cat <<EOF
+    "outbounds": [
         {
             "tag": "WARP",
             "type": "wireguard",
@@ -46,23 +47,53 @@ WARP_PART=$(cat <<EOF
             "mtu": 1408,
             "udp_fragment": true
         }
+    ]
+EOF
+)
+
+WARP_PART=$(cat <<EOF
+    "endpoints": [
+        {
+            "tag": "WARP",
+            "type": "wireguard",
+            "address": [
+                "${ipv4}/32",
+                "${ipv6}/128"
+            ],
+            "private_key": "$private_key",
+            "peers": [
+                {
+                    "address": "$WARP_SERVER",
+                    "port": $WARP_PORT,
+                    "public_key": "$public_key",
+                    "allowed_ips": [
+                        "0.0.0.0/0"
+                    ],
+                    "persistent_keepalive_interval": 30,
+                    "reserved": $reserved_dec,
+                }
+            ],
+            "mtu": 1408,
+            "udp_fragment": true
+        }
+    ],
 EOF
 )
 
 DIRECT_PART=$(cat <<EOF
+    "outbounds": [
         {
             "tag": "direct-out",
             "udp_fragment": true,
             "type": "direct"
         }
+    ]
 EOF
 )
 
 cat <<EOF | sudo tee /etc/sing-box/config.json
 {
-    "outbounds": [
-$WARP_PART
-    ],
+$WARP_PART,
     "inbounds": [
         {   
             "type": "hysteria2",
