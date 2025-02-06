@@ -119,8 +119,17 @@ curl -fsSL bit.ly/vertex-test | sh -s -- project_name model_name
 
 ### 9. Debian System Init
 
-- create-cron
-- create-kmod
+Basic
+
+- bit.ly/create-kmod
+- bit.ly/create-locale
+- bit.ly/create-sshd
+- bit.ly/create-swap
+
+Add-on
+- bit.ly/create-cron
+- bit.ly/create-docker
+- bit.ly/create-rust
 
 ## Reference
 
