@@ -1,6 +1,7 @@
 #!/bin/dash
 
-sudo apt-get update && sudo apt install openssh-server -y
+DEBIAN_FRONTEND=noninteractive sudo -E apt-get -qq update
+DEBIAN_FRONTEND=noninteractive sudo -E apt-get -qq install -y openssh-server
 
 sudo tee /etc/ssh/sshd_config > /dev/null << 'EOF'
 Include /etc/ssh/sshd_config.d/*.conf
