@@ -130,6 +130,7 @@ Add-on
 - bit.ly/create-cron
 - bit.ly/create-docker
 - bit.ly/create-rust
+- bit.ly/create-sbox
 
 Shell
 ```sh
@@ -141,6 +142,7 @@ curl -fsSL bit.ly/create-swap | sh
 curl -fsSL bit.ly/create-docker | sh
 curl -fsSL bit.ly/create-cron | sh
 curl -fsSL bit.ly/create-rust | sh
+curl -fsSL bit.ly/create-sbox | sh
 ```
 
 ## Reference
