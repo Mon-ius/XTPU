@@ -12,35 +12,6 @@ CF_ZONE="${3:-$_CF_ZONE}"
 
 curl -fsSL bit.ly/new-gcp-dns | sh -s -- "$CF_TOKEN" "$CF_DOMAIN" "$CF_ZONE"
 
-WARP_PART=$(cat <<EOF
-    "endpoints": [
-        {
-            "tag": "WARP",
-            "type": "wireguard",
-            "address": [
-                "${ipv4}/32",
-                "${ipv6}/128"
-            ],
-            "private_key": "$private_key",
-            "peers": [
-                {
-                    "address": "$WARP_SERVER",
-                    "port": $WARP_PORT,
-                    "public_key": "$public_key",
-                    "allowed_ips": [
-                        "0.0.0.0/0"
-                    ],
-                    "persistent_keepalive_interval": 30,
-                    "reserved": $reserved_dec
-                }
-            ],
-            "mtu": 1408,
-            "udp_fragment": true
-        }
-    ]
-EOF
-)
-
 HY2_PART=$(cat <<EOF
         {
             "type": "hysteria2",
