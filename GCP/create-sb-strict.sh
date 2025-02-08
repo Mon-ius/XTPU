@@ -1,7 +1,6 @@
 #!/bin/dash
 
 sudo apt-get -qq update && sudo apt-get -qq install gnupg2 curl jq
-
 SAGER_NET="https://sing-box.app/gpg.key"
 curl -fsSL "$SAGER_NET" | sudo gpg --yes --dearmor -o /etc/apt/trusted.gpg.d/sagernet.gpg
 echo "deb https://deb.sagernet.org * *" | sudo tee /etc/apt/sources.list.d/sagernet.list
