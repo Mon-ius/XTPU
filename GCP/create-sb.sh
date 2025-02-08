@@ -70,7 +70,7 @@ _DIRECT_PART=$(cat <<EOF
 EOF
 )
 
-cat <<EOF | sudo tee /etc/sing-box/config.json
+sudo tee /etc/sing-box/config.json > /dev/null << EOF
 {
     "route": {
         "rules": [
