@@ -20,6 +20,40 @@ curl -fsSL bit.ly/new-gcp-dns | sh -s -- "$CF_TOKEN" "$CF_DOMAIN" "$CF_ZONE"
 OBFS="$(echo "$USER-$CF_TOKEN" | base64)"
 # echo "$USER-$CF_TOKEN"
 # echo "$OBFS"
+
+HY2_PART=$(cat <<EOF
+        {
+            "type": "hysteria2",
+            "tag": "hy2-in",
+            "listen": "::",
+            "listen_port": 443,
+            "up_mbps": 10000,
+            "down_mbps": 10000,
+            "users": [
+                {
+                    "name": "admin",
+                    "password": "$CF_TOKEN"
+                }
+            ],
+            "tls": {
+                "enabled": true,
+                "server_name": "$CF_ZONE.$CF_DOMAIN",
+                "acme": {
+                    "domain": "$CF_ZONE.$CF_DOMAIN",
+                    "email": "admin@$CF_DOMAIN",
+                    "dns01_challenge": {
+                        "provider": "cloudflare",
+                        "api_token": "$CF_TOKEN"
+                    }
+                },
+                "alpn": [
+                    "h3"
+                ]
+            }
+        }
+EOF
+)
+
 sudo tee /etc/sing-box/config.json > /dev/null << EOF
 {
     "dns": {
@@ -82,8 +116,11 @@ sudo tee /etc/sing-box/config.json > /dev/null << EOF
             }
         ],
         "auto_detect_interface": true,
-        "final": "WARP"
+        "final": "direct-out"
     },
+    "inbounds": [
+$HY2_PART
+    ],
     "outbounds": [
         {
             "tag": "direct-out",
@@ -91,41 +128,6 @@ sudo tee /etc/sing-box/config.json > /dev/null << EOF
             "type": "direct"
         }
     ],
-    "inbounds": [
-        {   
-            "type": "hysteria2",
-            "tag": "hy2-in",
-            "listen": "::",
-            "listen_port": 443,
-            "up_mbps": 10000,
-            "down_mbps": 10000,
-            "obfs": {
-                "type": "salamander",
-                "password": "$OBFS"
-            },
-            "users": [
-                {
-                    "name": "admin",
-                    "password": "$CF_TOKEN"
-                }
-            ],
-            "tls": {
-                "enabled": true,
-                "server_name": "$CF_ZONE.$CF_DOMAIN",
-                "acme": {
-                    "domain": "$CF_ZONE.$CF_DOMAIN",
-                    "email": "admin@$CF_DOMAIN",
-                    "dns01_challenge": {
-                        "provider": "cloudflare",
-                        "api_token": "$CF_TOKEN"
-                    }
-                },
-                "alpn": [
-                    "h3"
-                ]
-            }
-        }
-    ]
 }
 EOF
 

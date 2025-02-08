@@ -59,16 +59,39 @@ WARP_PART=$(cat <<EOF
 EOF
 )
 
-_DIRECT_PART=$(cat <<EOF
-    "outbounds": [
+HY2_PART=$(cat <<EOF
         {
-            "tag": "direct-out",
-            "udp_fragment": true,
-            "type": "direct"
+            "type": "hysteria2",
+            "tag": "hy2-in",
+            "listen": "::",
+            "listen_port": 443,
+            "up_mbps": 10000,
+            "down_mbps": 10000,
+            "users": [
+                {
+                    "name": "admin",
+                    "password": "$CF_TOKEN"
+                }
+            ],
+            "tls": {
+                "enabled": true,
+                "server_name": "$CF_ZONE.$CF_DOMAIN",
+                "acme": {
+                    "domain": "$CF_ZONE.$CF_DOMAIN",
+                    "email": "admin@$CF_DOMAIN",
+                    "dns01_challenge": {
+                        "provider": "cloudflare",
+                        "api_token": "$CF_TOKEN"
+                    }
+                },
+                "alpn": [
+                    "h3"
+                ]
+            }
         }
-    ]
 EOF
 )
+
 
 sudo tee /etc/sing-box/config.json > /dev/null << EOF
 {
@@ -134,36 +157,15 @@ sudo tee /etc/sing-box/config.json > /dev/null << EOF
         "auto_detect_interface": true,
         "final": "WARP"
     },
-$WARP_PART,
     "inbounds": [
-        {   
-            "type": "hysteria2",
-            "tag": "hy2-in",
-            "listen": "::",
-            "listen_port": 443,
-            "up_mbps": 10000,
-            "down_mbps": 10000,
-            "users": [
-                {
-                    "name": "admin",
-                    "password": "$CF_TOKEN"
-                }
-            ],
-            "tls": {
-                "enabled": true,
-                "server_name": "$CF_ZONE.$CF_DOMAIN",
-                "acme": {
-                    "domain": "$CF_ZONE.$CF_DOMAIN",
-                    "email": "admin@$CF_DOMAIN",
-                    "dns01_challenge": {
-                        "provider": "cloudflare",
-                        "api_token": "$CF_TOKEN"
-                    }
-                },
-                "alpn": [
-                    "h3"
-                ]
-            }
+$HY2_PART
+    ],
+$WARP_PART,
+    "outbounds": [
+        {
+            "tag": "direct-out",
+            "type": "direct",
+            "udp_fragment": true
         }
     ]
 }
