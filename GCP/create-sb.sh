@@ -72,6 +72,26 @@ EOF
 
 sudo tee /etc/sing-box/config.json > /dev/null << EOF
 {
+    "dns": {
+        "servers": [
+            {
+                "tag": "ND-h3",
+                "address": "h3://dns.nextdns.io/x",
+                "address_resolver": "dns-direct",
+                "detour": "direct-out"
+            },
+            {
+                "tag": "dns-direct",
+                "address": "udp://223.5.5.5",
+                "detour": "direct-out"
+            }
+        ],
+        "strategy": "ipv4_only",
+        "final": "ND-h3",
+        "reverse_mapping": true,
+        "disable_cache": false,
+        "disable_expire": false
+    },
     "route": {
         "rules": [
             {
