@@ -72,6 +72,48 @@ EOF
 
 cat <<EOF | sudo tee /etc/sing-box/config.json
 {
+    "route": {
+        "rules": [
+            {
+                "inbound": "hy2-in",
+                "action": "sniff",
+                "sniffer": [
+                    "dns",
+                    "bittorrent",
+                    "http",
+                    "tls",
+                    "quic",
+                    "dtls"
+                ]
+            },
+            {
+                "protocol": "dns",
+                "action": "hijack-dns"
+            },
+            {
+                "ip_is_private": true,
+                "action": "route",
+                "outbound": "direct-out"
+            },
+            {
+                "ip_cidr": [
+                    "0.0.0.0/8",
+                    "10.0.0.0/8",
+                    "127.0.0.0/8",
+                    "169.254.0.0/16",
+                    "172.16.0.0/12",
+                    "192.168.0.0/16",
+                    "224.0.0.0/4",
+                    "240.0.0.0/4",
+                    "52.80.0.0/16"
+                ],
+                "action": "route",
+                "outbound": "direct-out"
+            }
+        ],
+        "auto_detect_interface": true,
+        "final": "WARP"
+    },
 $WARP_PART,
     "inbounds": [
         {   
