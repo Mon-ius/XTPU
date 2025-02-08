@@ -1,8 +1,6 @@
 #!/bin/dash
 
 export DEBIAN_FRONTEND=noninteractive
-sudo -E apt-get -qq update
-sudo -E apt-get -qq install -o Dpkg::Options::="--force-confold" -y locales
 
 sudo tee /etc/default/locale > /dev/null << 'EOF'
 LANG="en_US.UTF-8"
