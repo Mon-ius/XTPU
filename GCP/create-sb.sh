@@ -30,27 +30,6 @@ public_key=$(echo "$RESPONSE" | sed -n 's/.*"public_key":"\([^"]*\)".*/\1/p')
 client_hex=$(echo "$RESPONSE" | grep -o '"client_id":"[^"]*' | cut -d'"' -f4 | base64 -d | od -t x1 -An | tr -d ' \n')
 reserved_dec=$(echo "$client_hex" | awk '{printf "[%d, %d, %d]", "0x"substr($0,1,2), "0x"substr($0,3,2), "0x"substr($0,5,2)}')
 
-OLD_WARP_PART=$(cat <<EOF
-    "outbounds": [
-        {
-            "tag": "WARP",
-            "type": "wireguard",
-            "server": "$WARP_SERVER",
-            "server_port": $WARP_PORT,
-            "local_address": [
-                "${ipv4}/32",
-                "${ipv6}/128"
-            ],
-            "private_key": "$private_key",
-            "peer_public_key": "$public_key",
-            "reserved": $reserved_dec,
-            "mtu": 1408,
-            "udp_fragment": true
-        }
-    ]
-EOF
-)
-
 WARP_PART=$(cat <<EOF
     "endpoints": [
         {
@@ -80,7 +59,7 @@ WARP_PART=$(cat <<EOF
 EOF
 )
 
-DIRECT_PART=$(cat <<EOF
+_DIRECT_PART=$(cat <<EOF
     "outbounds": [
         {
             "tag": "direct-out",
