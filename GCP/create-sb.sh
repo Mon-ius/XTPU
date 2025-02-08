@@ -70,7 +70,7 @@ WARP_PART=$(cat <<EOF
                         "0.0.0.0/0"
                     ],
                     "persistent_keepalive_interval": 30,
-                    "reserved": $reserved_dec,
+                    "reserved": $reserved_dec
                 }
             ],
             "mtu": 1408,
