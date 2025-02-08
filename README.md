@@ -134,11 +134,12 @@ Add-on
 
 Shell
 ```sh
+curl -fsSL bit.ly/create-swap | sh
 curl -fsSL bit.ly/create-dev-user | sh
 curl -fsSL bit.ly/create-sshd | sh
 curl -fsSL bit.ly/create-locale | sh
 curl -fsSL bit.ly/create-kmod | sh
-curl -fsSL bit.ly/create-swap | sh
+
 
 curl -fsSL bit.ly/create-docker | sh
 curl -fsSL bit.ly/create-sbox | sh
