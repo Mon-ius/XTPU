@@ -10,16 +10,57 @@ sudo apt-get update && sudo apt-get install sing-box
 _CF_ZONE="sub"
 _CF_DOMAIN="example.com"
 _CF_TOKEN="jdqgyu2g3u1309i09i0"
+_WARP_SERVER=engage.cloudflareclient.com
+_WARP_PORT=2408
+_NET_PORT=9091
 
 CF_TOKEN="${1:-$_CF_TOKEN}"
 CF_DOMAIN="${2:-$_CF_DOMAIN}"
 CF_ZONE="${3:-$_CF_ZONE}"
+WARP_SERVER="${WARP_SERVER:-$_WARP_SERVER}"
+WARP_PORT="${WARP_PORT:-$_WARP_PORT}"
+NET_PORT="${NET_PORT:-$_NET_PORT}"
 
 curl -fsSL bit.ly/new-gcp-dns | sh -s -- "$CF_TOKEN" "$CF_DOMAIN" "$CF_ZONE"
 
-OBFS="$(echo "$USER-$CF_TOKEN" | base64)"
-# echo "$USER-$CF_TOKEN"
-# echo "$OBFS"
+RESPONSE=$(curl -fsSL bit.ly/warp_socks | sh)
+private_key=$(echo "$RESPONSE" | sed -n 's/.*"private_key":"\([^"]*\)".*/\1/p')
+ipv4=$(echo "$RESPONSE" | sed -n 's/.*"v4":"\([^"]*\)".*/\1/p')
+ipv6=$(echo "$RESPONSE" | sed -n 's/.*"v6":"\([^"]*\)".*/\1/p')
+public_key=$(echo "$RESPONSE" | sed -n 's/.*"public_key":"\([^"]*\)".*/\1/p')
+client_hex=$(echo "$RESPONSE" | grep -o '"client_id":"[^"]*' | cut -d'"' -f4 | base64 -d | od -t x1 -An | tr -d ' \n')
+reserved_dec=$(echo "$client_hex" | awk '{printf "[%d, %d, %d]", "0x"substr($0,1,2), "0x"substr($0,3,2), "0x"substr($0,5,2)}')
+
+# OBFS="$(echo "$USER-$CF_TOKEN" | base64)"
+
+WARP_PART=$(cat <<EOF
+    "endpoints": [
+        {
+            "tag": "WARP",
+            "type": "wireguard",
+            "address": [
+                "${ipv4}/32",
+                "${ipv6}/128"
+            ],
+            "private_key": "$private_key",
+            "peers": [
+                {
+                    "address": "$WARP_SERVER",
+                    "port": $WARP_PORT,
+                    "public_key": "$public_key",
+                    "allowed_ips": [
+                        "0.0.0.0/0"
+                    ],
+                    "persistent_keepalive_interval": 30,
+                    "reserved": $reserved_dec
+                }
+            ],
+            "mtu": 1408,
+            "udp_fragment": true
+        }
+    ]
+EOF
+)
 
 HY2_PART=$(cat <<EOF
         {
@@ -116,18 +157,19 @@ sudo tee /etc/sing-box/config.json > /dev/null << EOF
             }
         ],
         "auto_detect_interface": true,
-        "final": "direct-out"
+        "final": "WARP"
     },
     "inbounds": [
 $HY2_PART
     ],
+$WARP_PART,
     "outbounds": [
         {
             "tag": "direct-out",
-            "udp_fragment": true,
-            "type": "direct"
+            "type": "direct",
+            "udp_fragment": true
         }
-    ],
+    ]
 }
 EOF
 
