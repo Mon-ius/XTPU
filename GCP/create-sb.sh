@@ -76,7 +76,7 @@ WARP_PART=$(cat <<EOF
             "mtu": 1408,
             "udp_fragment": true
         }
-    ],
+    ]
 EOF
 )
 
