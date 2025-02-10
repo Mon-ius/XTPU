@@ -1,5 +1,9 @@
 #!/bin/dash
 
+export DEBIAN_FRONTEND=noninteractive
+sudo -E apt-get -qq update
+sudo -E apt-get -qq install -o Dpkg::Options::="--force-confold" -y cmake
+
 curl -fsSL https://sh.rustup.rs | sh -s -- -y && . "$HOME/.cargo/env"
 rustup update nightly && rustup default nightly
 
