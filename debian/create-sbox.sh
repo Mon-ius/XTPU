@@ -10,8 +10,12 @@ echo "deb https://deb.sagernet.org * *" | sudo -E tee /etc/apt/sources.list.d/sa
 
 sudo -E apt-get -qq update
 is_reboot=$(apt list --upgradable 2>/dev/null | grep -q "^sing-box/" && echo true || echo false)
-sudo -E apt-get -qq install -o Dpkg::Options::="--force-confold" -y sing-box
+
+if ! dpkg -l "sing-box" 2>/dev/null | grep -q '^ii'; then
+    sudo -E apt-get -qq install -o Dpkg::Options::="--force-confold" -y sing-box
+fi
 
 if [ "$is_reboot" = true ]; then
+    sudo -E apt-get -qq install -o Dpkg::Options::="--force-confold" -y sing-box
     sudo reboot
 fi
