@@ -62,7 +62,7 @@ StartLimitBurst=3
 
 [Service]
 Type=oneshot
-ExecStart=curl -fsSL bit.ly/create-sbox | sh
+ExecStart=curl -fsSL https://bit.ly/create-sbox | sh
 Restart=on-failure
 RestartSec=30
 
@@ -87,5 +87,6 @@ EOF
 sudo systemctl daemon-reload
 sudo systemctl enable sing-box
 sudo systemctl restart sing-box
+sudo systemctl stop update-sbox
 sudo systemctl enable update-sbox.timer
 sudo systemctl restart update-sbox.timer
