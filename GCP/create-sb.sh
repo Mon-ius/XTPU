@@ -80,7 +80,6 @@ RandomizedDelaySec=1800
 
 [Install]
 WantedBy=timers.target
-
 EOF
 
 sudo systemctl daemon-reload
