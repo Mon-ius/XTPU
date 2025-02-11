@@ -56,8 +56,8 @@ EOF
 sudo tee /etc/systemd/system/update-sbox.service > /dev/null << EOF
 [Unit]
 Description=Check for sing-box updates and reboot if necessary
-After=network-online.target
-Wants=network-online.target
+After=network-online.target nss-lookup.target
+Wants=network-online.target nss-lookup.target
 
 [Service]
 Type=oneshot
