@@ -86,7 +86,9 @@ EOF
 sudo systemctl daemon-reload
 sudo systemctl enable sing-box
 sudo systemctl restart sing-box
-sudo systemctl stop update-sbox
+sudo systemctl disable update-sbox.timer
 sudo systemctl disable update-sbox
+sudo systemctl stop update-sbox.timer
+sudo systemctl stop update-sbox
 sudo systemctl enable update-sbox.timer
 sudo systemctl restart update-sbox.timer
