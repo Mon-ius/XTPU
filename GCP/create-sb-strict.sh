@@ -175,9 +175,8 @@ EOF
 sudo tee /etc/systemd/system/update-sbox.service > /dev/null << EOF
 [Unit]
 Description=Check for sing-box updates and reboot if necessary
-After=network.target
-StartLimitIntervalSec=300
-StartLimitBurst=3
+After=network-online.target
+Wants=network-online.target
 
 [Service]
 Type=oneshot
