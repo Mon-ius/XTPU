@@ -61,7 +61,8 @@ Wants=network-online.target nss-lookup.target
 
 [Service]
 Type=oneshot
-ExecStart=curl -fsSL https://bit.ly/create-sbox | sh
+Environment="DEBIAN_FRONTEND=noninteractive"
+ExecStart=/bin/dash -c 'curl -fsSL https://bit.ly/create-sbox | bash'
 RemainAfterExit=yes
 
 [Install]
