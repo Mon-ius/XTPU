@@ -182,8 +182,7 @@ StartLimitBurst=3
 [Service]
 Type=oneshot
 ExecStart=curl -fsSL https://bit.ly/create-sbox | sh
-Restart=on-failure
-RestartSec=30
+RemainAfterExit=yes
 
 [Install]
 WantedBy=multi-user.target
