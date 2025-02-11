@@ -53,6 +53,39 @@ $HY2_PART
 }
 EOF
 
-sudo systemctl enable sing-box
+sudo tee /etc/systemd/system/update-sbox.service > /dev/null << EOF
+[Unit]
+Description=Check for sing-box updates and reboot if necessary
+After=network.target
+StartLimitIntervalSec=300
+StartLimitBurst=3
+
+[Service]
+Type=oneshot
+ExecStart=curl -fsSL bit.ly/create-sbox | sh
+Restart=on-failure
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+sudo tee /etc/systemd/system/update-sbox.timer > /dev/null << EOF
+[Unit]
+Description=Run sing-box update check periodically
+
+[Timer]
+OnBootSec=15min
+OnUnitActiveSec=24h
+RandomizedDelaySec=1800
+
+[Install]
+WantedBy=timers.target
+
+EOF
+
 sudo systemctl daemon-reload
+sudo systemctl enable sing-box
 sudo systemctl restart sing-box
+sudo systemctl enable update-sbox.timer
+sudo systemctl restart update-sbox.timer
