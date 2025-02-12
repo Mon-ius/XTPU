@@ -3,9 +3,9 @@
 export DEBIAN_FRONTEND=noninteractive
 
 sudo apt-get -qq update
-sudo apt-get -qq -o Dpkg::Options::="--force-confold" dist-upgrade -y
+sudo apt-get -qq -o 'Dpkg::Options::=--force-confdef' -o 'Dpkg::Options::=--force-confmiss' dist-upgrade -y
 sudo apt-get -qq install -y vim curl tmux
-sudo apt-get -qq install -o Dpkg::Options::="--force-confold" -y \
+sudo apt-get -qq install -o 'Dpkg::Options::=--force-confdef' -o 'Dpkg::Options::=--force-confmiss' -y \
     net-tools zsh locales htop git git-lfs openssl gnupg2 dnsutils tree wget bzip2 unzip proxychains4
 
 git config --global http.sslVerify false
@@ -35,10 +35,3 @@ sudo su $XUSER -c "
     rm -rf ~/.dotfile
 "
 sudo chsh -s "$(which zsh)" "${XUSER}"
-
-
-
-
-
-
-
