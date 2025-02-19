@@ -14,6 +14,6 @@ echo "deb [arch=$ARCH] https://download.docker.com/linux/debian $VER stable" | s
 sudo -E apt-get -qq update
 sudo -E apt-get -qq install -o Dpkg::Options::="--force-confold" -y docker-ce docker-compose-plugin
 
-sudo chmod 666 /var/run/docker.sock
 sudo groupadd docker
 sudo usermod -aG docker "$USER"
+sudo chmod 666 /var/run/docker.sock
