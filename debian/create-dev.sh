@@ -3,7 +3,7 @@
 export DEBIAN_FRONTEND=noninteractive
 
 apt-get -qq update
-apt-get -qq install -o Dpkg::Options::="--force-confold" -y vim curl tmux
+apt-get -qq install -o Dpkg::Options::="--force-confold" -y vim curl tmux sudo
 
 apt-get -qq dist-upgrade -y
 apt-get -qq install -o Dpkg::Options::="--force-confold" -y \
