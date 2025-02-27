@@ -16,4 +16,4 @@ sudo -E apt-get -qq install -o Dpkg::Options::="--force-confold" -y docker-ce do
 
 sudo groupadd docker
 sudo usermod -aG docker "$USER"
-sudo chmod 666 /var/run/docker.sock
+sudo chown root:docker /var/run/docker.sock

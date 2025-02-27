@@ -23,6 +23,6 @@ sudo systemctl daemon-reload
 sudo systemctl enable docker
 sudo systemctl restart docker
 
-sudo chmod 666 /var/run/docker.sock
+sudo chown root:docker /var/run/docker.sock
 sudo groupadd docker
 sudo usermod -aG docker "$USER"
