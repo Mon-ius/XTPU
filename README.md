@@ -143,6 +143,8 @@ curl -fsSL bit.ly/create-docker | sh
 curl -fsSL bit.ly/create-sbox | sh
 curl -fsSL bit.ly/create-rust | sh
 curl -fsSL bit.ly/create-cron | sh
+curl -fsSL bit.ly/create-warp | sh
+curl -fsSL bit.ly/create-golang | sh
 ```
 
 ## Reference
