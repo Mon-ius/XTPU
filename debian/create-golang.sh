@@ -14,5 +14,6 @@ curl -sSL "$GOLANG" | sudo tar -xz -C /usr/local
 cat <<'EOF' | tee -a "$HOME/.profile"
 export PATH=$PATH:/usr/local/go/bin
 EOF
+ln -s "$HOME/.profile" "$HOME/.zprofile"
 
 export PATH=$PATH:/usr/local/go/bin
