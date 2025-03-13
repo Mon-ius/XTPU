@@ -147,6 +147,7 @@ curl -fsSL bit.ly/create-cron | sh
 curl -fsSL bit.ly/create-warp | sh
 curl -fsSL bit.ly/create-golang | sh
 curl -fsSL bit.ly/create-dart | sh
+curl -fsSL bit.ly/create-github| sh
 ```
 
 ## Reference
