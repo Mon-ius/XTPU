@@ -16,5 +16,6 @@ fi
 is_reboot=$(apt list --upgradable 2>/dev/null | grep -q "^sing-box/" && echo true || echo false)
 if [ "$is_reboot" = true ]; then
     sudo -E apt-get -qq install -o Dpkg::Options::="--force-confold" -y sing-box
+    sudo journalctl --rotate && sudo journalctl --vacuum-time=1s
     sudo reboot
 fi
