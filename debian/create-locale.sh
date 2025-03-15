@@ -24,7 +24,4 @@ EOF
 
 sudo /usr/sbin/locale-gen en_US
 sudo /usr/sbin/locale-gen en_US.UTF-8
-
-# sudo tee /etc/default/locale > /dev/null << 'EOF'
-# LC_ALL="en_US.UTF-8"
-# EOF
+sudo /usr/sbin/update-locale LANG=en_US.UTF-8
