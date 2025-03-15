@@ -22,7 +22,7 @@ LC_MEASUREMENT="en_US.UTF-8"
 LC_IDENTIFICATION="en_US.UTF-8"
 EOF
 
-sudo dpkg-reconfigure --frontend=noninteractive locales
+sudo /usr/sbin/dpkg-reconfigure --frontend=noninteractive locales
 
 # sudo tee /etc/default/locale > /dev/null << 'EOF'
 # LC_ALL="en_US.UTF-8"
