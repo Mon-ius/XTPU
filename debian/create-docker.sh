@@ -14,6 +14,17 @@ echo "deb [arch=$ARCH] https://download.docker.com/linux/debian $VER stable" | s
 sudo -E apt-get -qq update
 sudo -E apt-get -qq install -o Dpkg::Options::="--force-confold" -y docker-ce docker-compose-plugin docker-compose
 
+sudo mkdir -p /etc/docker
+sudo tee /etc/docker/daemon.json <<EOF
+{
+    "ipv6": true,
+    "fixed-cidr-v6": "fd00::/64"
+}
+EOF
+sudo systemctl daemon-reload
+sudo systemctl enable docker
+sudo systemctl restart docker
+
 sudo groupadd docker
 sudo usermod -aG docker "$USER"
 sudo chown root:docker /var/run/docker.sock
