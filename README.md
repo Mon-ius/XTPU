@@ -101,8 +101,8 @@ curl -fsSL bit.ly/remote-LLM-dataset-mount | sh -s -- dataset
 
 ```bash
 curl -fsSL bit.ly/new-gcp-api | sh -s -- project_name api_num api_target
-curl -fsSL bit.ly/new-gcp-dns | sh -s -- cf_token_base64 cf_domain cf_zone
-curl -fsSL bit.ly/new-gcp-sb | sh -s -- cf_token_base64 cf_domain cf_zone
+curl -fsSL bit.ly/new-gcp-dns | sh -s -- cf_token_base64 cf_zone
+curl -fsSL bit.ly/new-gcp-sb | sh -s -- cf_token_base64 cf_zone
 curl -fsSL bit.ly/new-gcp-wg | sh -s -- license
 curl -fsSL bit.ly/create-vm-user | sh -s -- username
 curl -fsSL bit.ly/create-ssh-tun | sh -s -- username
