@@ -1,13 +1,14 @@
 #!/bin/dash
 
 _CF_ZONE="sub"
-_CF_TOKEN="base64encodedtoken"
+_CF_TOKEN_BASE64="base64encodedtoken"
 
-CF_TOKEN="${1:-$_CF_TOKEN}"
+CF_TOKEN_BASE64="${1:-$_CF_TOKEN_BASE64}"
 CF_ZONE="${2:-$_CF_ZONE}"
 
-
 CF_IP=$(curl -fsSL https://ipinfo.io/ip)
+CF_TOKEN=$(echo "$CF_TOKEN_BASE64" | base64 -d)
+
 CF_DOMAIN=$(curl -fsSL -X GET -H "Authorization: Bearer $CF_TOKEN" \
     "https://api.cloudflare.com/client/v4/zones" | grep -o '"name":"[^"]*' | cut -d'"' -f4 | head -n 1)
 CF_ZONE_ID=$(curl -fsSL -X GET -H "Authorization: Bearer $CF_TOKEN" \
