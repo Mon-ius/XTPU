@@ -43,8 +43,7 @@ if [ -z "$CF_RECORD" ]; then
             "type": "A",
             "name": "'"${CF_ZONE}.${CF_DOMAIN}"'",
             "content": "'"${CF_IP}"'",
-            "proxied": false,
-            "ttl": 1
+            "proxied": false
         }')
 else
     echo "DNS record found. Modifying the existing DNS record..."
@@ -55,8 +54,7 @@ else
             "type": "A",
             "name": "'"${CF_ZONE}.${CF_DOMAIN}"'",
             "content": "'"${CF_IP}"'",
-            "proxied": false,
-            "ttl": 1
+            "proxied": false
         }')
 fi
 
