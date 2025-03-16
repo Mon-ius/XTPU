@@ -9,6 +9,9 @@ CF_ZONE="${2:-$_CF_ZONE}"
 curl -fsSL bit.ly/new-gcp-dns | sh -s -- "$CF_TOKEN" "$CF_ZONE"
 curl -fsSL bit.ly/create-sbox | sh
 
+CF_DOMAIN=$(curl -fsSL -X GET -H "Authorization: Bearer $CF_TOKEN" \
+    "https://api.cloudflare.com/client/v4/zones" | grep -o '"name":"[^"]*' | cut -d'"' -f4 | head -n 1)
+
 HY2_PART=$(cat <<EOF
         {
             "type": "hysteria2",

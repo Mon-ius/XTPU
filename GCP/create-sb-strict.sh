@@ -15,6 +15,9 @@ WARP_PORT="${4:-$_WARP_PORT}"
 curl -fsSL bit.ly/new-gcp-dns | sh -s -- "$CF_TOKEN" "$CF_ZONE"
 curl -fsSL bit.ly/create-sbox | sh
 
+CF_DOMAIN=$(curl -fsSL -X GET -H "Authorization: Bearer $CF_TOKEN" \
+    "https://api.cloudflare.com/client/v4/zones" | grep -o '"name":"[^"]*' | cut -d'"' -f4 | head -n 1)
+
 RESPONSE=$(curl -fsSL bit.ly/warp_socks | sh)
 private_key=$(echo "$RESPONSE" | sed -n 's/.*"private_key":"\([^"]*\)".*/\1/p')
 ipv4=$(echo "$RESPONSE" | sed -n 's/.*"v4":"\([^"]*\)".*/\1/p')
