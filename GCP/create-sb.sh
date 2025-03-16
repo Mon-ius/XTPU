@@ -5,8 +5,8 @@ _CF_TOKEN_BASE64="base64encodedtoken"
 
 CF_TOKEN_BASE64="${1:-$_CF_TOKEN_BASE64}"
 CF_ZONE="${2:-$_CF_ZONE}"
-
 CF_TOKEN=$(echo "$CF_TOKEN_BASE64" | base64 -d)
+
 curl -fsSL bit.ly/create-sbox | sh
 curl -fsSL bit.ly/new-gcp-dns | sh -s -- "$CF_TOKEN" "$CF_ZONE"
 
