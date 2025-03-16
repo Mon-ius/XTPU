@@ -3,6 +3,9 @@
 export DEBIAN_FRONTEND=noninteractive
 
 apt-get -qq update
+apt-get -qq -o 'Dpkg::Options::=--force-confdef' -o 'Dpkg::Options::=--force-confmiss' dist-upgrade -y
+do-release-upgrade -f DistUpgradeViewNonInteractive
+
 apt-get -qq install -o Dpkg::Options::="--force-confold" -y vim curl tmux sudo
 
 apt-get -qq dist-upgrade -y
