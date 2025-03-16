@@ -14,7 +14,7 @@ WARP_PORT="${4:-$_WARP_PORT}"
 
 CF_TOKEN=$(echo "$CF_TOKEN_BASE64" | base64 -d)
 curl -fsSL bit.ly/create-sbox | sh
-curl -fsSL bit.ly/new-gcp-dns | sh -s -- "$CF_TOKEN" "$CF_ZONE"
+curl -fsSL bit.ly/new-gcp-dns | sh -s -- "$CF_TOKEN_BASE64" "$CF_ZONE"
 
 CF_DOMAIN=$(curl -fsSL -X GET -H "Authorization: Bearer $CF_TOKEN" \
     "https://api.cloudflare.com/client/v4/zones" | grep -o '"name":"[^"]*' | cut -d'"' -f4 | head -n 1)
