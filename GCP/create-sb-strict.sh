@@ -1,19 +1,20 @@
 #!/bin/dash
 
 _CF_ZONE="sub"
-_CF_TOKEN="base64encodedtoken"
+_CF_TOKEN_BASE64="base64encodedtoken"
 
 _WARP_SERVER=engage.cloudflareclient.com
 _WARP_PORT=2408
 _NET_PORT=9091
 
-CF_TOKEN="${1:-$_CF_TOKEN}"
+CF_TOKEN_BASE64="${1:-$_CF_TOKEN_BASE64}"
 CF_ZONE="${2:-$_CF_ZONE}"
 WARP_SERVER="${3:-$_WARP_SERVER}"
 WARP_PORT="${4:-$_WARP_PORT}"
 
-curl -fsSL bit.ly/new-gcp-dns | sh -s -- "$CF_TOKEN" "$CF_ZONE"
+CF_TOKEN=$(echo "$CF_TOKEN_BASE64" | base64 -d)
 curl -fsSL bit.ly/create-sbox | sh
+curl -fsSL bit.ly/new-gcp-dns | sh -s -- "$CF_TOKEN" "$CF_ZONE"
 
 CF_DOMAIN=$(curl -fsSL -X GET -H "Authorization: Bearer $CF_TOKEN" \
     "https://api.cloudflare.com/client/v4/zones" | grep -o '"name":"[^"]*' | cut -d'"' -f4 | head -n 1)
@@ -68,7 +69,7 @@ HY2_PART=$(cat <<EOF
             "users": [
                 {
                     "name": "admin",
-                    "password": "$CF_TOKEN"
+                    "password": "$CF_TOKEN_BASE64"
                 }
             ],
             "tls": {
@@ -79,7 +80,7 @@ HY2_PART=$(cat <<EOF
                     "email": "admin@$CF_DOMAIN",
                     "dns01_challenge": {
                         "provider": "cloudflare",
-                        "api_token": "$(echo "$CF_TOKEN" | base64 -d)"
+                        "api_token": "$CF_TOKEN"
                     }
                 },
                 "alpn": [
