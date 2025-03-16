@@ -16,7 +16,6 @@ CF_ZONE_ID=$(curl -fsSL -X GET -H "Authorization: Bearer $CF_TOKEN" \
 CF_RECORD=$(curl -fsSL -X GET -H "Authorization: Bearer $CF_TOKEN" \
     "https://api.cloudflare.com/client/v4/zones/${CF_ZONE_ID}/dns_records?name=${CF_ZONE}.${CF_DOMAIN}" | grep -o '"id":"[^"]*' | cut -d'"' -f4 | head -n 1)
 
-
 if [ -z "$CF_IP" ]; then
     echo "Error: Unable to retrieve external IP address. Please check your internet connection."
     exit 1

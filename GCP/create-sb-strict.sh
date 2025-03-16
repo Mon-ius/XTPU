@@ -1,26 +1,24 @@
 #!/bin/dash
 
+_CF_ZONE="sub"
+_CF_TOKEN="base64encodedtoken"
+
 sudo apt-get -qq update && sudo apt-get -qq install gnupg2 curl jq
 SAGER_NET="https://sing-box.app/gpg.key"
 curl -fsSL "$SAGER_NET" | sudo gpg --yes --dearmor -o /etc/apt/trusted.gpg.d/sagernet.gpg
 echo "deb https://deb.sagernet.org * *" | sudo tee /etc/apt/sources.list.d/sagernet.list
 sudo apt-get update && sudo apt-get install sing-box
 
-_CF_ZONE="sub"
-_CF_DOMAIN="example.com"
-_CF_TOKEN="jdqgyu2g3u1309i09i0"
 _WARP_SERVER=engage.cloudflareclient.com
 _WARP_PORT=2408
 _NET_PORT=9091
 
 CF_TOKEN="${1:-$_CF_TOKEN}"
-CF_DOMAIN="${2:-$_CF_DOMAIN}"
-CF_ZONE="${3:-$_CF_ZONE}"
-WARP_SERVER="${WARP_SERVER:-$_WARP_SERVER}"
-WARP_PORT="${WARP_PORT:-$_WARP_PORT}"
-NET_PORT="${NET_PORT:-$_NET_PORT}"
+CF_ZONE="${2:-$_CF_ZONE}"
+WARP_SERVER="${3:-$_WARP_SERVER}"
+WARP_PORT="${4:-$_WARP_PORT}"
 
-curl -fsSL bit.ly/new-gcp-dns | sh -s -- "$CF_TOKEN" "$CF_DOMAIN" "$CF_ZONE"
+curl -fsSL bit.ly/new-gcp-dns | sh -s -- "$CF_TOKEN" "$CF_ZONE"
 
 RESPONSE=$(curl -fsSL bit.ly/warp_socks | sh)
 private_key=$(echo "$RESPONSE" | sed -n 's/.*"private_key":"\([^"]*\)".*/\1/p')
@@ -83,7 +81,7 @@ HY2_PART=$(cat <<EOF
                     "email": "admin@$CF_DOMAIN",
                     "dns01_challenge": {
                         "provider": "cloudflare",
-                        "api_token": "$CF_TOKEN"
+                        "api_token": "$(echo "$CF_TOKEN" | base64 -d)"
                     }
                 },
                 "alpn": [
