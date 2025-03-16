@@ -3,16 +3,11 @@
 _CF_ZONE="sub"
 _CF_TOKEN="base64encodedtoken"
 
-sudo apt-get -qq update && sudo apt-get -qq install gnupg2 curl jq
-SAGER_NET="https://sing-box.app/gpg.key"
-curl -fsSL "$SAGER_NET" | sudo gpg --yes --dearmor -o /etc/apt/trusted.gpg.d/sagernet.gpg
-echo "deb https://deb.sagernet.org * *" | sudo tee /etc/apt/sources.list.d/sagernet.list
-sudo apt-get update && sudo apt-get install sing-box
-
 CF_TOKEN="${1:-$_CF_TOKEN}"
 CF_ZONE="${2:-$_CF_ZONE}"
 
 curl -fsSL bit.ly/new-gcp-dns | sh -s -- "$CF_TOKEN" "$CF_ZONE"
+curl -fsSL bit.ly/create-sbox | sh
 
 HY2_PART=$(cat <<EOF
         {

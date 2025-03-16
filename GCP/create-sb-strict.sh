@@ -3,12 +3,6 @@
 _CF_ZONE="sub"
 _CF_TOKEN="base64encodedtoken"
 
-sudo apt-get -qq update && sudo apt-get -qq install gnupg2 curl jq
-SAGER_NET="https://sing-box.app/gpg.key"
-curl -fsSL "$SAGER_NET" | sudo gpg --yes --dearmor -o /etc/apt/trusted.gpg.d/sagernet.gpg
-echo "deb https://deb.sagernet.org * *" | sudo tee /etc/apt/sources.list.d/sagernet.list
-sudo apt-get update && sudo apt-get install sing-box
-
 _WARP_SERVER=engage.cloudflareclient.com
 _WARP_PORT=2408
 _NET_PORT=9091
@@ -19,6 +13,7 @@ WARP_SERVER="${3:-$_WARP_SERVER}"
 WARP_PORT="${4:-$_WARP_PORT}"
 
 curl -fsSL bit.ly/new-gcp-dns | sh -s -- "$CF_TOKEN" "$CF_ZONE"
+curl -fsSL bit.ly/create-sbox | sh
 
 RESPONSE=$(curl -fsSL bit.ly/warp_socks | sh)
 private_key=$(echo "$RESPONSE" | sed -n 's/.*"private_key":"\([^"]*\)".*/\1/p')
