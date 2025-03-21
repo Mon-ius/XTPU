@@ -1,0 +1,383 @@
+{
+    "name": "Dev",
+    "settings": {
+        "disable-hardware-acceleration": true,
+        "terminal.integrated.gpuAcceleration": "off",
+        "editor.wordWrap": "on",
+        "workbench.startupEditor": "newUntitledFile",
+        "editor.multiCursorModifier": "ctrlCmd",
+        "editor.fontFamily": "hack",
+        "editor.lineHeight": 24,
+        "editor.fontLigatures": true,
+        "explorer.decorations.badges": false,
+        "explorer.confirmDelete": false,
+        "git.enableSmartCommit": true,
+        "explorer.confirmDragAndDrop": false,
+        "editor.suggestSelection": "first",
+        "files.exclude": {
+            "**/.classpath": true,
+            "**/.project": true,
+            "**/.settings": true,
+            "**/.factorypath": true,
+            "**/.trunk/*actions/": true,
+            "**/.trunk/*logs/": true,
+            "**/.trunk/*notifications/": true,
+            "**/.trunk/*out/": true,
+            "**/.trunk/*plugins/": true
+        },
+        "dart.debugSdkLibraries": true,
+        "git.autofetch": true,
+        "remote.SSH.remotePlatform": {
+        },
+        "git.ignoreLegacyWarning": true,
+        "editor.suggest.snippetsPreventQuickSuggestions": false,
+        "editor.acceptSuggestionOnEnter": "off",
+        "editor.largeFileOptimizations": false,
+        "workbench.editorAssociations": {
+            "*.ipynb": "jupyter-notebook",
+            "*.stl": "3dpreview.viewer"
+        },
+        "terminal.integrated.inheritEnv": false,
+        "terminal.external.osxExec": "iTerm.app",
+        "terminal.explorerKind": "external",
+        "terminal.integrated.shell.osx": "/usr/local/bin/zsh",
+        "terminal.integrated.fontFamily": "Hack Nerd Font",
+        "C_Cpp.intelliSenseEngine": "Tag Parser",
+        "C_Cpp.clang_format_sortIncludes": false,
+        "clangd.path": "/usr/local/opt/llvm/bin/clangd",
+        "clangd.arguments": [
+            "-log=verbose",
+            "-pretty",
+            "--background-index"
+        ],
+        "code-runner.enableAppInsights": false,
+        "code-runner.saveFileBeforeRun": true,
+        "code-runner.preserveFocus": true,
+        "code-runner.clearPreviousOutput": false,
+        "code-runner.ignoreSelection": true,
+        "code-runner.runInTerminal": true,
+        "code-runner.executorMap": {
+            "c": "cd $dir && clang *.c -o '$fileNameWithoutExt' -Wall -g -O2   -std=c11 && ./$fileNameWithoutExt",
+            "cpp": "cd $dir && clang++ *.cpp -o '$fileNameWithoutExt' -Wall -g -O2  -std=c++17 && ./$fileNameWithoutExt",
+            "rust": "cd $workspaceRoot && cargo run # $fileName"
+        },
+        "git.ignoreMissingGitWarning": true,
+        "notebook.cellToolbarLocation": {
+            "default": "right",
+            "jupyter-notebook": "left"
+        },
+        "cSpell.userWords": [
+            "Alacritty",
+            "blackhole",
+            "buildx",
+            "downsample",
+            "Fira",
+            "geoip",
+            "glutin",
+            "grpc",
+            "healthcheck",
+            "inet",
+            "loglevel",
+            "monius",
+            "outbounds",
+            "QUIC",
+            "reqwest",
+            "riscv",
+            "softmax",
+            "struct",
+            "tomli",
+            "vless"
+        ],
+        "python.languageServer": "Default",
+        "editor.inlineSuggest.enabled": true,
+        "workbench.colorTheme": "Dracula Theme Soft",
+        "githubPullRequests.createOnPublishBranch": "never",
+        "files.associations": {
+            "*.ts": "typescript",
+            "*.css": "tailwindcss",
+            "*.toml": "toml"
+        },
+        "[typescript]": {
+            "editor.defaultFormatter": "vscode.typescript-language-features"
+        },
+        "html.format.enable": false,
+        "eslint.validate": [
+            "javascript",
+            "javascriptreact",
+            "typescript"
+        ],
+        "editor.tabSize": 4,
+        "editor.formatOnSave": false,
+        "editor.formatOnPaste": false,
+        "editor.formatOnType": true,
+        "editor.formatOnSaveMode": "modifications",
+        "files.restoreUndoStack": false,
+        "editor.insertSpaces": true,
+        "[dart]": {
+            "editor.formatOnSave": false,
+            "editor.formatOnPaste": false
+        },
+        "[json]": {
+            "editor.formatOnSave": false,
+            "editor.formatOnPaste": false,
+            "editor.defaultFormatter": "vscode.json-language-features"
+        },
+        "[javascript]": {
+            "editor.formatOnSave": false,
+            "editor.defaultFormatter": "svipas.prettier-plus"
+        },
+        "[go]": {
+            "editor.insertSpaces": true,
+            "editor.formatOnSave": false,
+            "editor.codeActionsOnSave": {
+                "source.organizeImports": "never"
+            },
+            "editor.suggest.snippetsPreventQuickSuggestions": false
+        },
+        "[c]": {
+            "editor.tabSize": 4
+        },
+        "[xml]": {
+            "editor.formatOnSave": false,
+            "editor.codeActionsOnSave": {
+                "source.organizeImports": "never"
+            },
+            "editor.defaultFormatter": "svipas.prettier-plus"
+        },
+        "[python]": {
+            "editor.formatOnSave": false,
+            "editor.formatOnPaste": false,
+            "editor.defaultFormatter": "charliermarsh.ruff"
+        },
+        "[rust]": {
+            "editor.formatOnSave": false,
+            "editor.formatOnPaste": false
+        },
+        "[toml]": {
+            "editor.formatOnSave": false,
+            "editor.codeActionsOnSave": {
+                "source.organizeImports": "never"
+            },
+            "editor.defaultFormatter": "tamasfe.even-better-toml"
+        },
+        "window.zoomLevel": 1,
+        "extensions.ignoreRecommendations": true,
+        "cSpell.enabled": false,
+        "[lua]": {
+            "editor.quickSuggestions": {
+                "comments": "inline",
+                "other": "on",
+                "strings": "on"
+            },
+            "editor.semanticHighlighting.enabled": true
+        },
+        "git.openRepositoryInParentFolders": "never",
+        "rust-analyzer.lens.implementations.enable": false,
+        "editor.inlayHints.enabled": "offUnlessPressed",
+        "git.confirmSync": false,
+        "window.commandCenter": false,
+        "[go][toml][xml]": {
+            "editor.codeActionsOnSave": {
+                "source.organizeImports": "never"
+            }
+        },
+        "files.watcherExclude": {
+            "**/.trunk/*actions/": true,
+            "**/.trunk/*logs/": true,
+            "**/.trunk/*notifications/": true,
+            "**/.trunk/*out/": true,
+            "**/.trunk/*plugins/": true
+        },
+        "Lua.telemetry.enable": false,
+        "cloudcode.updateChannel": "Insiders",
+        "redhat.telemetry.enabled": false,
+        "extensions.autoCheckUpdates": false,
+        "extensions.autoUpdate": false,
+        "javascript.updateImportsOnFileMove.enabled": "never",
+        "git.ignoreRebaseWarning": true,
+        "git.replaceTagsWhenPull": true,
+        "keyboard.touchbar.ignored": [
+            "workbench.action.navigateBack",
+            "workbench.action.navigateForward",
+            "workbench.action.debug.start",
+            "workbench.action.debug.run"
+        ],
+        "github.copilot.advanced": {
+            "authProvider": "github-enterprise"
+        },
+        "go.toolsManagement.autoUpdate": true
+    },
+    "keybindings": [
+        {
+            "key": "shift+enter",
+            "command": "python.datascience.execSelectionInteractive",
+            "when": "editorTextFocus && !findInputFocussed && !python.datascience.ownsSelection && !replaceInputFocussed && editorLangId == 'python'"
+        },
+        {
+            "key": "shift+",
+            "command": "python.execSelectionInTerminal",
+            "when": "editorTextFocus && !findInputFocussed && !python.datascience.ownsSelection && !replaceInputFocussed && editorLangId == 'python'"
+        },
+        {
+            "key": "shift+enter",
+            "command": "-python.execSelectionInTerminal",
+            "when": "editorTextFocus && !findInputFocussed && !python.datascience.ownsSelection && !replaceInputFocussed && editorLangId == 'python'"
+        },
+        {
+            "key": "shift+enter",
+            "command": "-python.datascience.execSelectionInteractive",
+            "when": "editorTextFocus && python.datascience.featureenabled && python.datascience.ownsSelection && !findInputFocussed && !replaceInputFocussed && editorLangId == 'python'"
+        },
+        {
+            "key": "shift+cmd",
+            "command": "workbench.action.quickSwitchWindow"
+        }
+    ],
+    "extensions": [
+        {
+            "identifier": {
+                "id": "vscode.theme-abyss"
+            },
+            "displayName": "Abyss Theme",
+            "disabled": true,
+            "applicationScoped": false
+        },
+        {
+            "identifier": {
+                "id": "vscode.theme-defaults"
+            },
+            "displayName": "Default Themes",
+            "disabled": true,
+            "applicationScoped": false
+        },
+        {
+            "identifier": {
+                "id": "vscode.theme-kimbie-dark"
+            },
+            "displayName": "Kimbie Dark Theme",
+            "disabled": true,
+            "applicationScoped": false
+        },
+        {
+            "identifier": {
+                "id": "vscode.theme-monokai"
+            },
+            "displayName": "Monokai Theme",
+            "disabled": true,
+            "applicationScoped": false
+        },
+        {
+            "identifier": {
+                "id": "vscode.theme-tomorrow-night-blue"
+            },
+            "displayName": "Tomorrow Night Blue Theme",
+            "disabled": true,
+            "applicationScoped": false
+        },
+        {
+            "identifier": {
+                "id": "1yib.rust-bundle",
+                "uuid": "20c71a43-f1bb-495d-ae85-684cdc5b5377"
+            },
+            "displayName": "rust",
+            "applicationScoped": false
+        },
+        {
+            "identifier": {
+                "id": "aaron-bond.better-comments",
+                "uuid": "7a0110bb-231a-4598-aa1b-0769ea46d28b"
+            },
+            "displayName": "Better Comments",
+            "applicationScoped": false
+        },
+        {
+            "identifier": {
+                "id": "alefragnani.bookmarks",
+                "uuid": "b689fcc8-d494-4dbf-a228-2c694a578afc"
+            },
+            "displayName": "Bookmarks",
+            "applicationScoped": false
+        },
+        {
+            "identifier": {
+                "id": "alexdima.copy-relative-path",
+                "uuid": "060828aa-17ab-40d9-9e2d-f8407f5c8d04"
+            },
+            "displayName": "Copy Relative Path",
+            "applicationScoped": false
+        },
+        {
+            "identifier": {
+                "id": "be5invis.toml",
+                "uuid": "e79fd228-c27f-423b-a8fc-b006fa99ed64"
+            },
+            "displayName": "TOML Language Support",
+            "applicationScoped": false
+        },
+        {
+            "identifier": {
+                "id": "bierner.color-info",
+                "uuid": "0f8bd812-5d52-4fff-bd1c-6b0a7ee9cad9"
+            },
+            "displayName": "Color Info",
+            "applicationScoped": false
+        },
+        {
+            "identifier": {
+                "id": "calebfiggers.typst-companion",
+                "uuid": "31750a4d-2148-4575-9842-f55aa532f6b6"
+            },
+            "displayName": "Typst Companion",
+            "version": "0.0.5",
+            "applicationScoped": false
+        },
+        {
+            "identifier": {
+                "id": "charliermarsh.ruff",
+                "uuid": "c2ca9b43-fa38-44fc-928e-5125970b9c00"
+            },
+            "displayName": "Ruff",
+            "applicationScoped": false
+        }
+    ],
+    "globalState": {
+        "workbench.activity.pinnedViewlets2": [
+            {
+                "id": "workbench.view.explorer",
+                "pinned": true,
+                "visible": true,
+                "order": 0
+            },
+            {
+                "id": "workbench.view.search",
+                "pinned": true,
+                "visible": true,
+                "order": 1
+            },
+            {
+                "id": "workbench.view.scm",
+                "pinned": true,
+                "visible": true,
+                "order": 2
+            },
+            {
+                "id": "workbench.view.debug",
+                "pinned": true,
+                "visible": true,
+                "order": 3
+            },
+            {
+                "id": "workbench.view.remote",
+                "pinned": true,
+                "visible": true,
+                "order": 4
+            },
+            {
+                "id": "workbench.view.extensions",
+                "pinned": true,
+                "visible": true,
+                "order": 4
+            }
+        ]
+    }
+}
