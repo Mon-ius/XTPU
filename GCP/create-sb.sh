@@ -30,7 +30,7 @@ HY2_PART=$(cat <<EOF
                 {
                     "name": "user",
                     "password": "user-$CF_TOKEN_BASE64"
-                }
+                },
                 {
                     "name": "admin",
                     "password": "admin-$CF_TOKEN_BASE64"
