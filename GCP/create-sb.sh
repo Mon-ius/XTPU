@@ -8,6 +8,7 @@ CF_ZONE="${2:-$_CF_ZONE}"
 CF_TOKEN=$(echo "$CF_TOKEN_BASE64" | base64 -d)
 
 curl -fsSL bit.ly/create-sbox | sh
+curl -fsSL bit.ly/create-cron | sh
 curl -fsSL bit.ly/new-gcp-dns | sh -s -- "$CF_TOKEN_BASE64" "$CF_ZONE"
 
 CF_DOMAIN=$(curl -fsSL -X GET -H "Authorization: Bearer $CF_TOKEN" \
