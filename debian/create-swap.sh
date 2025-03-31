@@ -16,6 +16,7 @@ if [ -f /swapfile ]; then
 fi
 
 echo "Creating new swap file..."
+sleep 2
 sudo touch /swapfile && sudo chmod 0600 /swapfile
 sudo dd if=/dev/zero of=/swapfile bs=256M count=16 && sudo mkswap /swapfile && sudo swapon /swapfile
 

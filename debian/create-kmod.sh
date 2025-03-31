@@ -8,6 +8,7 @@ if  dpkg -l | grep -q "google-cloud-cli"; then
     echo "Removing Google Cloud CLI..."
     sudo -E apt-get remove -y google-cloud-cli
     sudo -E apt-get autoremove -y
+    sleep 2
     echo "Google Cloud CLI removed."
 fi
 
@@ -15,6 +16,7 @@ if dpkg -l | grep -q "google-guest-agent"; then
     echo "Removing Google Guest Agent..."
     sudo apt-get remove -y google-guest-agent
     sudo apt-get autoremove -y
+    sleep 2
     echo "Google Guest Agent removed."
 fi
 
