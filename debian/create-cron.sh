@@ -16,7 +16,7 @@ else
     sudo -E apt-get -qq install -y tzdata cron
     sudo ln -sf /usr/share/zoneinfo/UTC /etc/localtime
     echo "UTC" | sudo tee /etc/timezone
-    sudo dpkg-reconfigure -f noninteractive tzdata
+    sudo /usr/sbin/dpkg-reconfigure -f noninteractive tzdata
     if ! grep -F "$CRON_JOB" /etc/crontab >/dev/null 2>&1; then
         echo "$CRON_JOB" | sudo tee -a /etc/crontab
         sudo systemctl restart cron
