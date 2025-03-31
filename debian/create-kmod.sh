@@ -4,6 +4,13 @@ export DEBIAN_FRONTEND=noninteractive
 sudo -E apt-get -qq update
 sudo -E apt-get -qq install -o Dpkg::Options::="--force-confold" -y kmod
 
+if command -v gcloud >/dev/null 2>&1 || [ -d /usr/lib/google-cloud-sdk ] || dpkg -l | grep -q "google-cloud-cli"; then
+    echo "Removing Google Cloud CLI..."
+    sudo -E apt-get remove -y google-cloud-cli
+    sudo -E apt-get autoremove -y
+    echo "Google Cloud CLI removed."
+fi
+
 sudo tee /etc/security/limits.conf > /dev/null << 'EOF'
 root soft nofile 2000000
 root hard nofile 2000000
