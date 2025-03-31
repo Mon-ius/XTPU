@@ -22,6 +22,5 @@ LC_MEASUREMENT="en_US.UTF-8"
 LC_IDENTIFICATION="en_US.UTF-8"
 EOF
 
-sudo /usr/sbin/locale-gen en_US
 sudo /usr/sbin/locale-gen en_US.UTF-8
 sudo /usr/sbin/update-locale LANG=en_US.UTF-8
