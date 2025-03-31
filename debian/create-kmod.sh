@@ -4,11 +4,18 @@ export DEBIAN_FRONTEND=noninteractive
 sudo -E apt-get -qq update
 sudo -E apt-get -qq install -o Dpkg::Options::="--force-confold" -y kmod
 
-if command -v gcloud >/dev/null 2>&1 || [ -d /usr/lib/google-cloud-sdk ] || dpkg -l | grep -q "google-cloud-cli"; then
+if  dpkg -l | grep -q "google-cloud-cli"; then
     echo "Removing Google Cloud CLI..."
     sudo -E apt-get remove -y google-cloud-cli
     sudo -E apt-get autoremove -y
     echo "Google Cloud CLI removed."
+fi
+
+if dpkg -l | grep -q "google-guest-agent"; then
+    echo "Removing Google Guest Agent..."
+    sudo apt-get remove -y google-guest-agent
+    sudo apt-get autoremove -y
+    echo "Google Guest Agent removed."
 fi
 
 sudo tee /etc/security/limits.conf > /dev/null << 'EOF'
