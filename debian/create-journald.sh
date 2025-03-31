@@ -2,7 +2,7 @@
 
 export DEBIAN_FRONTEND=noninteractive
 
-cat <<'EOF' > /etc/systemd/journald.conf
+sudo tee /etc/systemd/journald.conf > /dev/null << 'EOF'
 [Journal]
 SystemMaxUse=512M
 SystemMaxFileSize=128M
