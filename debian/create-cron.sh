@@ -12,7 +12,6 @@ if [ -f /etc/alpine-release ]; then
         doas /etc/init.d/crond restart
     fi
 else
-    
     sudo -E apt-get -qq update
     sudo -E apt-get -qq install -y tzdata cron
     sudo ln -sf /usr/share/zoneinfo/UTC /etc/localtime
