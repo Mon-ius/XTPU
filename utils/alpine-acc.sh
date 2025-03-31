@@ -1,6 +1,6 @@
 #!/bin/dash
 
-_R=3.19
+_R=3.21
 _ARC=$(arch)
 _REL="${1:-$_R}"
 _TARGET="https://dl-cdn.alpinelinux.org/alpine/v${_REL}/releases/${_ARC}/alpine-minirootfs-${_REL}.1-${_ARC}.tar.gz"
