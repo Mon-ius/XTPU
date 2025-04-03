@@ -13,7 +13,7 @@ USED=$(echo $MEM_INFO | awk '{print $3}')
 PERCENTAGE=$(awk "BEGIN {printf \"%.2f\", $USED/$TOTAL*100}")
 
 if (( $(echo "$PERCENTAGE > 66" | bc -l) )); then
-    /sbin/shutdown -r now
+    sudo /sbin/shutdown -r now
     exit 1
 fi
 
