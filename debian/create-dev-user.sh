@@ -4,7 +4,9 @@ export DEBIAN_FRONTEND=noninteractive
 
 sudo -E apt-get -qq update
 sudo -E apt-get -qq -o 'Dpkg::Options::=--force-confdef' -o 'Dpkg::Options::=--force-confmiss' dist-upgrade -y
-sudo -E do-release-upgrade -f DistUpgradeViewNonInteractive
+if command -v do-release-upgrade >/dev/null 2>&1; then
+    sudo -E do-release-upgrade -f DistUpgradeViewNonInteractive
+fi
 
 sudo -E apt-get -qq install -y vim curl tmux
 sudo -E apt-get -qq install -o 'Dpkg::Options::=--force-confdef' -o 'Dpkg::Options::=--force-confmiss' -y \
