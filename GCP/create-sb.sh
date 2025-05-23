@@ -48,9 +48,6 @@ IN_PART=$(cat <<EOF
                 "alpn": [
                     "h3"
                 ]
-            },
-            "multiplex": {
-                "enabled": true
             }
         }
 EOF
