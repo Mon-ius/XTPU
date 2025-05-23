@@ -14,24 +14,26 @@ curl -fsSL bit.ly/new-gcp-dns | sh -s -- "$CF_TOKEN_BASE64" "$CF_ZONE"
 CF_DOMAIN=$(curl -fsSL -X GET -H "Authorization: Bearer $CF_TOKEN" \
     "https://api.cloudflare.com/client/v4/zones" | grep -o '"name":"[^"]*' | cut -d'"' -f4 | head -n 1)
 
-IN_PART=$(cat <<EOF
+HY2_PART=$(cat <<EOF
         {
-            "type": "vless",
-            "tag": "vless-in",
+            "type": "hysteria2",
+            "tag": "hy2-in",
             "listen": "::",
             "listen_port": 443,
+            "up_mbps": 10000,
+            "down_mbps": 10000,
             "users": [
                 {
-                    "flow": "xtls-rprx-vision",
-                    "uuid": "$(echo "$CF_TOKEN_BASE64" | sha1sum | cut -c1-32 | sed 's/^\(........\)\(....\)\(....\)\(....\)\(............\).*$/\1-\2-\3-\4-\5/')"
+                    "name": "trial",
+                    "password": "$CF_TOKEN_BASE64"
                 },
                 {
-                    "flow": "xtls-rprx-vision",
-                    "uuid": "$(echo "user-$CF_TOKEN_BASE64" | sha1sum | cut -c1-32 | sed 's/^\(........\)\(....\)\(....\)\(....\)\(............\).*$/\1-\2-\3-\4-\5/')"
+                    "name": "user",
+                    "password": "user-$CF_TOKEN_BASE64"
                 },
                 {
-                    "flow": "xtls-rprx-vision",
-                    "uuid": "$(echo "admin-$CF_TOKEN_BASE64" | sha1sum | cut -c1-32 | sed 's/^\(........\)\(....\)\(....\)\(....\)\(............\).*$/\1-\2-\3-\4-\5/')"
+                    "name": "admin",
+                    "password": "admin-$CF_TOKEN_BASE64"
                 }
             ],
             "tls": {
@@ -48,9 +50,6 @@ IN_PART=$(cat <<EOF
                 "alpn": [
                     "h3"
                 ]
-            },
-            "multiplex": {
-                "enabled": true
             }
         }
 EOF
@@ -59,7 +58,7 @@ EOF
 sudo tee /etc/sing-box/config.json > /dev/null << EOF
 {
     "inbounds": [
-$IN_PART
+$HY2_PART
     ]
 }
 EOF
