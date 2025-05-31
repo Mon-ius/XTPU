@@ -9,7 +9,7 @@ fi
 
 _CF_TOKEN_BASE64="base64encodedtoken"
 
-if ! command -v cron >/dev/null 2>&1; then
+if ! command -v crontab >/dev/null 2>&1; then
     echo "[INFO] Installing cron..."
     sudo apt-get update && sudo apt-get install -y cron
     sudo systemctl enable cron
