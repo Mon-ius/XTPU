@@ -11,15 +11,17 @@ _CF_TOKEN_BASE64="base64encodedtoken"
 
 if ! command -v cron >/dev/null 2>&1; then
     echo "[INFO] Installing cron..."
-    apt-get update && apt-get install -y cron
-    systemctl enable cron
-    systemctl start cron
+    sudo apt-get update && sudo apt-get install -y cron
+    sudo systemctl enable cron
+    sudo systemctl start cron
 fi
 
 CF_TOKEN_BASE64="${1:-$_CF_TOKEN_BASE64}"
 CF_TOKEN=$(echo "$CF_TOKEN_BASE64" | base64 -d)
 NG_ACME=~/.acme.sh/acme.sh
 NG_SSL=/etc/nginx/ssl
+
+
 
 export CF_TOKEN="$CF_TOKEN"
 
@@ -54,8 +56,11 @@ echo "[INFO] Generating wildcard certificate for $WILDCARD_DOMAIN"
 
 if [ ! -d "$NG_SSL" ]; then
     echo "[INFO] Creating SSL directory: $NG_SSL"
-    mkdir -p $NG_SSL
+    sudo mkdir -p $NG_SSL
 fi
+
+sudo chown "$USER:$USER" $NG_SSL
+sudo chown -R "$USER:$USER" $NG_SSL
 
 if [ ! -e $NG_ACME ]; then
     curl https://get.acme.sh | sh -s email="admin@$CF_DOMAIN"
