@@ -21,31 +21,29 @@ CF_TOKEN=$(echo "$CF_TOKEN_BASE64" | base64 -d)
 NG_ACME=~/.acme.sh/acme.sh
 NG_SSL=/etc/nginx/ssl
 
-
-
-export CF_TOKEN="$CF_TOKEN"
-
 CF_DOMAIN=$(curl -fsSL "https://api.cloudflare.com/client/v4/zones" \
     -H "Authorization: Bearer $CF_TOKEN" \
     -H "Content-Type: application/json" | \
     grep -o '"name":"[^"]*' | cut -d'"' -f4 | head -n 1)
 
-CF_Zone_ID=$(curl -fsSL "https://api.cloudflare.com/client/v4/zones" \
+CF_ZONE=$(curl -fsSL "https://api.cloudflare.com/client/v4/zones" \
     -H "Authorization: Bearer $CF_TOKEN" \
     -H "Content-Type: application/json" | \
     grep -o '"id":"[^"]*' | cut -d'"' -f4 | head -n 1)
 
-export CF_Zone_ID="$CF_Zone_ID"
 
 if [ -z "$CF_DOMAIN" ]; then
     echo "Error: Unable to retrieve Cloudflare domain."
     exit 1
 fi
 
-if [ -z "$CF_Zone_ID" ]; then
+if [ -z "$CF_ZONE" ]; then
     echo "Error: Unable to retrieve Cloudflare zone ID."
     exit 1
 fi
+
+export CF_Token="$CF_TOKEN"
+export CF_Zone_ID="$CF_ZONE"
 
 WILDCARD_DOMAIN="*.$CF_DOMAIN"
 SSL_KEY="$NG_SSL/wildcard.$CF_DOMAIN.key"
