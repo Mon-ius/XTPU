@@ -9,6 +9,30 @@ fi
 
 _CF_TOKEN_BASE64="base64encodedtoken"
 
+if ! command -v cron >/dev/null 2>&1; then
+    echo "[INFO] Installing cron..."
+    if command -v apt-get >/dev/null 2>&1; then
+        apt-get update && apt-get install -y cron
+    elif command -v yum >/dev/null 2>&1; then
+        yum install -y cronie
+    elif command -v apk >/dev/null 2>&1; then
+        apk add --no-cache dcron
+    else
+        echo "Error: Unable to install cron. Please install manually."
+        exit 1
+    fi
+    
+    if command -v systemctl >/dev/null 2>&1; then
+        systemctl enable cron || systemctl enable crond
+        systemctl start cron || systemctl start crond
+    elif command -v service >/dev/null 2>&1; then
+        service cron start || service crond start
+    elif command -v rc-service >/dev/null 2>&1; then
+        rc-service dcron start
+        rc-update add dcron default
+    fi
+fi
+
 CF_TOKEN_BASE64="${1:-$_CF_TOKEN_BASE64}"
 CF_TOKEN=$(echo "$CF_TOKEN_BASE64" | base64 -d)
 NG_ACME=~/.acme.sh/acme.sh
