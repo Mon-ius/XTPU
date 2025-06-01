@@ -118,22 +118,13 @@ sudo tee /etc/sing-box/config.json > /dev/null << EOF
             {
                 "inbound": "hy2-in",
                 "action": "sniff",
-                "sniffer": [
-                    "dns",
-                    "bittorrent",
-                    "http",
-                    "tls",
-                    "quic",
-                    "dtls"
-                ]
             },
             {
-                "protocol": "dns",
-                "action": "hijack-dns"
+                "protocol": ["quic", "BitTorrent"],
+                "action": "reject"
             },
             {
                 "ip_is_private": true,
-                "action": "route",
                 "outbound": "direct-out"
             },
             {
@@ -146,9 +137,13 @@ sudo tee /etc/sing-box/config.json > /dev/null << EOF
                     "192.168.0.0/16",
                     "224.0.0.0/4",
                     "240.0.0.0/4",
-                    "52.80.0.0/16"
+                    "52.80.0.0/16",
+                    "112.95.0.0/16"
                 ],
-                "action": "route",
+                "outbound": "direct-out"
+            },
+            {
+                "domain_suffix": [".com.cn", ".cn"],
                 "outbound": "direct-out"
             }
         ],
