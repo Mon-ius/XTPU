@@ -114,6 +114,8 @@ sudo tee /etc/sing-box/config.json > /dev/null << EOF
         "disable_expire": false
     },
     "route": {
+        "final": "WARP"
+        "auto_detect_interface": true,
         "rules": [
             {
                 "inbound": "hy2-in",
@@ -143,12 +145,155 @@ sudo tee /etc/sing-box/config.json > /dev/null << EOF
                 "outbound": "direct-out"
             },
             {
-                "domain_suffix": [".com.cn", ".cn"],
+                "domain_suffix": [".com.cn", ".gov.cn", ".cn"],
                 "outbound": "direct-out"
-            }
+            },
+            {
+                "rule_set": ["geoip-cn", "geosite-geolocation-cn", "geosite-china-list"],
+                "outbound": "direct-out"
+            },
         ],
-        "auto_detect_interface": true,
-        "final": "WARP"
+    "rule_set": [
+        {
+            "tag": "geosite-china-list",
+            "type": "remote",
+            "format": "binary",
+            "url": "https://testingcf.jsdelivr.net/gh/lyc8503/sing-box-rules@rule-set-geosite/geosite-china-list.srs",
+            "download_detour": "direct-out"
+        },
+        {
+            "tag": "geosite-geolocation-cn",
+            "type": "remote",
+            "format": "binary",
+            "url": "https://testingcf.jsdelivr.net/gh/lyc8503/sing-box-rules@rule-set-geosite/geosite-geolocation-cn.srs",
+            "download_detour": "direct-out"
+        },
+        {
+            "tag": "geosite-geolocation-!cn",
+            "type": "remote",
+            "format": "binary",
+            "url": "https://testingcf.jsdelivr.net/gh/lyc8503/sing-box-rules@rule-set-geosite/geosite-geolocation-!cn.srs",
+            "download_detour": "direct-out"
+        },
+        {
+            "tag": "geosite-category-ads-all",
+            "type": "remote",
+            "format": "binary",
+            "url": "https://testingcf.jsdelivr.net/gh/lyc8503/sing-box-rules@rule-set-geosite/geosite-category-ads-all.srs",
+            "download_detour": "direct-out"
+        },
+        {
+            "tag": "geosite-youtube",
+            "type": "remote",
+            "format": "binary",
+            "url": "https://testingcf.jsdelivr.net/gh/lyc8503/sing-box-rules@rule-set-geosite/geosite-youtube.srs",
+            "download_detour": "direct-out"
+        },
+        {
+            "tag": "geosite-google",
+            "type": "remote",
+            "format": "binary",
+            "url": "https://testingcf.jsdelivr.net/gh/lyc8503/sing-box-rules@rule-set-geosite/geosite-google.srs",
+            "download_detour": "direct-out"
+        },
+        {
+            "tag": "geosite-github",
+            "type": "remote",
+            "format": "binary",
+            "url": "https://testingcf.jsdelivr.net/gh/lyc8503/sing-box-rules@rule-set-geosite/geosite-github.srs",
+            "download_detour": "direct-out"
+        },
+        {
+            "tag": "geosite-reddit",
+            "type": "remote",
+            "format": "binary",
+            "url": "https://testingcf.jsdelivr.net/gh/lyc8503/sing-box-rules@rule-set-geosite/geosite-reddit.srs",
+            "download_detour": "direct-out"
+        },
+        {
+            "tag": "geosite-category-ai",
+            "type": "remote",
+            "format": "binary",
+            "url": "https://testingcf.jsdelivr.net/gh/lyc8503/sing-box-rules@rule-set-geosite/geosite-category-ai-!cn.srs",
+            "download_detour": "direct-out"
+        },
+        {
+            "tag": "geosite-facebook",
+            "type": "remote",
+            "format": "binary",
+            "url": "https://testingcf.jsdelivr.net/gh/lyc8503/sing-box-rules@rule-set-geosite/geosite-facebook.srs",
+            "download_detour": "direct-out"
+        },
+        {
+            "tag": "geosite-cloudflare",
+            "type": "remote",
+            "format": "binary",
+            "url": "https://testingcf.jsdelivr.net/gh/lyc8503/sing-box-rules@rule-set-geosite/geosite-cloudflare.srs",
+            "download_detour": "direct-out"
+        },
+        {
+            "tag": "geosite-discord",
+            "type": "remote",
+            "format": "binary",
+            "url": "https://testingcf.jsdelivr.net/gh/lyc8503/sing-box-rules@rule-set-geosite/geosite-discord.srs",
+            "download_detour": "direct-out"
+        },
+        {
+            "tag": "geosite-tiktok",
+            "type": "remote",
+            "format": "binary",
+            "url": "https://testingcf.jsdelivr.net/gh/lyc8503/sing-box-rules@rule-set-geosite/geosite-tiktok.srs",
+            "download_detour": "direct-out"
+        },
+        {
+            "tag": "geosite-disney",
+            "type": "remote",
+            "format": "binary",
+            "url": "https://testingcf.jsdelivr.net/gh/lyc8503/sing-box-rules@rule-set-geosite/geosite-disney.srs",
+            "download_detour": "direct-out"
+        },
+        {
+            "tag": "geosite-hbo",
+            "type": "remote",
+            "format": "binary",
+            "url": "https://testingcf.jsdelivr.net/gh/lyc8503/sing-box-rules@rule-set-geosite/geosite-hbo.srs",
+            "download_detour": "direct-out"
+        },
+        {
+            "tag": "geosite-primevideo",
+            "type": "remote",
+            "format": "binary",
+            "url": "https://testingcf.jsdelivr.net/gh/lyc8503/sing-box-rules@rule-set-geosite/geosite-primevideo.srs",
+            "download_detour": "direct-out"
+        },
+        {
+            "tag": "geosite-netflix",
+            "type": "remote",
+            "format": "binary",
+            "url": "https://testingcf.jsdelivr.net/gh/lyc8503/sing-box-rules@rule-set-geosite/geosite-netflix.srs",
+            "download_detour": "direct-out"
+        },
+        {
+            "tag": "geoip-netflix",
+            "type": "remote",
+            "format": "binary",
+            "url": "https://testingcf.jsdelivr.net/gh/lyc8503/sing-box-rules@rule-set-geoip/geoip-netflix.srs",
+            "download_detour": "direct-out"
+        },
+        {
+            "tag": "geoip-google",
+            "type": "remote",
+            "format": "binary",
+            "url": "https://testingcf.jsdelivr.net/gh/lyc8503/sing-box-rules@rule-set-geoip/geoip-google.srs",
+            "download_detour": "direct-out"
+        },
+        {
+            "tag": "geoip-cn",
+            "type": "remote",
+            "format": "binary",
+            "url": "https://testingcf.jsdelivr.net/gh/lyc8503/sing-box-rules@rule-set-geoip/geoip-cn.srs",
+            "download_detour": "direct-out"
+        }]
     },
     "inbounds": [
 $HY2_PART
