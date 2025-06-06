@@ -134,14 +134,16 @@ Add-on
 
 Shell
 ```sh
-curl -fsSL bit.ly/create-dev-user | sh
+curl -fsSL https://bit.ly/create-dev-user | sh
 
-curl -fsSL bit.ly/create-journald | sh
-curl -fsSL bit.ly/create-resolv | sh
-curl -fsSL bit.ly/create-locale | sh
-curl -fsSL bit.ly/create-kmod | sh
-curl -fsSL bit.ly/create-swap | sh
-curl -fsSL bit.ly/create-sshd | sh
+curl -fsSL https://bit.ly/create-apt | sh
+curl -fsSL https://bit.ly/create-journald | sh
+curl -fsSL https://bit.ly/create-resolv | sh
+curl -fsSL https://bit.ly/create-locale | sh
+curl -fsSL https://bit.ly/create-kmod | sh
+curl -fsSL https://bit.ly/create-swap | sh
+curl -fsSL https://bit.ly/create-sshd | sh
+curl -fsSL https://bit.ly/create-docker-mirror | sh
 
 curl -fsSL bit.ly/create-docker | sh
 curl -fsSL bit.ly/create-cron | sh
