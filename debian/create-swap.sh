@@ -5,13 +5,9 @@ if ! command -v swapon >/dev/null 2>&1; then
     sudo apt-get update && sudo apt-get install -y util-linux
 fi
 
-if command -v swapon >/dev/null 2>&1 && swapon --show | grep -q "/swapfile"; then
-    echo "Deactivating existing swap file..."
-    sudo swapoff /swapfile
-fi
-
 if [ -f /swapfile ]; then
     echo "Removing old swap file..."
+    sudo swapoff /swapfile
     sudo sh -c "rm -f /swapfile"
 fi
 
