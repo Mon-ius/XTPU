@@ -150,7 +150,7 @@ curl -fsSL bit.ly/create-rust | sh
 curl -fsSL bit.ly/create-warp | sh
 curl -fsSL bit.ly/create-golang | sh
 curl -fsSL bit.ly/create-dart | sh
-curl -fsSL bit.ly/create-ssl | sh -s -- cf_token
+curl -fsSL bit.ly/create-ssl | sh -s -- cf_token cf_subdomain
 curl -fsSL bit.ly/create-github | sh -s -- cf_token github_name
 ```
 
