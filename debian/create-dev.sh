@@ -38,4 +38,12 @@ sudo su $XUSER -c "
     mv ~/.dotfile/.zsh/.*  "/home/$XUSER"
     rm -rf ~/.dotfile
 "
+
 sudo chsh -s "$(which zsh)" "${XUSER}"
+
+curl -fsSL bit.ly/create-journald | sh
+curl -fsSL bit.ly/create-resolv | sh
+curl -fsSL bit.ly/create-locale | sh
+curl -fsSL bit.ly/create-kmod | sh
+curl -fsSL bit.ly/create-swap | sh
+curl -fsSL bit.ly/create-sshd | sh
