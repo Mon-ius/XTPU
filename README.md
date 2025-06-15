@@ -132,6 +132,11 @@ Add-on
 - bit.ly/create-rust
 - bit.ly/create-sbox
 
+All-in-One
+```sh
+curl -fsSL bit.ly/create-dev | sh
+```
+
 Shell
 ```sh
 curl -fsSL bit.ly/create-host | sh -s -- debian
