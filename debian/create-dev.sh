@@ -24,6 +24,11 @@ PUB_KEY_1='ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDWJ4UGB7emxS6NdVe7G/yy36pf63K1Vr
 PUB_KEY_2='ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM0YC4tbZ6EjzoqlyYgQo2C0SKD5bhrCKc/O9Rs/tZps'
 PUB_KEY_3='ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGnwFB1b3DAConi5RSjIWJZqB62CMc8tMCpuLSdMQQDq'
 
+if id "$XUSER"; then
+    echo "User $XUSER already exists. Exiting."
+    exit 0
+fi
+
 echo "$XUSER ALL=(ALL) NOPASSWD:ALL" | sudo tee -a /etc/sudoers.d/$XUSER
 sudo adduser --disabled-password --gecos "" $XUSER && echo "$XUSER:$PASSWD" | sudo chpasswd
 
