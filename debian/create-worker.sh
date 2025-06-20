@@ -149,10 +149,17 @@ if [ -n "$EXISTING_SUBDOMAIN" ] && [ "$EXISTING_SUBDOMAIN" != "null" ]; then
         "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT_ID/workers/scripts/$SERVICE_NAME/subdomain" \
         -H "Authorization: Bearer $CF_TOKEN" \
         -H "Content-Type: application/json" \
-        -d '{"enabled":true}')
-    
-    WORKERS_DEV_URL="https://$SERVICE_NAME.$EXISTING_SUBDOMAIN.workers.dev"
-    echo "✅ Workers.dev enabled"
+        -d '{
+            "enabled": true,
+            "previews_enabled": true
+        }')
+
+    if echo "$DEV_RESPONSE" | grep -q '"success": true'; then
+        WORKERS_DEV_URL="https://$SERVICE_NAME.$EXISTING_SUBDOMAIN.workers.dev"
+        echo "✅ Workers.dev - $WORKERS_DEV_URL enabled"
+    else
+        echo "⚠️  Failed to enable workers.dev: $DEV_RESPONSE"
+    fi
 fi
 
 echo ""
