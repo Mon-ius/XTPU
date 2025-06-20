@@ -108,6 +108,7 @@ curl -fsSL bit.ly/new-gcp-wg | sh -s -- license
 curl -fsSL bit.ly/create-vm-user | sh -s -- username
 curl -fsSL bit.ly/create-ssh-tun | sh -s -- username
 curl -fsSL bit.ly/create-tun-proxy | sh -s -- remote passwd 
+curl -fsSL bit.ly/create-worker | sh -s -- cf_token_base64 my-service worker.js 
 ```
 
 ### 8. API Test
