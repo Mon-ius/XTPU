@@ -32,7 +32,7 @@ if [ -z "$CF_ACCOUNT_ID" ]; then
 fi
 
 echo "[INFO] Account ID: $CF_ACCOUNT_ID"
-echo "[INFO] Setting up R2 bucket $BUCKET_NAME"
+echo "[INFO] Setting up R2 bucket: $BUCKET_NAME"
 echo "[INFO] Admin mode: $IS_ADMIN"
 echo "[INFO] Public mode: $IS_PUBLIC"
 
