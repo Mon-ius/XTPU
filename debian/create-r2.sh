@@ -1,6 +1,6 @@
 #!/bin/dash
 
-set -e
+set +e
 
 if [ -z "$1" ]; then
     echo "Usage: $0 <cloudflare_token> <bucket_name> [is_admin] [is_public]"
