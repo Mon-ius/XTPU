@@ -32,7 +32,6 @@ if [ -z "$CF_ACCOUNT_ID" ]; then
 fi
 
 echo "[INFO] Account ID: $CF_ACCOUNT_ID"
-echo "[INFO] Setting up R2 bucket: $BUCKET_NAME"
 echo "[INFO] Admin mode: $IS_ADMIN"
 echo "[INFO] Public mode: $IS_PUBLIC"
 
@@ -45,6 +44,8 @@ BUCKET_EXISTS=$(curl -fsSL "https://api.cloudflare.com/client/v4/accounts/$CF_AC
     -H "Content-Type: application/json" | \
     grep -o '"name":"'"$BUCKET_NAME"'"')
 
+echo "[INFO] Setting up R2 bucket: $BUCKET_NAME"
+
 if [ -z "$BUCKET_EXISTS" ]; then
     curl -fsSL -X POST "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT_ID/r2/buckets" \
         -H "Authorization: Bearer $CF_TOKEN" \
@@ -55,9 +56,9 @@ if [ -z "$BUCKET_EXISTS" ]; then
         }'
 fi
 
+echo "[INFO] Configuring public access for bucket"
+
 if [ "$IS_PUBLIC" = "true" ]; then
-    echo "[INFO] Configuring public access for bucket"
-    
     DOMAIN_RESPONSE=$(curl -fsSL -X PUT "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT_ID/r2/buckets/$BUCKET_NAME/domains/managed" \
         -H "Authorization: Bearer $CF_TOKEN" \
         -H "Content-Type: application/json" \
