@@ -1,6 +1,6 @@
 #!/bin/dash
 
-set -e
+set +e
 
 if [ -z "$1" ]; then
     echo "Usage: $0 <base64-encoded-cf-api-token> [service-name] [worker-file]"
