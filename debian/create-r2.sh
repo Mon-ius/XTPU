@@ -47,13 +47,22 @@ BUCKET_EXISTS=$(curl -fsSL "https://api.cloudflare.com/client/v4/accounts/$CF_AC
 echo "[INFO] Setting up R2 bucket: $BUCKET_NAME"
 
 if [ -z "$BUCKET_EXISTS" ]; then
-    curl -fsSL -X POST "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT_ID/r2/buckets" \
+    BUCKET_RESPONSE=$(curl -fsSL -X POST "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT_ID/r2/buckets" \
         -H "Authorization: Bearer $CF_TOKEN" \
         -H "Content-Type: application/json" \
         -d '{
             "name": "'"$BUCKET_NAME"'",
             "locationHint": "apac"
-        }'
+        }')
+    
+    CREATED_BUCKET_NAME=$(echo "$BUCKET_RESPONSE" | grep -o '"result":{"name":"[^"]*' | cut -d'"' -f6)
+    
+    if [ "$CREATED_BUCKET_NAME" = "$BUCKET_NAME" ]; then
+        echo "[SUCCESS] Bucket '$BUCKET_NAME' created successfully"
+    else
+        echo "[ERROR] Failed to create bucket '$BUCKET_NAME'"
+        exit 1
+    fi
 fi
 
 echo "[INFO] Configuring public access for bucket"
