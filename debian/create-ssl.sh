@@ -28,7 +28,7 @@ CF_DOMAIN=$(curl -fsSL "https://api.cloudflare.com/client/v4/zones" \
     -H "Content-Type: application/json" | \
     grep -o '"name":"[^"]*' | cut -d'"' -f4 | head -n 1)
 
-CF_ZONE=$(curl -fsSL "https://api.cloudflare.com/client/v4/zones" \
+CF_ZONE_ID=$(curl -fsSL "https://api.cloudflare.com/client/v4/zones" \
     -H "Authorization: Bearer $CF_TOKEN" \
     -H "Content-Type: application/json" | \
     grep -o '"id":"[^"]*' | cut -d'"' -f4 | head -n 1)
@@ -38,13 +38,13 @@ if [ -z "$CF_DOMAIN" ]; then
     exit 1
 fi
 
-if [ -z "$CF_ZONE" ]; then
+if [ -z "$CF_ZONE_ID" ]; then
     echo "Error: Unable to retrieve Cloudflare zone ID."
     exit 1
 fi
 
 export CF_Token="$CF_TOKEN"
-export CF_Zone_ID="$CF_ZONE"
+export CF_Zone_ID="$CF_ZONE_ID"
 FULL_DOMAIN="$SERVICE_NAME.$CF_DOMAIN"
 SSL_KEY="$NG_SSL/$FULL_DOMAIN.key"
 SSL_FULL_CHAIN="$NG_SSL/$FULL_DOMAIN.pem"

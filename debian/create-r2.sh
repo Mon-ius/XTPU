@@ -97,14 +97,6 @@ if [ "$IS_ADMIN" = "true" ]; then
                 },
                 "permission_groups": [
                     {
-                        "id": "6a018a9f2fc74eb6b293b0c548f38b39",
-                        "name": "Workers R2 Storage Bucket Item Read"
-                    },
-                    {
-                        "id": "2efd5506f9c8494dacb1fa10a3e7d5b6",
-                        "name": "Workers R2 Storage Bucket Item Write"
-                    },
-                    {
                         "id": "b4992e1108244f5d8bfbd5744320c2e1",
                         "name": "Workers R2 Storage Read"
                     },
