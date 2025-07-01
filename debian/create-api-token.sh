@@ -1,5 +1,7 @@
 #!/bin/dash
 
+set +e
+
 if [ -z "$1" ]; then
     echo "Usage: $0 <cloudflare_token_base64>"
     echo "Example: $0 base64token"
@@ -105,6 +107,18 @@ echo "Token ID/ACCESS_KEY: $TOKEN_ID"
 echo "Token SECRET_KEY: $SECRET_KEY"
 
 
+R2_ACCESS_KEY=$(echo "$TOKEN_RESPONSE" | grep -o '"id":"[^"]*' | cut -d'"' -f4 | head -n 1)
+R2_TOKEN_VALUE=$(echo "$TOKEN_RESPONSE" | grep -o '"value":"[^"]*' | cut -d'"' -f4)
+R2_SECRET_KEY=$(echo -n "$R2_TOKEN_VALUE" | sha256sum | cut -d' ' -f1)
+
+echo "[SUCCESS] R2 configured"
+echo "Endpoint: $R2_ENDPOINT"
+echo "ACCESS KEY: $R2_ACCESS_KEY"
+echo "SECRET KEY: $R2_SECRET_KEY"
+
+
+curl "https://api.cloudflare.com/client/v4/accounts/330b04872a0a1ba239f2b0c909c1925b/tokens/verify" \
+     -H "Authorization: Bearer msL3tVPB4T8Y2TVEIs0ZlJ4Uqcun3EVwG8SdCG3N"
 # JSON_PAYLOAD='{
 #     "name": "'"${TOKEN_NAME}"'",
 #     "policies": [
