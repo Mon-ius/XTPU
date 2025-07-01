@@ -24,12 +24,18 @@ if [ -z "$CF_ACCOUNT_ID" ]; then
     exit 1
 fi
 
+S3_ENDPOINT="https://$CF_ACCOUNT_ID.r2.cloudflarestorage.com"
+
 echo "[INFO] Account ID: $CF_ACCOUNT_ID"
-
-
-curl -fsSL -X POST "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT_ID/tokens/verify" \
-    -H "Authorization: Bearer $CF_TOKEN"
 
 TOKEN_RESPONSE=$(curl -fsSL "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT_ID/tokens/verify" \
     -H "Authorization: Bearer $CF_TOKEN")
+
+S3_ACCESS_KEY=$(echo "$TOKEN_RESPONSE" | grep -o '"id":"[^"]*"' | head -1 | sed 's/"id":"\([^"]*\)"/\1/')
+S3_SECRET_KEY=$(echo -n "$CF_TOKEN" | sha256sum | cut -d' ' -f1)
+
+echo "[SUCCESS] R2 to S3 generated"
+echo "Endpoint: $S3_ENDPOINT"
+echo "ACCESS KEY: $S3_ACCESS_KEY"
+echo "SECRET KEY: $S3_SECRET_KEY"
 
