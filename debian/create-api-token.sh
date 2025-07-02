@@ -116,9 +116,6 @@ echo "Endpoint: $R2_ENDPOINT"
 echo "ACCESS KEY: $R2_ACCESS_KEY"
 echo "SECRET KEY: $R2_SECRET_KEY"
 
-
-curl "https://api.cloudflare.com/client/v4/accounts/330b04872a0a1ba239f2b0c909c1925b/tokens/verify" \
-     -H "Authorization: Bearer msL3tVPB4T8Y2TVEIs0ZlJ4Uqcun3EVwG8SdCG3N"
 # JSON_PAYLOAD='{
 #     "name": "'"${TOKEN_NAME}"'",
 #     "policies": [
