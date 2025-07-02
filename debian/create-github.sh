@@ -1,9 +1,18 @@
 #!/bin/dash
 
-_CF_TOKEN="jdqgyu2g3u1309i09i0"
-_GITHUB="github"
+set +e
 
-CF_TOKEN="${1:-$_CF_TOKEN}"
+if [ -z "$1" ]; then
+    echo "Usage: $0 <cloudflare_token_base64> [github_username]"
+    echo "Example: $0 base64token github"
+    exit 1
+fi
+
+_CF_TOKEN_BASE64='base64encodedtoken'
+_GITHUB='github'
+
+CF_TOKEN_BASE64="${1:-$_CF_TOKEN_BASE64}"
+CF_TOKEN=$(echo "$CF_TOKEN_BASE64" | base64 -d)
 GITHUB="${2:-$_GITHUB}"
 
 CF_DOMAIN=$(curl -fsSL -X GET "https://api.cloudflare.com/client/v4/zones" \
