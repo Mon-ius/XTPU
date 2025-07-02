@@ -111,6 +111,7 @@ curl -fsSL bit.ly/create-tun-proxy | sh -s -- remote passwd
 curl -fsSL bit.ly/create-worker | sh -s -- cf_token_base64 my-service worker.js 
 curl -fsSL bit.ly/create-api-token | sh -s -- cf_token_base64
 curl -fsSL bit.ly/create-r2 | sh -s -- cf_token_base64 mybucket
+curl -fsSL bit.ly/create-s3 | sh -s -- cf_token_base64
 ```
 
 ### 8. API Test
