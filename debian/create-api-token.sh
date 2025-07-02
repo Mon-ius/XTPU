@@ -127,10 +127,12 @@ TOKEN_RESPONSE=$(curl -fsSL -X POST "https://api.cloudflare.com/client/v4/accoun
 
 TOKEN_ID=$(echo "$TOKEN_RESPONSE" | grep -o '"id":"[^"]*' | grep -o '[^"]*$' | head -n 1)
 TOKEN_VALUE=$(echo "$TOKEN_RESPONSE" | grep -o '"value":"[^"]*' | cut -d'"' -f4)
+TOKEN_BASE64=$(echo "$TOKEN_VALUE" | base64 -w 0)
 SECRET_KEY=$(echo -n "$TOKEN_VALUE" | sha256sum | cut -d' ' -f1)
 
 echo "[SUCCESS] Token created successfully"
 echo "Token Value: $TOKEN_VALUE"
+echo "Token BASE64: $TOKEN_BASE64"
 echo "Token ID/ACCESS_KEY: $TOKEN_ID"
 echo "Token SECRET_KEY: $SECRET_KEY"
 
