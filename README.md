@@ -174,6 +174,14 @@ curl -fsSL https://bit.ly/create-kmod | sh
 curl -fsSL https://bit.ly/create-swap | sh
 curl -fsSL https://bit.ly/create-sshd | sh
 curl -fsSL https://bit.ly/create-docker-mirror | sh
+
+
+curl -fsSL https://bit.ly/create-ssl | sh -s -- cf_token cf_subdomain
+curl -fsSL https://bit.ly/create-github | sh -s -- cf_token github_name
+curl -fsSL https://bit.ly/create-worker | sh -s -- cf_token_base64 my-service worker.js 
+curl -fsSL https://bit.ly/create-api-token | sh -s -- cf_token_base64
+curl -fsSL https://bit.ly/create-r2 | sh -s -- cf_token_base64 mybucket
+curl -fsSL https://bit.ly/create-s3 | sh -s -- cf_token_base64
 ```
 
 ## Reference
