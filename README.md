@@ -108,10 +108,6 @@ curl -fsSL bit.ly/new-gcp-wg | sh -s -- license
 curl -fsSL bit.ly/create-vm-user | sh -s -- username
 curl -fsSL bit.ly/create-ssh-tun | sh -s -- username
 curl -fsSL bit.ly/create-tun-proxy | sh -s -- remote passwd 
-curl -fsSL bit.ly/create-worker | sh -s -- cf_token_base64 my-service worker.js 
-curl -fsSL bit.ly/create-api-token | sh -s -- cf_token_base64
-curl -fsSL bit.ly/create-r2 | sh -s -- cf_token_base64 mybucket
-curl -fsSL bit.ly/create-s3 | sh -s -- cf_token_base64
 ```
 
 ### 8. API Test
@@ -161,6 +157,10 @@ curl -fsSL bit.ly/create-golang | sh
 curl -fsSL bit.ly/create-dart | sh
 curl -fsSL bit.ly/create-ssl | sh -s -- cf_token cf_subdomain
 curl -fsSL bit.ly/create-github | sh -s -- cf_token github_name
+curl -fsSL bit.ly/create-worker | sh -s -- cf_token_base64 my-service worker.js 
+curl -fsSL bit.ly/create-api-token | sh -s -- cf_token_base64
+curl -fsSL bit.ly/create-r2 | sh -s -- cf_token_base64 mybucket
+curl -fsSL bit.ly/create-s3 | sh -s -- cf_token_base64
 ```
 
 Mirror
