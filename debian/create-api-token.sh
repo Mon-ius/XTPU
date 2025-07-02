@@ -13,17 +13,17 @@ _CF_TOKEN_BASE64='base64encodedtoken'
 CF_TOKEN_BASE64="${1:-$_CF_TOKEN_BASE64}"
 CF_TOKEN=$(echo "$CF_TOKEN_BASE64" | base64 -d)
 
-CF_DOMAIN=$(curl -fsSL "https://api.cloudflare.com/client/v4/zones" \
+CF_DOMAIN=$(curl -fsSL -X GET "https://api.cloudflare.com/client/v4/zones" \
     -H "Authorization: Bearer $CF_TOKEN" \
     -H "Content-Type: application/json" | \
     grep -o '"name":"[^"]*' | cut -d'"' -f4 | head -n 1)
 
-CF_ZONE_ID=$(curl -fsSL "https://api.cloudflare.com/client/v4/zones" \
+CF_ZONE_ID=$(curl -fsSL -X GET "https://api.cloudflare.com/client/v4/zones" \
     -H "Authorization: Bearer $CF_TOKEN" \
     -H "Content-Type: application/json" | \
     grep -o '"id":"[^"]*' | cut -d'"' -f4 | head -n 1)
 
-CF_ACCOUNT_ID=$(curl -fsSL "https://api.cloudflare.com/client/v4/accounts" \
+CF_ACCOUNT_ID=$(curl -fsSL -X GET "https://api.cloudflare.com/client/v4/accounts" \
     -H "Authorization: Bearer $CF_TOKEN" \
     -H "Content-Type: application/json" | \
     grep -o '"id":"[^"]*' | cut -d'"' -f4 | head -n 1)
