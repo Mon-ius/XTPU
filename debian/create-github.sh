@@ -71,9 +71,13 @@ JSON_PAYLOAD='{
     "status": "active"
 }'
 
-RESPONSE=$(curl -X POST "https://api.cloudflare.com/client/v4/zones/$CF_ZONE_ID/dns_records" \
+RESPONSE=$(curl -X POST "https://api.cloudflare.com/client/v4/zones/$CF_ZONE_ID/pagerules" \
     -H "Authorization: Bearer $CF_TOKEN" \
     -H "Content-Type: application/json" \
     -d "$JSON_PAYLOAD")
+# RESPONSE=$(curl -X POST "https://api.cloudflare.com/client/v4/zones/$CF_ZONE_ID/dns_records" \
+#     -H "Authorization: Bearer $CF_TOKEN" \
+#     -H "Content-Type: application/json" \
+#     -d "$JSON_PAYLOAD")
 
 echo "$RESPONSE"
