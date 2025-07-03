@@ -161,6 +161,14 @@ JSON_PAYLOAD='{
                 {
                     "id": "f7f0eda5697f475c90846e879bab8666",
                     "name": "Workers KV Storage Write"
+                },
+                {
+                    "id": "e086da7e2179491d91ee5f35b3ca210a",
+                    "name": "Workers Scripts Write"
+                },
+                {
+                    "id": "bacc64e0f6c34fc0883a1223f938a104",
+                    "name": "Workers AI Write"
                 }
             ]
         }
