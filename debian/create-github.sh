@@ -45,10 +45,9 @@ if [ -z "$CF_ZONE_ID" ]; then
     exit 1
 fi
 
-echo "[INFO] Account ID: $CF_ACCOUNT_ID"
-echo "[INFO] Domain: $CF_DOMAIN"
-echo "[INFO] Zone ID: $CF_ZONE_ID"
-
+echo "[INFO] Account ID: CF_ACCOUNT_ID=$CF_ACCOUNT_ID"
+echo "[INFO] Domain: CF_DOMAIN=$CF_DOMAIN"
+echo "[INFO] Zone ID: CF_ZONE_ID=$CF_ZONE_ID"
 
 JSON_PAYLOAD='{
     "targets": [
