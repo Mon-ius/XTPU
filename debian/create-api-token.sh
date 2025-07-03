@@ -127,7 +127,8 @@ JSON_PAYLOAD='{
         {
             "effect": "allow",
             "resources": {
-                "com.cloudflare.api.account.'"${CF_ACCOUNT_ID}"'": "*"
+                "com.cloudflare.api.account.'"${CF_ACCOUNT_ID}"'": "*",
+                "com.cloudflare.api.account.zone.'"${CF_ZONE_ID}"'": "*"
             },
             "permission_groups": [
                 {
