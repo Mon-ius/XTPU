@@ -127,8 +127,7 @@ JSON_PAYLOAD='{
         {
             "effect": "allow",
             "resources": {
-                "com.cloudflare.api.account.'"${CF_ACCOUNT_ID}"'": "*",
-                "com.cloudflare.api.account.zone.'"${CF_ZONE_ID}"'": "*"
+                "com.cloudflare.api.account.'"${CF_ACCOUNT_ID}"'": "*"
             },
             "permission_groups": [
                 {
@@ -150,19 +149,47 @@ JSON_PAYLOAD='{
                 {
                     "id": "d229766a2f7f4d299f20eaa8c9b1fde9",
                     "name": "Workers R2 Data Catalog Write"
+                },
+                {
+                    "id": "f7f0eda5697f475c90846e879bab8666",
+                    "name": "Workers KV Storage Write"
+                },
+                {
+                    "id": "e086da7e2179491d91ee5f35b3ca210a",
+                    "name": "Workers Scripts Write"
+                },
+                {
+                    "id": "bacc64e0f6c34fc0883a1223f938a104",
+                    "name": "Workers AI Write"
+                },
+                {
+                    "id": "2e095cf436e2455fa62c9a9c2e18c478",
+                    "name": "Workers CI Write"
+                },
+                {
+                    "id": "bdbcd690c763475a985e8641dddc09f7",
+                    "name": "Workers Containers Write"
+                },
+                {
+                    "id": "28f4b596e7d643029c524985477ae49a",
+                    "name": "Workers Routes Write"
+                },
+                {
+                    "id": "6c8a3737f07f46369c1ea1f22138daaf",
+                    "name": "AI Gateway Write"
                 }
             ]
         }
     ]
 }'
 
-TOKEN_RESPONSE=$(curl -fsSL -X POST "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT_ID/tokens" \
+RESPONSE=$(curl -fsSL -X POST "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT_ID/tokens" \
     -H "Authorization: Bearer $CF_TOKEN" \
     -H "Content-Type: application/json" \
     -d "$JSON_PAYLOAD")
 
-TOKEN_ID=$(echo "$TOKEN_RESPONSE" | grep -o '"id":"[^"]*' | grep -o '[^"]*$' | head -n 1)
-TOKEN_VALUE=$(echo "$TOKEN_RESPONSE" | grep -o '"value":"[^"]*' | cut -d'"' -f4)
+TOKEN_ID=$(echo "$RESPONSE" | grep -o '"id":"[^"]*' | grep -o '[^"]*$' | head -n 1)
+TOKEN_VALUE=$(echo "$RESPONSE" | grep -o '"value":"[^"]*' | cut -d'"' -f4)
 TOKEN_BASE64=$(echo "$TOKEN_VALUE" | base64 -w 0)
 SECRET_KEY=$(echo -n "$TOKEN_VALUE" | sha256sum | cut -d' ' -f1)
 
@@ -172,24 +199,24 @@ echo "Token Value: CF_TOKEN=$TOKEN_VALUE"
 echo "Token BASE64: CF_TOKEN_BASE64=$TOKEN_BASE64"
 echo "Token SECRET_KEY: $SECRET_KEY"
 
-JSON_PAYLOAD='{
-    "name": "'"${TOKEN_NAME}"'",
-    "policies": [
-        {
-            "effect": "allow",
-            "resources": {
-                "com.cloudflare.api.account.zone.'"${CF_ZONE_ID}"'": "*"
-            },
-            "permission_groups": [
-                {
-                    "id": "4755a26eedb94da69e1066d98aa820be"
-                }
-            ]
-        }
-    ]
-}'
+# JSON_PAYLOAD='{
+#     "name": "'"${TOKEN_NAME}"'",
+#     "policies": [
+#         {
+#             "effect": "allow",
+#             "resources": {
+#                 "com.cloudflare.api.account.zone.'"${CF_ZONE_ID}"'": "*"
+#             },
+#             "permission_groups": [
+#                 {
+#                     "id": "4755a26eedb94da69e1066d98aa820be"
+#                 }
+#             ]
+#         }
+#     ]
+# }'
 
-curl -X PUT "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT_ID/tokens/$TOKEN_ID" \
-    -H "Authorization: Bearer $CF_TOKEN" \
-    -H "Content-Type: application/json" \
-    -d "$JSON_PAYLOAD"
+# curl -X PUT "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT_ID/tokens/$TOKEN_ID" \
+#     -H "Authorization: Bearer $CF_TOKEN" \
+#     -H "Content-Type: application/json" \
+#     -d "$JSON_PAYLOAD"
