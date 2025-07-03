@@ -135,6 +135,14 @@ JSON_PAYLOAD='{
                     "name": "DNS Write"
                 },
                 {
+                    "id": "c8fed203ed3043cba015a93ad1616f1f",
+                    "name": "Zone Read"
+                },
+                {
+                    "id": "1af1fa2adc104452b74a9a3364202f20",
+                    "name": "Account Settings Write"
+                },
+                {
                     "id": "b4992e1108244f5d8bfbd5744320c2e1",
                     "name": "Workers R2 Storage Read"
                 },
