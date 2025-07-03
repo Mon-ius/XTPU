@@ -172,24 +172,24 @@ echo "Token BASE64: $TOKEN_BASE64"
 echo "Token ID/ACCESS_KEY: $TOKEN_ID"
 echo "Token SECRET_KEY: $SECRET_KEY"
 
-# JSON_PAYLOAD='{
-#     "name": "'"${TOKEN_NAME}"'",
-#     "policies": [
-#         {
-#             "effect": "allow",
-#             "resources": {
-#                 "com.cloudflare.api.account.zone.'"${CF_ZONE_ID}"'": "*"
-#             },
-#             "permission_groups": [
-#                 {
-#                     "id": "4755a26eedb94da69e1066d98aa820be"
-#                 }
-#             ]
-#         }
-#     ]
-# }'
+JSON_PAYLOAD='{
+    "name": "'"${TOKEN_NAME}"'",
+    "policies": [
+        {
+            "effect": "allow",
+            "resources": {
+                "com.cloudflare.api.account.zone.'"${CF_ZONE_ID}"'": "*"
+            },
+            "permission_groups": [
+                {
+                    "id": "4755a26eedb94da69e1066d98aa820be"
+                }
+            ]
+        }
+    ]
+}'
 
-# curl -X PUT "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT_ID/tokens/$TOKEN_ID" \
-#     -H "Authorization: Bearer $CF_TOKEN" \
-#     -H "Content-Type: application/json" \
-#     -d "$JSON_PAYLOAD"
+curl -X PUT "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT_ID/tokens/$TOKEN_ID" \
+    -H "Authorization: Bearer $CF_TOKEN" \
+    -H "Content-Type: application/json" \
+    -d "$JSON_PAYLOAD"
