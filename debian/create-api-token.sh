@@ -45,10 +45,10 @@ fi
 
 TOKEN_NAME="$CF_DOMAIN-$(date +%Y%m%d)"
 
-echo "[INFO] Account ID: $CF_ACCOUNT_ID"
-echo "[INFO] Domain: $CF_DOMAIN"
-echo "[INFO] Zone ID: $CF_ZONE_ID"
-echo "[INFO] Creating token: $TOKEN_NAME"
+echo "[INFO] Account ID: CF_ACCOUNT_ID=$CF_ACCOUNT_ID"
+echo "[INFO] Domain: CF_DOMAIN=$CF_DOMAIN"
+echo "[INFO] Zone ID: CF_ZONE_ID=$CF_ZONE_ID"
+echo "[INFO] Creating token: TOKEN_NAME=$TOKEN_NAME"
 
 # JSON_PAYLOAD='{
 #     "name": "'"${TOKEN_NAME}"'",
@@ -167,9 +167,9 @@ TOKEN_BASE64=$(echo "$TOKEN_VALUE" | base64 -w 0)
 SECRET_KEY=$(echo -n "$TOKEN_VALUE" | sha256sum | cut -d' ' -f1)
 
 echo "[SUCCESS] Token created successfully"
-echo "Token Value: $TOKEN_VALUE"
-echo "Token BASE64: $TOKEN_BASE64"
-echo "Token ID/ACCESS_KEY: $TOKEN_ID"
+echo "Token ID/ACCESS_KEY: TOKEN_ID=$TOKEN_ID"
+echo "Token Value: CF_TOKEN=$TOKEN_VALUE"
+echo "Token BASE64: CF_TOKEN_BASE64=$TOKEN_BASE64"
 echo "Token SECRET_KEY: $SECRET_KEY"
 
 JSON_PAYLOAD='{
