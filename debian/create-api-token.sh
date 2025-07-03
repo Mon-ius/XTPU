@@ -153,26 +153,6 @@ JSON_PAYLOAD='{
                 {
                     "id": "f7f0eda5697f475c90846e879bab8666",
                     "name": "Workers KV Storage Write"
-                },
-                {
-                    "id": "e086da7e2179491d91ee5f35b3ca210a",
-                    "name": "Workers Scripts Write"
-                },
-                {
-                    "id": "bacc64e0f6c34fc0883a1223f938a104",
-                    "name": "Workers AI Write"
-                },
-                {
-                    "id": "2e095cf436e2455fa62c9a9c2e18c478",
-                    "name": "Workers CI Write"
-                },
-                {
-                    "id": "bdbcd690c763475a985e8641dddc09f7",
-                    "name": "Workers Containers Write"
-                },
-                {
-                    "id": "6c8a3737f07f46369c1ea1f22138daaf",
-                    "name": "AI Gateway Write"
                 }
             ]
         }
