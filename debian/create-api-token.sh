@@ -171,10 +171,6 @@ JSON_PAYLOAD='{
                     "name": "Workers Containers Write"
                 },
                 {
-                    "id": "28f4b596e7d643029c524985477ae49a",
-                    "name": "Workers Routes Write"
-                },
-                {
                     "id": "6c8a3737f07f46369c1ea1f22138daaf",
                     "name": "AI Gateway Write"
                 }
