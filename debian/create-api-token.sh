@@ -167,10 +167,6 @@ JSON_PAYLOAD='{
                     "name": "Workers Scripts Write"
                 },
                 {
-                    "id": "bacc64e0f6c34fc0883a1223f938a104",
-                    "name": "Workers AI Write"
-                },
-                {
                     "id": "2e095cf436e2455fa62c9a9c2e18c478",
                     "name": "Workers CI Write"
                 },
