@@ -27,7 +27,6 @@ if [ -z "$VONAGE_API_KEY" ] || [ -z "$VONAGE_API_SECRET" ]; then
 fi
 
 RESPONSE=$(curl -fsSL -X GET "https://api.nexmo.com/verify/json?&api_key=$VONAGE_API_KEY&api_secret=$VONAGE_API_SECRET&number=$VONAGE_NUMBER&brand=$VONAGE_BRAND")
-
 REQUEST_ID=$(echo "$RESPONSE" | sed -n 's/.*"request_id":"\([^"]*\)".*/\1/p')
 STATUS=$(echo "$RESPONSE" | sed -n 's/.*"status":"\([^"]*\)".*/\1/p')
 
