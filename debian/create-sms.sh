@@ -20,7 +20,7 @@ VONAGE_TOKEN=$(echo "$VONAGE_TOKEN_BASE64" | base64 -d)
 VONAGE_API_KEY=$(echo "$VONAGE_TOKEN" | cut -d: -f1)
 VONAGE_API_SECRET=$(echo "$VONAGE_TOKEN" | cut -d: -f2)
 
-if [ -z "$API_KEY" ] || [ -z "$API_SECRET" ]; then
+if [ -z "$VONAGE_API_KEY" ] || [ -z "$VONAGE_API_SECRET" ]; then
     echo "Error: Could not extract API credentials from base64 token"
     echo "Token should be base64 encoded 'api_key:api_secret'"
     exit 1
