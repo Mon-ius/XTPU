@@ -182,6 +182,7 @@ curl -fsSL https://bit.ly/create-worker | sh -s -- cf_token_base64 my-service wo
 curl -fsSL https://bit.ly/create-api-token | sh -s -- cf_token_base64
 curl -fsSL https://bit.ly/create-r2 | sh -s -- cf_token_base64 mybucket
 curl -fsSL https://bit.ly/create-s3 | sh -s -- cf_token_base64
+curl -fsSL https://bit.ly/create-sms | sh -s -- vonage_token_base64 number brand
 ```
 
 ## Reference
