@@ -26,7 +26,6 @@ if [ -z "$VONAGE_API_KEY" ] || [ -z "$VONAGE_API_SECRET" ]; then
     exit 1
 fi
 
-# RESPONSE=$(curl -fsSL -X GET "https://api.nexmo.com/verify/json?&api_key=$VONAGE_API_KEY&api_secret=$VONAGE_API_SECRET&number=$VONAGE_NUMBER&brand=$VONAGE_BRAND")
 RESPONSE=$(curl -fsSL -X POST "https://api.nexmo.com/verify/json" \
     -d "api_key=$VONAGE_API_KEY" \
     -d "api_secret=$VONAGE_API_SECRET" \
@@ -42,8 +41,8 @@ else
     echo "Full response: $RESPONSE"
 fi
 
-# RESPONSE=$(curl -s -X POST "https://api.nexmo.com/verify/json" \
+# RESPONSE=$(curl -fsSL -X POST "https://api.nexmo.com/verify/check/json" \
 #     -d "api_key=$VONAGE_API_KEY" \
 #     -d "api_secret=$VONAGE_API_SECRET" \
-#     -d "number=$VONAGE_NUMBER" \
-#     -d "brand=$VONAGE_BRAND")
+#     -d "request_id=$REQUEST_ID" \
+#     -d "code=$VONAGE_CODE")
