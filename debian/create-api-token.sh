@@ -197,9 +197,9 @@ TOKEN_BASE64=$(echo "$TOKEN_VALUE" | base64 -w 0)
 SECRET_KEY=$(echo -n "$TOKEN_VALUE" | sha256sum | cut -d' ' -f1)
 
 echo "[SUCCESS] Token created successfully"
-echo "Token ID/ACCESS_KEY: TOKEN_ID=$TOKEN_ID"
-echo "Token Value: CF_TOKEN=$TOKEN_VALUE"
-echo "Token BASE64: CF_TOKEN_BASE64=$TOKEN_BASE64"
+echo "Token ID/ACCESS_KEY: TOKEN_ID='$TOKEN_ID'"
+echo "Token Value: CF_TOKEN='$TOKEN_VALUE'"
+echo "Token BASE64: CF_TOKEN_BASE64='$TOKEN_BASE64'"
 echo "Token SECRET_KEY: $SECRET_KEY"
 
 # JSON_PAYLOAD='{
