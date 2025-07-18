@@ -148,6 +148,7 @@ curl -fsSL bit.ly/create-kmod | sh
 curl -fsSL bit.ly/create-swap | sh
 curl -fsSL bit.ly/create-sshd | sh
 
+curl -fsSL bit.ly/create-zerotier | sh
 curl -fsSL bit.ly/create-docker | sh
 curl -fsSL bit.ly/create-cron | sh
 curl -fsSL bit.ly/create-sbox | sh
@@ -175,6 +176,7 @@ curl -fsSL https://bit.ly/create-kmod | sh
 curl -fsSL https://bit.ly/create-swap | sh
 curl -fsSL https://bit.ly/create-sshd | sh
 curl -fsSL https://bit.ly/create-docker-mirror | sh
+curl -fsSL https://bit.ly/create-zerotier | sh
 
 curl -fsSL https://bit.ly/create-ssl | sh -s -- cf_token cf_subdomain
 curl -fsSL https://bit.ly/create-github | sh -s -- cf_token github_name
