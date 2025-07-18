@@ -3,6 +3,7 @@
 export DEBIAN_FRONTEND=noninteractive
 sudo -E apt-get -qq update
 sudo -E apt-get -qq install -o Dpkg::Options::="--force-confold" -y locales debconf
+
 sudo tee /etc/locale.gen > /dev/null << 'EOF'
 en_US.UTF-8 UTF-8
 EOF
