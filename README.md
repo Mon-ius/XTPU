@@ -166,8 +166,8 @@ curl -fsSL bit.ly/create-sms | sh -s -- vonage_token_base64 number brand
 
 Mirror
 ```sh
-curl -fsSL https://bit.ly/create-dev-user | sh
 curl -fsSL https://bit.ly/create-apt | sh
+curl -fsSL https://bit.ly/create-dev-user | sh
 curl -fsSL https://bit.ly/create-journald | sh
 curl -fsSL https://bit.ly/create-resolv | sh
 curl -fsSL https://bit.ly/create-locale | sh
