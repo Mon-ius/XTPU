@@ -3,7 +3,7 @@
 set +e
 
 if [ -z "$1" ]; then
-    echo "Usage: $0 <cloudflare_token_base64> [github_username]"
+    echo "Usage: $0 <cloudflare_token> [github_username]"
     echo "Example: $0 base64token github"
     exit 1
 fi
