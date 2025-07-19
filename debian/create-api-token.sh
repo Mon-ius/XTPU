@@ -134,14 +134,6 @@ JSON_PAYLOAD='{
                 {
                     "id": "c8fed203ed3043cba015a93ad1616f1f",
                     "name": "Zone Read"
-                },
-                {
-                    "id": "28f4b596e7d643029c524985477ae49a",
-                    "name": "Workers Routes Write"
-                },
-                {
-                    "id": "4755a26eedb94da69e1066d98aa820be",
-                    "name": "DNS Write"
                 }
             ]
         },
@@ -154,6 +146,10 @@ JSON_PAYLOAD='{
                 {
                     "id": "eb56a6953c034b9d97dd838155666f06",
                     "name": "Account API Tokens Read"
+                },
+                {
+                    "id": "4755a26eedb94da69e1066d98aa820be",
+                    "name": "DNS Write"
                 },
                 {
                     "id": "e086da7e2179491d91ee5f35b3ca210a",
@@ -188,6 +184,10 @@ JSON_PAYLOAD='{
                     "name": "Workers AI Write"
                 },
                 {
+                    "id": "28f4b596e7d643029c524985477ae49a",
+                    "name": "Workers Routes Write"
+                },
+                {
                     "id": "2e095cf436e2455fa62c9a9c2e18c478",
                     "name": "Workers CI Write"
                 },
@@ -204,7 +204,7 @@ JSON_PAYLOAD='{
     ]
 }'
 
-RESPONSE=$(curl -fsSL -X POST "$CF_API_BASE/accounts/$CF_ACCOUNT_ID/tokens" \
+RESPONSE=$(curl -X POST "$CF_API_BASE/accounts/$CF_ACCOUNT_ID/tokens" \
     -H "Authorization: Bearer $CF_TOKEN" \
     -H "Content-Type: application/json" \
     -d "$JSON_PAYLOAD")
