@@ -30,9 +30,14 @@ echo "----------------------------------"
 
 for provider in $AI_PROVIDERS; do
     script="https://raw.githubusercontent.com/Mon-ius/XTPU/refs/heads/main/cloudflare/workers/create-cloudflare-${provider}.sh"
-    echo "  ⏳ Deploying $provider..."
-    curl -fsSL "$script" | sh -s -- "$CF_TOKEN_BASE64"
-    echo "  ✅ $provider deployed"
+    
+    if curl -fsSL --head "$script" >/dev/null 2>&1; then
+        echo "  ⏳ Deploying $provider..."
+        curl -fsSL "$script" | sh -s -- "$CF_TOKEN_BASE64"
+        echo "  ✅ $provider deployed"
+    else
+        echo "  ⚠️  Skipping $provider (script not found at URL)"
+    fi
 done
 
 echo ""
@@ -40,7 +45,12 @@ echo "📦 Deploying Container Registry Mirrors..."
 echo "------------------------------------------"
 for registry in $REGISTRIES; do
     script="https://raw.githubusercontent.com/Mon-ius/XTPU/refs/heads/main/cloudflare/workers/create-cloudflare-${registry}.sh"
-    echo "  ⏳ Deploying $registry..."
-    curl -fsSL "$script" | sh -s -- "$CF_TOKEN_BASE64"
-    echo "  ✅ $registry deployed"
+    
+    if curl -fsSL --head "$script" >/dev/null 2>&1; then
+        echo "  ⏳ Deploying $registry..."
+        curl -fsSL "$script" | sh -s -- "$CF_TOKEN_BASE64"
+        echo "  ✅ $registry deployed"
+    else
+        echo "  ⚠️  Skipping $registry (script not found at URL)"
+    fi
 done
