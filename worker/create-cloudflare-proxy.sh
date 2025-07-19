@@ -22,11 +22,6 @@ SERVICE_NAME="${2:-$_SERVICE_NAME}"
 SERVICE_ENDPOINT="${3:-$_SERVICE_ENDPOINT}"
 CLOUDFLARE_ACCELERATION="${4:-$_CLOUDFLARE_ACCELERATION}"
 
-SERVICE_DOMAIN="$SERVICE_NAME.$CF_DOMAIN"
-SERVICE_URL="https://$SERVICE_DOMAIN"
-WORKER_META='{"main_module":"worker.js"}'
-BOUNDARY="----formdata"
-
 CF_TOKEN=$(echo "$CF_TOKEN_BASE64" | base64 -d)
 
 script_content=$(cat <<EOF
@@ -42,19 +37,36 @@ EOF
 
 echo "🔍 Fetching account information..."
 
-CF_DOMAIN=$(curl -fsSL -X GET -H "Authorization: Bearer $CF_TOKEN" \
-    "$CF_API_BASE/zones" | grep -o '"name":"[^"]*' | cut -d'"' -f4 | head -n 1)
-CF_ZONE_ID=$(curl -fsSL -X GET -H "Authorization: Bearer $CF_TOKEN" \
-    "$CF_API_BASE/zones" | grep -o '"id":"[^"]*' | cut -d'"' -f4 | head -n 1)
-CF_ACCOUNT_ID=$(curl -fsSL -X GET -H "Authorization: Bearer $CF_TOKEN" \
-    "$CF_API_BASE/accounts" | grep -o '"id":"[^"]*' | cut -d'"' -f4 | head -n 1)
-CF_SERVICE_DOMAIN=$(curl -fsSL -X GET -H "Authorization: Bearer $CF_TOKEN" \
-    "$CF_API_BASE/accounts/$CF_ACCOUNT_ID/workers/domains" | \
-    grep -B3 "\"hostname\": \"$SERVICE_DOMAIN\"" | grep '"id"' | cut -d'"' -f4 | head -n 1)
+CF_ACCOUNT_ID=$(curl -fsSL -X GET "$CF_API_BASE/accounts" \
+    -H "Authorization: Bearer $CF_TOKEN" \
+    -H "Content-Type: application/json" | \
+    grep -o '"id":"[^"]*' | cut -d'"' -f4 | head -n 1)
 
-curl -X GET -H "Authorization: Bearer $CF_TOKEN" \
-    "$CF_API_BASE/accounts/$CF_ACCOUNT_ID/workers/domains"
-    
+CF_TOKEN_ID=$(curl -fsSL -X GET "$CF_API_BASE/accounts/$CF_ACCOUNT_ID/tokens/verify"  \
+    -H "Authorization: Bearer $CF_TOKEN" \
+    -H "Content-Type: application/json" | \
+    grep -o '"id":"[^"]*' | cut -d'"' -f4 | head -n 1)
+
+CF_ZONE_ID=$(curl -fsSL -X GET "$CF_API_BASE/accounts/$CF_ACCOUNT_ID/tokens/$CF_TOKEN_ID" \
+    -H "Authorization: Bearer $CF_TOKEN" \
+    -H "Content-Type: application/json" | \
+    grep -o 'com.cloudflare.api.account.zone.[^"]*' | sed 's/.*\.zone\.//')
+
+CF_DOMAIN=$(curl -fsSL -X GET "$CF_API_BASE/zones/$CF_ZONE_ID" \
+    -H "Authorization: Bearer $CF_TOKEN" \
+    -H "Content-Type: application/json" | \
+    grep -o '"name":"[^"]*' | cut -d'"' -f4 | head -n 1)
+
+CF_SERVICE_DOMAIN=$(curl -fsSL -X GET "$CF_API_BASE/accounts/$CF_ACCOUNT_ID/workers/domains" \
+    -H "Authorization: Bearer $CF_TOKEN" \
+    -H "Content-Type: application/json" | \
+    grep -B3 '"hostname": "'"$SERVICE_DOMAIN"'"' | \
+    grep '"id"' | cut -d'"' -f4 | head -n 1)
+
+# CF_SERVICE_DOMAIN=$(curl -fsSL -X GET -H "Authorization: Bearer $CF_TOKEN" \
+#     "$CF_API_BASE/accounts/$CF_ACCOUNT_ID/workers/domains" | \
+#     grep -B3 "\"hostname\": \"$SERVICE_DOMAIN\"" | grep '"id"' | cut -d'"' -f4 | head -n 1)
+
 if [ -z "$CF_DOMAIN" ]; then
     echo "Error: Unable to retrieve Cloudflare domain."
     exit 1
@@ -69,6 +81,11 @@ if [ -z "$CF_ACCOUNT_ID" ]; then
     echo "Error: Unable to retrieve Cloudflare account ID."
     exit 1
 fi
+
+SERVICE_DOMAIN="$SERVICE_NAME.$CF_DOMAIN"
+SERVICE_URL="https://$SERVICE_DOMAIN"
+WORKER_META='{"main_module":"worker.js"}'
+BOUNDARY="----formdata"
 
 echo "✅ Domain: $CF_DOMAIN"
 echo "✅ Zone ID: $CF_ZONE_ID"
