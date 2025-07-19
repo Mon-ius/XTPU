@@ -63,10 +63,6 @@ CF_SERVICE_DOMAIN=$(curl -fsSL -X GET "$CF_API_BASE/accounts/$CF_ACCOUNT_ID/work
     grep -B3 '"hostname": "'"$SERVICE_DOMAIN"'"' | \
     grep '"id"' | cut -d'"' -f4 | head -n 1)
 
-# CF_SERVICE_DOMAIN=$(curl -fsSL -X GET -H "Authorization: Bearer $CF_TOKEN" \
-#     "$CF_API_BASE/accounts/$CF_ACCOUNT_ID/workers/domains" | \
-#     grep -B3 "\"hostname\": \"$SERVICE_DOMAIN\"" | grep '"id"' | cut -d'"' -f4 | head -n 1)
-
 if [ -z "$CF_DOMAIN" ]; then
     echo "Error: Unable to retrieve Cloudflare domain."
     exit 1
@@ -130,11 +126,10 @@ if [ -z "$CF_SERVICE_DOMAIN" ]; then
         -H "Authorization: Bearer $CF_TOKEN" \
         -H "Content-Type: application/json" \
         -d '{
-            "override_existing_dns_record": "true",
             "environment": "production",
             "hostname": "'"$SERVICE_DOMAIN"'",
-            "zone_id": "'"$CF_ZONE_ID"'",
-            "service": "'"$SERVICE_NAME"'"
+            "service": "'"$SERVICE_NAME"'",
+            "zone_id": "'"$CF_ZONE_ID"'"
         }')
     
     if echo "$DOMAIN_RESPONSE" | grep -q '"success": true'; then
@@ -146,49 +141,48 @@ else
     echo "✅ Custom domain already attached"
 fi
 
+# echo "📝 Setting up workers.dev access..."
+# subdomain_check=$(curl -fsSL -X GET "$CF_API_BASE/accounts/$CF_ACCOUNT_ID/workers/subdomain" \
+#     -H "Authorization: Bearer $CF_TOKEN" \
+#     -H "Content-Type: application/json")
 
-echo "📝 Setting up workers.dev access..."
-subdomain_check=$(curl -fsSL "$CF_API_BASE/accounts/$CF_ACCOUNT_ID/workers/subdomain" \
-    -H "Authorization: Bearer $CF_TOKEN" \
-    -H "Content-Type: application/json")
+# EXISTING_SUBDOMAIN=$(echo "$subdomain_check" | grep -o '"subdomain": *"[^"]*' | cut -d'"' -f4)
 
-EXISTING_SUBDOMAIN=$(echo "$subdomain_check" | grep -o '"subdomain": *"[^"]*' | cut -d'"' -f4)
+# if [ -n "$EXISTING_SUBDOMAIN" ] && [ "$EXISTING_SUBDOMAIN" != "null" ]; then
+#     DEV_RESPONSE=$(curl -fsSL -X POST \
+#         "$CF_API_BASE/accounts/$CF_ACCOUNT_ID/workers/scripts/$SERVICE_NAME/subdomain" \
+#         -H "Authorization: Bearer $CF_TOKEN" \
+#         -H "Content-Type: application/json" \
+#         -d '{
+#             "enabled": true,
+#             "previews_enabled": true
+#         }')
 
-if [ -n "$EXISTING_SUBDOMAIN" ] && [ "$EXISTING_SUBDOMAIN" != "null" ]; then
-    DEV_RESPONSE=$(curl -fsSL -X POST \
-        "$CF_API_BASE/accounts/$CF_ACCOUNT_ID/workers/scripts/$SERVICE_NAME/subdomain" \
-        -H "Authorization: Bearer $CF_TOKEN" \
-        -H "Content-Type: application/json" \
-        -d '{
-            "enabled": true,
-            "previews_enabled": true
-        }')
+#     if echo "$DEV_RESPONSE" | grep -q '"success": true'; then
+#         WORKERS_DEV_URL="https://$SERVICE_NAME.$EXISTING_SUBDOMAIN.workers.dev"
+#         echo "✅ Workers.dev - $WORKERS_DEV_URL enabled"
+#     else
+#         echo "⚠️  Failed to enable workers.dev: $DEV_RESPONSE"
+#     fi
+# fi
 
-    if echo "$DEV_RESPONSE" | grep -q '"success": true'; then
-        WORKERS_DEV_URL="https://$SERVICE_NAME.$EXISTING_SUBDOMAIN.workers.dev"
-        echo "✅ Workers.dev - $WORKERS_DEV_URL enabled"
-    else
-        echo "⚠️  Failed to enable workers.dev: $DEV_RESPONSE"
-    fi
-fi
+# echo ""
+# echo "🎉 Deployment complete!"
+# echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+# echo "Service Domain: $SERVICE_URL"
+# if [ -n "$WORKERS_DEV_URL" ]; then
+#     echo "Workers.dev:   $WORKERS_DEV_URL"
+# fi
 
-echo ""
-echo "🎉 Deployment complete!"
-echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "Service Domain: $SERVICE_URL"
-if [ -n "$WORKERS_DEV_URL" ]; then
-    echo "Workers.dev:   $WORKERS_DEV_URL"
-fi
+# echo ""
+# echo "🧪 Testing deployment..."
+# sleep 5
 
-echo ""
-echo "🧪 Testing deployment..."
-sleep 5
+# test_response=$(curl -s -o /dev/null -w "%{http_code}" "$SERVICE_URL" 2>/dev/null || echo "000")
 
-test_response=$(curl -s -o /dev/null -w "%{http_code}" "$SERVICE_URL" 2>/dev/null || echo "000")
-
-if [ "$test_response" = "200" ] || [ "$test_response" = "404" ] || [ "$test_response" = "401" ]; then
-    echo "✅ Worker is responding (HTTP $test_response)"
-else
-    echo "⚠️  Worker may still be propagating (HTTP $test_response)"
-    echo "   DNS propagation can take 1-2 minutes"
-fi
+# if [ "$test_response" = "200" ] || [ "$test_response" = "404" ] || [ "$test_response" = "401" ]; then
+#     echo "✅ Worker is responding (HTTP $test_response)"
+# else
+#     echo "⚠️  Worker may still be propagating (HTTP $test_response)"
+#     echo "   DNS propagation can take 1-2 minutes"
+# fi
