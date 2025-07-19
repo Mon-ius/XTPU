@@ -2,6 +2,8 @@
 
 set +e
 
+CF_API_BASE="https://api.cloudflare.com/client/v4"
+
 if [ -z "$1" ]; then
     echo "Usage: $0 <cloudflare_token>"
     echo "Example: $0 base64token"
@@ -13,17 +15,17 @@ _CF_TOKEN_BASE64='base64encodedtoken'
 CF_TOKEN_BASE64="${1:-$_CF_TOKEN_BASE64}"
 CF_TOKEN=$(echo "$CF_TOKEN_BASE64" | base64 -d)
 
-CF_DOMAIN=$(curl -fsSL -X GET "https://api.cloudflare.com/client/v4/zones" \
+CF_DOMAIN=$(curl -fsSL -X GET "$CF_API_BASE/zones" \
     -H "Authorization: Bearer $CF_TOKEN" \
     -H "Content-Type: application/json" | \
     grep -o '"name":"[^"]*' | cut -d'"' -f4 | head -n 1)
 
-CF_ZONE_ID=$(curl -fsSL -X GET "https://api.cloudflare.com/client/v4/zones" \
+CF_ZONE_ID=$(curl -fsSL -X GET "$CF_API_BASE/zones" \
     -H "Authorization: Bearer $CF_TOKEN" \
     -H "Content-Type: application/json" | \
     grep -o '"id":"[^"]*' | cut -d'"' -f4 | head -n 1)
 
-CF_ACCOUNT_ID=$(curl -fsSL -X GET "https://api.cloudflare.com/client/v4/accounts" \
+CF_ACCOUNT_ID=$(curl -fsSL -X GET "$CF_API_BASE/accounts" \
     -H "Authorization: Bearer $CF_TOKEN" \
     -H "Content-Type: application/json" | \
     grep -o '"id":"[^"]*' | cut -d'"' -f4 | head -n 1)
@@ -131,7 +133,7 @@ JSON_PAYLOAD='{
             "permission_groups": [
                 {
                     "id": "eb56a6953c034b9d97dd838155666f06",
-                    "name": "Account API Tokens Read",
+                    "name": "Account API Tokens Read"
                 },
                 {
                     "id": "e086da7e2179491d91ee5f35b3ca210a",
@@ -194,7 +196,7 @@ JSON_PAYLOAD='{
     ]
 }'
 
-RESPONSE=$(curl -fsSL -X POST "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT_ID/tokens" \
+RESPONSE=$(curl -fsSL -X POST "$CF_API_BASE/accounts/$CF_ACCOUNT_ID/tokens" \
     -H "Authorization: Bearer $CF_TOKEN" \
     -H "Content-Type: application/json" \
     -d "$JSON_PAYLOAD")
@@ -227,7 +229,7 @@ echo "Token SECRET_KEY: $SECRET_KEY"
 #     ]
 # }'
 
-# curl -X PUT "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT_ID/tokens/$TOKEN_ID" \
+# curl -X PUT "$CF_API_BASE/accounts/$CF_ACCOUNT_ID/tokens/$TOKEN_ID" \
 #     -H "Authorization: Bearer $CF_TOKEN" \
 #     -H "Content-Type: application/json" \
 #     -d "$JSON_PAYLOAD"
