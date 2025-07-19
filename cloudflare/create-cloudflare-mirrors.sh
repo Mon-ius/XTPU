@@ -21,7 +21,7 @@ echo "=========================================="
 echo ""
 
 AI_PROVIDERS="openai gemini claude grok cohere groq mistral huggingface"
-# AI_PROVIDERS="ai21 claude cohere deepseek fireworks gemini groq huggingface mistral nvidia openai perplexity replicate together voyage"
+# AI_PROVIDERS="openai gemini claude grok cohere groq mistral huggingface ai21 deepseek fireworks nvidia replicate together voyage"
 REGISTRIES="docker ghcr k8s"
 # REGISTRIES="docker quay gcr k8s-gcr k8s ghcr cloudsmith nvcr"
 
