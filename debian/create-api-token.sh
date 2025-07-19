@@ -128,6 +128,26 @@ JSON_PAYLOAD='{
         {
             "effect": "allow",
             "resources": {
+                "com.cloudflare.api.account.zone.'"${CF_ZONE_ID}"'": "*"
+            },
+            "permission_groups": [
+                {
+                    "id": "c8fed203ed3043cba015a93ad1616f1f",
+                    "name": "Zone Read"
+                },
+                {
+                    "id": "28f4b596e7d643029c524985477ae49a",
+                    "name": "Workers Routes Write"
+                },
+                {
+                    "id": "4755a26eedb94da69e1066d98aa820be",
+                    "name": "DNS Write"
+                }
+            ]
+        },
+        {
+            "effect": "allow",
+            "resources": {
                 "com.cloudflare.api.account.'"${CF_ACCOUNT_ID}"'": "*"
             },
             "permission_groups": [
@@ -138,14 +158,6 @@ JSON_PAYLOAD='{
                 {
                     "id": "e086da7e2179491d91ee5f35b3ca210a",
                     "name": "Workers Scripts Write"
-                },
-                {
-                    "id": "4755a26eedb94da69e1066d98aa820be",
-                    "name": "DNS Write"
-                },
-                {
-                    "id": "c8fed203ed3043cba015a93ad1616f1f",
-                    "name": "Zone Read"
                 },
                 {
                     "id": "1af1fa2adc104452b74a9a3364202f20",
@@ -182,10 +194,6 @@ JSON_PAYLOAD='{
                 {
                     "id": "bdbcd690c763475a985e8641dddc09f7",
                     "name": "Workers Containers Write"
-                },
-                {
-                    "id": "28f4b596e7d643029c524985477ae49a",
-                    "name": "Workers Routes Write"
                 },
                 {
                     "id": "6c8a3737f07f46369c1ea1f22138daaf",
