@@ -2,6 +2,8 @@
 
 set +e
 
+CF_API_BASE="https://api.cloudflare.com/client/v4"
+
 if [ -z "$1" ]; then
     echo "Usage: $0 <cloudflare_token> [service-name] [service-endpoint] [cf-acc-endpoint]"
     echo ""
@@ -41,15 +43,18 @@ EOF
 echo "🔍 Fetching account information..."
 
 CF_DOMAIN=$(curl -fsSL -X GET -H "Authorization: Bearer $CF_TOKEN" \
-    "https://api.cloudflare.com/client/v4/zones" | grep -o '"name":"[^"]*' | cut -d'"' -f4 | head -n 1)
+    "$CF_API_BASE/zones" | grep -o '"name":"[^"]*' | cut -d'"' -f4 | head -n 1)
 CF_ZONE_ID=$(curl -fsSL -X GET -H "Authorization: Bearer $CF_TOKEN" \
-    "https://api.cloudflare.com/client/v4/zones" | grep -o '"id":"[^"]*' | cut -d'"' -f4 | head -n 1)
+    "$CF_API_BASE/zones" | grep -o '"id":"[^"]*' | cut -d'"' -f4 | head -n 1)
 CF_ACCOUNT_ID=$(curl -fsSL -X GET -H "Authorization: Bearer $CF_TOKEN" \
-    "https://api.cloudflare.com/client/v4/accounts" | grep -o '"id":"[^"]*' | cut -d'"' -f4 | head -n 1)
+    "$CF_API_BASE/accounts" | grep -o '"id":"[^"]*' | cut -d'"' -f4 | head -n 1)
 CF_SERVICE_DOMAIN=$(curl -fsSL -X GET -H "Authorization: Bearer $CF_TOKEN" \
-    "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT_ID/workers/domains" | \
+    "$CF_API_BASE/accounts/$CF_ACCOUNT_ID/workers/domains" | \
     grep -B3 "\"hostname\": \"$SERVICE_DOMAIN\"" | grep '"id"' | cut -d'"' -f4 | head -n 1)
 
+curl -X GET -H "Authorization: Bearer $CF_TOKEN" \
+    "$CF_API_BASE/accounts/$CF_ACCOUNT_ID/workers/domains"
+    
 if [ -z "$CF_DOMAIN" ]; then
     echo "Error: Unable to retrieve Cloudflare domain."
     exit 1
@@ -88,7 +93,7 @@ EOF
 )
 
 UPLOAD_RESPONSE=$(curl -fsSL -X PUT \
-    "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT_ID/workers/scripts/$SERVICE_NAME" \
+    "$CF_API_BASE/accounts/$CF_ACCOUNT_ID/workers/scripts/$SERVICE_NAME" \
     -H "Authorization: Bearer $CF_TOKEN" \
     -H "Content-Type: multipart/form-data; boundary=$BOUNDARY" \
     --data-binary "$form_data")
@@ -104,7 +109,7 @@ echo "✅ Worker script created"
 echo "📝 Setting up custom service domain route..."
 if [ -z "$CF_SERVICE_DOMAIN" ]; then
     DOMAIN_RESPONSE=$(curl -fsSL -X PUT \
-        "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT_ID/workers/domains" \
+        "$CF_API_BASE/accounts/$CF_ACCOUNT_ID/workers/domains" \
         -H "Authorization: Bearer $CF_TOKEN" \
         -H "Content-Type: application/json" \
         -d '{
@@ -126,7 +131,7 @@ fi
 
 
 echo "📝 Setting up workers.dev access..."
-subdomain_check=$(curl -fsSL "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT_ID/workers/subdomain" \
+subdomain_check=$(curl -fsSL "$CF_API_BASE/accounts/$CF_ACCOUNT_ID/workers/subdomain" \
     -H "Authorization: Bearer $CF_TOKEN" \
     -H "Content-Type: application/json")
 
@@ -134,7 +139,7 @@ EXISTING_SUBDOMAIN=$(echo "$subdomain_check" | grep -o '"subdomain": *"[^"]*' | 
 
 if [ -n "$EXISTING_SUBDOMAIN" ] && [ "$EXISTING_SUBDOMAIN" != "null" ]; then
     DEV_RESPONSE=$(curl -fsSL -X POST \
-        "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT_ID/workers/scripts/$SERVICE_NAME/subdomain" \
+        "$CF_API_BASE/accounts/$CF_ACCOUNT_ID/workers/scripts/$SERVICE_NAME/subdomain" \
         -H "Authorization: Bearer $CF_TOKEN" \
         -H "Content-Type: application/json" \
         -d '{

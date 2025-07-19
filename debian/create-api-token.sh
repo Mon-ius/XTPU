@@ -130,6 +130,14 @@ JSON_PAYLOAD='{
             },
             "permission_groups": [
                 {
+                    "id": "eb56a6953c034b9d97dd838155666f06",
+                    "name": "Account API Tokens Read",
+                },
+                {
+                    "id": "e086da7e2179491d91ee5f35b3ca210a",
+                    "name": "Workers Scripts Write"
+                },
+                {
                     "id": "4755a26eedb94da69e1066d98aa820be",
                     "name": "DNS Write"
                 },
