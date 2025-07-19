@@ -80,7 +80,7 @@ fi
 
 SERVICE_DOMAIN="$SERVICE_NAME.$CF_DOMAIN"
 SERVICE_URL="https://$SERVICE_DOMAIN"
-WORKER_META='{"main_module":"worker.js"}'
+WORKER_META='{"main_module":"worker.js","placement":{"mode":"smart"}}'
 BOUNDARY="----formdata"
 
 echo "✅ Domain: $CF_DOMAIN"
@@ -111,7 +111,7 @@ UPLOAD_RESPONSE=$(curl -fsSL -X PUT \
     -H "Content-Type: multipart/form-data; boundary=$BOUNDARY" \
     --data-binary "$form_data")
 
-if ! echo "$UPLOAD_RESPONSE" | grep -q '"success":true'; then
+if ! echo "$UPLOAD_RESPONSE" | grep -q '"success": true'; then
     echo "❌ Failed to create worker"
     echo "Response: $UPLOAD_RESPONSE"
     exit 1
@@ -133,56 +133,10 @@ if [ -z "$CF_SERVICE_DOMAIN" ]; then
         }')
     
     if echo "$DOMAIN_RESPONSE" | grep -q '"success": true'; then
-        echo "✅ Custom domain attached"
+        echo "✅ Custom domain attached: $SERVICE_URL"
     else
         echo "⚠️  Failed to attach custom domain: $DOMAIN_RESPONSE"
     fi
 else
-    echo "✅ Custom domain already attached"
+    echo "✅ Custom domain already attached: $SERVICE_URL"
 fi
-
-# echo "📝 Setting up workers.dev access..."
-# subdomain_check=$(curl -fsSL -X GET "$CF_API_BASE/accounts/$CF_ACCOUNT_ID/workers/subdomain" \
-#     -H "Authorization: Bearer $CF_TOKEN" \
-#     -H "Content-Type: application/json")
-
-# EXISTING_SUBDOMAIN=$(echo "$subdomain_check" | grep -o '"subdomain": *"[^"]*' | cut -d'"' -f4)
-
-# if [ -n "$EXISTING_SUBDOMAIN" ] && [ "$EXISTING_SUBDOMAIN" != "null" ]; then
-#     DEV_RESPONSE=$(curl -fsSL -X POST \
-#         "$CF_API_BASE/accounts/$CF_ACCOUNT_ID/workers/scripts/$SERVICE_NAME/subdomain" \
-#         -H "Authorization: Bearer $CF_TOKEN" \
-#         -H "Content-Type: application/json" \
-#         -d '{
-#             "enabled": true,
-#             "previews_enabled": true
-#         }')
-
-#     if echo "$DEV_RESPONSE" | grep -q '"success": true'; then
-#         WORKERS_DEV_URL="https://$SERVICE_NAME.$EXISTING_SUBDOMAIN.workers.dev"
-#         echo "✅ Workers.dev - $WORKERS_DEV_URL enabled"
-#     else
-#         echo "⚠️  Failed to enable workers.dev: $DEV_RESPONSE"
-#     fi
-# fi
-
-# echo ""
-# echo "🎉 Deployment complete!"
-# echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-# echo "Service Domain: $SERVICE_URL"
-# if [ -n "$WORKERS_DEV_URL" ]; then
-#     echo "Workers.dev:   $WORKERS_DEV_URL"
-# fi
-
-# echo ""
-# echo "🧪 Testing deployment..."
-# sleep 5
-
-# test_response=$(curl -s -o /dev/null -w "%{http_code}" "$SERVICE_URL" 2>/dev/null || echo "000")
-
-# if [ "$test_response" = "200" ] || [ "$test_response" = "404" ] || [ "$test_response" = "401" ]; then
-#     echo "✅ Worker is responding (HTTP $test_response)"
-# else
-#     echo "⚠️  Worker may still be propagating (HTTP $test_response)"
-#     echo "   DNS propagation can take 1-2 minutes"
-# fi
