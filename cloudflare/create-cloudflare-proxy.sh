@@ -5,17 +5,17 @@ set +e
 CF_API_BASE="https://api.cloudflare.com/client/v4"
 
 if [ -z "$1" ]; then
-    echo "Usage: $0 <cloudflare_token> [service-name] [service-endpoint] [cf-acc-endpoint]"
+    echo "Usage: $0 <cloudflare_token> [service-name] [service-endpoint]"
     echo ""
     echo "Example:"
-    echo "  $0 eW91ci10b2tlbg== my-service"
+    echo "  $0 eW91ci10b2tlbg== my-service example.com"
     exit 1
 fi
 
 _CF_TOKEN_BASE64='base64encodedtoken'
 _SERVICE_NAME="worker-$(date +%Y%m%d)-$(head -c 16 /dev/urandom | od -An -tx1 | tr -d ' \n' | head -c 8)"
-_SERVICE_ENDPOINT='generativelanguage.googleapis.com'
-_CLOUDFLARE_ACCELERATION='cf.090227.xyz'
+_SERVICE_ENDPOINT='example.com'
+# _CLOUDFLARE_ACCELERATION='cf.090227.xyz'
 
 CF_TOKEN_BASE64="${1:-$_CF_TOKEN_BASE64}"
 SERVICE_NAME="${2:-$_SERVICE_NAME}"
