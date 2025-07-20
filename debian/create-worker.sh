@@ -14,6 +14,7 @@ fi
 
 _CF_TOKEN_BASE64='base64encodedtoken'
 _SERVICE_NAME="worker-$(date +%Y%m%d)-$(head -c 16 /dev/urandom | od -An -tx1 | tr -d ' \n' | head -c 8)"
+# _CLOUDFLARE_ACCELERATION='cf.090227.xyz'
 _WORKER_CONETENT=$(cat <<EOF
 export default {
     async fetch(request) {
@@ -37,6 +38,7 @@ EOF
 CF_TOKEN_BASE64="${1:-$_CF_TOKEN_BASE64}"
 SERVICE_NAME="${2:-$_SERVICE_NAME}"
 WORKER_CONETENT="${3:-$WORKER_CONETENT}"
+# CLOUDFLARE_ACCELERATION="${4:-$_CLOUDFLARE_ACCELERATION}"
 
 CF_TOKEN=$(echo "$CF_TOKEN_BASE64" | base64 -d)
 
