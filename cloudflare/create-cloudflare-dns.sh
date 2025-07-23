@@ -5,7 +5,7 @@ set +e
 CF_API_BASE="https://api.cloudflare.com/client/v4"
 
 if [ -z "$1" ]; then
-    echo "Usage: $0 <cloudflare_token_base64> [service]"
+    echo "Usage: $0 <cloudflare_token> [service]"
     echo "Example:"
     echo "  $0 eW91ci10b2tlbg== example"
     exit 1
