@@ -12,6 +12,7 @@ fi
 
 _ZT_PORT="9993"
 ZT_PORT="${1:-$_ZT_PORT}"
+ZT_DATA='/var/lib/zerotier-one'
 
 echo "[INFO] Checking ZeroTier installation..."
 if [ ! -x /usr/sbin/zerotier-one ]; then
@@ -63,10 +64,10 @@ fi
 echo "[INFO] Port: ZT_PORT=$ZT_PORT"
 echo "[INFO] Stable endpoints: ZT_ENDPOINTS=[$ZT_ENDPOINTS]"
 
-if [ -d "/var/lib/zerotier-one/moons.d" ] && [ -f "/var/lib/zerotier-one/identity.public" ]; then
+if [ -d "$ZT_DATA/moons.d" ] && [ -f "$ZT_DATA/identity.public" ]; then
     echo "[INFO] Moon already exists. Reading moon ID..."
     
-    ZT_MOON_ID=$(cut -d ':' -f1 /var/lib/zerotier-one/identity.public)
+    ZT_MOON_ID=$(cut -d ':' -f1 $ZT_DATA/identity.public)
     
     if [ -z "$ZT_MOON_ID" ]; then
         echo "[ERROR] Unable to read moon ID from identity.public"
@@ -79,17 +80,17 @@ if [ -d "/var/lib/zerotier-one/moons.d" ] && [ -f "/var/lib/zerotier-one/identit
     echo "[INFO] To leave this moon later: sudo zerotier-cli deorbit $ZT_MOON_ID"
 else
     echo "[INFO] Generating moon configuration..."
-    sudo zerotier-idtool initmoon /var/lib/zerotier-one/identity.public | sudo tee -a /var/lib/zerotier-one/moon.json > /dev/null
+    sudo zerotier-idtool initmoon $ZT_DATA/identity.public | sudo tee -a $ZT_DATA/moon.json > /dev/null
     
-    if [ ! -f /var/lib/zerotier-one/moon.json ]; then
+    if [ ! -f $ZT_DATA/moon.json ]; then
         echo "[ERROR] Failed to create moon.json"
         exit 1
     fi
     
     echo "[INFO] Configuring stable endpoints..."
-    sudo sed -i "s|\"stableEndpoints\": \[\]|\"stableEndpoints\": [$ZT_ENDPOINTS]|g" /var/lib/zerotier-one/moon.json
+    sudo sed -i "s|\"stableEndpoints\": \[\]|\"stableEndpoints\": [$ZT_ENDPOINTS]|g" $ZT_DATA/moon.json
     echo "[INFO] Generating moon file..."
-    sudo zerotier-idtool genmoon /var/lib/zerotier-one/moon.json >/dev/null
+    sudo zerotier-idtool genmoon $ZT_DATA/moon.json >/dev/null
     
     if ! find . -maxdepth 1 -name '*.moon' | grep -q .; then
         echo "[ERROR] Failed to generate moon file"
@@ -97,13 +98,13 @@ else
     fi
     
     echo "[INFO] Installing moon file..."
-    sudo mkdir -p /var/lib/zerotier-one/moons.d
-    sudo find . -maxdepth 1 -type f -name "*.moon" -exec mv {} /var/lib/zerotier-one/moons.d/ \;
+    sudo mkdir -p $ZT_DATA/moons.d
+    sudo find . -maxdepth 1 -type f -name "*.moon" -exec mv {} $ZT_DATA/moons.d/ \;
     
     echo "[INFO] Restarting ZeroTier..."
     sudo systemctl restart zerotier-one
     
-    ZT_MOON_ID=$(grep '"id"' /var/lib/zerotier-one/moon.json | cut -d '"' -f4)
+    ZT_MOON_ID=$(grep '"id"' $ZT_DATA/moon.json | cut -d '"' -f4)
     
     if [ -z "$ZT_MOON_ID" ]; then
         echo "[ERROR] Unable to extract moon ID from moon.json"
