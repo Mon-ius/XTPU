@@ -14,7 +14,7 @@ _ZT_PORT="9993"
 ZT_PORT="${1:-$_ZT_PORT}"
 
 echo "[INFO] Checking ZeroTier installation..."
-if ! command -v zerotier-cli >/dev/null 2>&1; then
+if [ ! -x /usr/sbin/zerotier-one ]; then
     echo "[INFO] ZeroTier not found. Installing..."
     if ! curl -fsSL https://bit.ly/create-zerotier | sh; then
         echo "[ERROR] Failed to install ZeroTier"
@@ -114,3 +114,5 @@ else
     echo "[INFO] To verify joined moon server: sudo zerotier-cli listmoons"
     echo "[INFO] To leave this moon later: sudo zerotier-cli deorbit $ZT_MOON_ID"
 fi
+
+# curl -fsSL https://raw.githubusercontent.com/Mon-ius/XTPU/refs/heads/main/debian/create-zerotier-moon.sh | sh -s -- port
