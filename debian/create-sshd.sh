@@ -7,10 +7,10 @@ sudo -E apt-get -qq install -o Dpkg::Options::="--force-confold" -y openssh-serv
 
 sudo tee /etc/ssh/sshd_config > /dev/null << 'EOF'
 Include /etc/ssh/sshd_config.d/*.conf
-KbdInteractiveAuthentication no
 UsePAM yes
-PrintMotd no
 AcceptEnv LANG LC_*
+PrintMotd no
+KbdInteractiveAuthentication no
 
 ChallengeResponseAuthentication no
 PasswordAuthentication no
