@@ -74,7 +74,9 @@ if [ -d "/var/lib/zerotier-one/moons.d" ] && [ -f "/var/lib/zerotier-one/identit
     fi
     
     echo "[SUCCESS] Your ZeroTier moon ID is $ZT_MOON_ID"
-    echo "[INFO] You can orbit this moon using: zerotier-cli orbit $ZT_MOON_ID $ZT_MOON_ID"
+    echo "[INFO] You can orbit this moon using: sudo zerotier-cli orbit $ZT_MOON_ID $ZT_MOON_ID"
+    echo "[INFO] To verify joined moon server: sudo zerotier-cli listmoons"
+    echo "[INFO] To leave this moon later: sudo zerotier-cli deorbit $ZT_MOON_ID"
 else
     echo "[INFO] Generating moon configuration..."
     sudo zerotier-idtool initmoon /var/lib/zerotier-one/identity.public | sudo tee -a /var/lib/zerotier-one/moon.json > /dev/null
