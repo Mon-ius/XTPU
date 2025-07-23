@@ -106,7 +106,7 @@ curl -fsSL bit.ly/new-gcp-sb | sh -s -- cf_token_base64 cf_zone
 curl -fsSL bit.ly/new-gcp-sb-hy2 | sh -s -- cf_token_base64 cf_zone
 curl -fsSL bit.ly/new-gcp-wg | sh -s -- license
 curl -fsSL bit.ly/create-vm-user | sh -s -- username
-curl -fsSL bit.ly/create-ssh-tun | sh -s -- username
+curl -fsSL bit.ly/create-ssh-tun | sh -s -- username pem
 curl -fsSL bit.ly/create-reverse-ssh | sh -s -- remote port
 curl -fsSL bit.ly/create-tun-proxy | sh -s -- remote passwd 
 ```

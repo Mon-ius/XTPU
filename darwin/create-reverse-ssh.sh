@@ -67,11 +67,14 @@ launchctl unload "$PLIST_PATH" 2>/dev/null
 launchctl load "$PLIST_PATH"
 launchctl start "com.user.$SNAME"
 
-echo "Service created and started: com.user.$SNAME"
-echo "Plist location: $PLIST_PATH"
-echo "To check status: launchctl list | grep $SNAME"
-echo "To stop: launchctl stop com.user.$SNAME"
-echo "To remove: launchctl unload $PLIST_PATH && rm $PLIST_PATH"
-
+echo "[SUCCESS] Reverse SSH tunnel created successfully."
+echo "[INFO] Service name: com.user.$SNAME"
+echo "[INFO] Plist location: $PLIST_PATH"
+echo "[INFO] Remote host: $RHOST"
+echo "[INFO] Remote port: $RPORT"
+echo "[INFO] You can connect back using: ssh -p $RPORT $USER@$RHOST"
+echo "[INFO] To check tunnel status: launchctl list | grep $SNAME"
+echo "[INFO] To stop tunnel: launchctl stop com.user.$SNAME"
+echo "[INFO] To remove tunnel: launchctl unload $PLIST_PATH && rm $PLIST_PATH"
 
 # curl -fsSL https://raw.githubusercontent.com/Mon-ius/XTPU/refs/heads/main/darwin/create-reverse-ssh.sh | sh -s -- remote port
