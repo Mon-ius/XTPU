@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/dash
 
 set +e
 
@@ -72,3 +72,6 @@ echo "Plist location: $PLIST_PATH"
 echo "To check status: launchctl list | grep $SNAME"
 echo "To stop: launchctl stop com.user.$SNAME"
 echo "To remove: launchctl unload $PLIST_PATH && rm $PLIST_PATH"
+
+
+# curl -fsSL https://raw.githubusercontent.com/Mon-ius/XTPU/refs/heads/main/darwin/create-reverse-ssh.sh | sh -s -- remote port
