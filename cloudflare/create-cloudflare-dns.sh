@@ -56,7 +56,7 @@ if [ -z "$CF_DOMAIN" ]; then
 fi
 
 if [ -z "$CF_ZONE_ID" ]; then
-    echo "Error: Unable to retrieve Cloudflare zone ID for domain $CF_DOMAIN. Please check your API token and domain name."
+    echo "Error: Unable to retrieve Cloudflare zone ID for domain $CF_DOMAIN. Please check your API token with [Account API Tokens Read] setting and domain name."
     exit 1
 fi
 
@@ -102,3 +102,6 @@ else
     echo "[ERROR] Failed to create or modify A record for ${CF_SERVICE}.${CF_DOMAIN}. HTTP status code: $RESPONSE"
     exit 1
 fi
+
+
+# curl -fsSL https://raw.githubusercontent.com/Mon-ius/XTPU/refs/heads/main/cloudflare/create-cloudflare-dns.sh | sh -s -- token service
