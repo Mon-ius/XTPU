@@ -67,3 +67,5 @@ else
     echo "Error: Failed to create or modify A record for ${CF_SERVICE}.${CF_DOMAIN}. HTTP status code: $RESPONSE"
     exit 1
 fi
+
+# curl -fsSL https://raw.githubusercontent.com/Mon-ius/XTPU/refs/heads/main/GCP/create-dns.sh | sh -s -- token service
