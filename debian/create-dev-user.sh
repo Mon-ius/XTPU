@@ -35,7 +35,7 @@ sudo su $XUSER -c "
     echo $PUB_KEY_2 >> ~/.ssh/authorized_keys &&
     echo $PUB_KEY_3 >> ~/.ssh/authorized_keys &&
     git clone --depth=1 https://github.com/AUTOM77/dotfile ~/.dotfile &&
-    mv ~/.dotfile/.zsh/.*  "/home/$XUSER"
+    cp -r ~/.dotfile/.zsh/.*  "/home/$XUSER"
     rm -rf ~/.dotfile
 "
 sudo chsh -s "$(which zsh)" "${XUSER}"
