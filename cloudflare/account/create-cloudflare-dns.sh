@@ -104,4 +104,4 @@ else
 fi
 
 
-# curl -fsSL https://raw.githubusercontent.com/Mon-ius/XTPU/refs/heads/main/cloudflare/create-cloudflare-dns.sh | sh -s -- token service
+# curl -fsSL https://raw.githubusercontent.com/Mon-ius/XTPU/refs/heads/main/cloudflare/account/create-cloudflare-dns.sh | sh -s -- token service
