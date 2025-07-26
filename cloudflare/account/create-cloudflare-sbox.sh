@@ -130,6 +130,7 @@ $CONFIG_PAYLOAD
 sudo systemctl daemon-reload
 sudo systemctl enable sing-box
 sudo systemctl restart sing-box
+sudo systemctl status sing-box --no-pager -l
 EOF
 else
     echo "[ERROR] Failed to create or modify A record for ${CF_SERVICE}.${CF_DOMAIN}. HTTP status code: $RESPONSE"
