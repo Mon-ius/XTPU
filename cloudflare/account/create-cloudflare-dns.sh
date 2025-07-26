@@ -4,6 +4,9 @@ set +e
 
 CF_API_BASE="https://api.cloudflare.com/client/v4"
 
+_CF_TOKEN_BASE64="base64encodedtoken"
+_CF_SERVICE="example"
+
 if [ -z "$1" ]; then
     echo "Usage: $0 <cloudflare_token> [service]"
     echo "Example:"
@@ -11,39 +14,16 @@ if [ -z "$1" ]; then
     exit 1
 fi
 
-_CF_TOKEN_BASE64="base64encodedtoken"
-_CF_SERVICE="example"
-
 CF_TOKEN_BASE64="${1:-$_CF_TOKEN_BASE64}"
 CF_SERVICE="${2:-$_CF_SERVICE}"
 CF_TOKEN=$(echo "$CF_TOKEN_BASE64" | base64 -d)
 
 CF_IP=$(curl -fsSL https://ipinfo.io/ip)
-
-CF_ACCOUNT_ID=$(curl -fsSL -X GET "$CF_API_BASE/accounts" \
-    -H "Authorization: Bearer $CF_TOKEN" \
-    -H "Content-Type: application/json" | \
-    grep -o '"id":"[^"]*' | cut -d'"' -f4 | head -n 1)
-
-CF_TOKEN_ID=$(curl -fsSL -X GET "$CF_API_BASE/accounts/$CF_ACCOUNT_ID/tokens/verify"  \
-    -H "Authorization: Bearer $CF_TOKEN" \
-    -H "Content-Type: application/json" | \
-    grep -o '"id":"[^"]*' | cut -d'"' -f4 | head -n 1)
-
-CF_ZONE_ID=$(curl -fsSL -X GET "$CF_API_BASE/accounts/$CF_ACCOUNT_ID/tokens/$CF_TOKEN_ID" \
-    -H "Authorization: Bearer $CF_TOKEN" \
-    -H "Content-Type: application/json" | \
-    grep -o 'com.cloudflare.api.account.zone.[^"]*' | sed 's/.*\.zone\.//')
-
-CF_DOMAIN=$(curl -fsSL -X GET "$CF_API_BASE/zones/$CF_ZONE_ID" \
-    -H "Authorization: Bearer $CF_TOKEN" \
-    -H "Content-Type: application/json" | \
-    grep -o '"name":"[^"]*' | cut -d'"' -f4 | head -n 1)
-
-CF_RECORD=$(curl -fsSL -X GET "$CF_API_BASE/zones/${CF_ZONE_ID}/dns_records?name=${CF_SERVICE}.${CF_DOMAIN}" \
-    -H "Authorization: Bearer $CF_TOKEN" \
-    -H "Content-Type: application/json" | \
-    grep -o '"id":"[^"]*' | cut -d'"' -f4 | head -n 1)
+CF_ACCOUNT_ID=$(curl -fsSL -X GET -H "Authorization: Bearer $CF_TOKEN" "$CF_API_BASE/accounts" | grep -o '"id":"[^"]*' | cut -d'"' -f4 | head -n 1)
+CF_TOKEN_ID=$(curl -fsSL -X GET -H "Authorization: Bearer $CF_TOKEN" "$CF_API_BASE/accounts/$CF_ACCOUNT_ID/tokens/verify" | grep -o '"id":"[^"]*' | cut -d'"' -f4 | head -n 1)
+CF_ZONE_ID=$(curl -fsSL -X GET -H "Authorization: Bearer $CF_TOKEN" "$CF_API_BASE/accounts/$CF_ACCOUNT_ID/tokens/$CF_TOKEN_ID" | grep -o 'com.cloudflare.api.account.zone.[^"]*' | sed 's/.*\.zone\.//')
+CF_DOMAIN=$(curl -fsSL -X GET -H "Authorization: Bearer $CF_TOKEN" "$CF_API_BASE/zones/$CF_ZONE_ID" | grep -o '"name":"[^"]*' | cut -d'"' -f4 | head -n 1)
+CF_RECORD=$(curl -fsSL -X GET -H "Authorization: Bearer $CF_TOKEN" "$CF_API_BASE/zones/${CF_ZONE_ID}/dns_records?name=${CF_SERVICE}.${CF_DOMAIN}" | grep -o '"id":"[^"]*' | cut -d'"' -f4 | head -n 1)
 
 if [ -z "$CF_IP" ]; then
     echo "Error: Unable to retrieve external IP address. Please check your internet connection."
@@ -66,34 +46,25 @@ echo "[INFO] Zone ID: CF_ZONE_ID=$CF_ZONE_ID"
 echo "[INFO] Service: CF_SERVICE=$CF_SERVICE"
 echo "[INFO] Record ID: CF_RECORD=$CF_RECORD"
 
+DNS_PAYLOAD='{
+    "type": "A",
+    "name": "'"${CF_SERVICE}.${CF_DOMAIN}"'",
+    "content": "'"${CF_IP}"'",
+    "proxied": false
+}'
+
 if [ -z "$CF_RECORD" ]; then
     echo "[INFO] DNS record not found. Creating a new DNS record..."
-    
-    JSON_PAYLOAD='{
-        "type": "A",
-        "name": "'"${CF_SERVICE}.${CF_DOMAIN}"'",
-        "content": "'"${CF_IP}"'",
-        "proxied": false
-    }'
-    
     RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X POST "$CF_API_BASE/zones/${CF_ZONE_ID}/dns_records" \
         -H "Authorization: Bearer $CF_TOKEN" \
         -H "Content-Type: application/json" \
-        -d "$JSON_PAYLOAD")
+        -d "$DNS_PAYLOAD")
 else
     echo "[INFO] DNS record found. Modifying the existing DNS record..."
-    
-    JSON_PAYLOAD='{
-        "type": "A",
-        "name": "'"${CF_ZONE}.${CF_DOMAIN}"'",
-        "content": "'"${CF_IP}"'",
-        "proxied": false
-    }'
-    
     RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X PUT "$CF_API_BASE/zones/${CF_ZONE_ID}/dns_records/${CF_RECORD}" \
         -H "Authorization: Bearer $CF_TOKEN" \
         -H "Content-Type: application/json" \
-        -d "$JSON_PAYLOAD")
+        -d "$DNS_PAYLOAD")
 fi
 
 if [ "$RESPONSE" -eq 200 ]; then
