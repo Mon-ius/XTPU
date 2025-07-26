@@ -2,6 +2,8 @@
 
 set +e
 
+export DEBIAN_FRONTEND=noninteractive
+SAGER_NET="https://sing-box.app/gpg.key"
 CF_API_BASE="https://api.cloudflare.com/client/v4"
 
 _CF_TOKEN_BASE64="base64encodedtoken"
@@ -13,6 +15,15 @@ if [ -z "$1" ]; then
     echo "  $0 eW91ci10b2tlbg== example"
     exit 1
 fi
+
+sudo -E apt-get -qq update
+sudo -E apt-get -qq install -o Dpkg::Options::="--force-confold" -y gnupg2 curl jq
+
+curl -fsSL "$SAGER_NET" | sudo -E gpg --yes --dearmor -o /etc/apt/trusted.gpg.d/sagernet.gpg
+echo "deb https://deb.sagernet.org * *" | sudo -E tee /etc/apt/sources.list.d/sagernet.list
+
+sudo -E apt-get -qq update
+sudo -E apt-get -qq install -o Dpkg::Options::="--force-confold" -y sing-box
 
 CF_TOKEN_BASE64="${1:-$_CF_TOKEN_BASE64}"
 CF_SERVICE="${2:-$_CF_SERVICE}"
@@ -53,6 +64,45 @@ DNS_PAYLOAD='{
     "proxied": false
 }'
 
+CONFIG_PAYLOAD=$(cat <<EOF
+        {
+            "type": "vless",
+            "tag": "vless-in",
+            "listen": "::",
+            "listen_port": 443,
+            "users": [
+                {
+                    "flow": "xtls-rprx-vision",
+                    "uuid": "$(echo "$CF_TOKEN_BASE64" | sha1sum | cut -c1-32 | sed 's/^\(........\)\(....\)\(....\)\(....\)\(............\).*$/\1-\2-\3-\4-\5/')"
+                },
+                {
+                    "flow": "xtls-rprx-vision",
+                    "uuid": "$(echo "user-$CF_TOKEN_BASE64" | sha1sum | cut -c1-32 | sed 's/^\(........\)\(....\)\(....\)\(....\)\(............\).*$/\1-\2-\3-\4-\5/')"
+                },
+                {
+                    "flow": "xtls-rprx-vision",
+                    "uuid": "$(echo "admin-$CF_TOKEN_BASE64" | sha1sum | cut -c1-32 | sed 's/^\(........\)\(....\)\(....\)\(....\)\(............\).*$/\1-\2-\3-\4-\5/')"
+                }
+            ],
+            "tls": {
+                "enabled": true,
+                "server_name": "$CF_SERVICE.$CF_DOMAIN",
+                "acme": {
+                    "domain": "$CF_SERVICE.$CF_DOMAIN",
+                    "email": "admin@$CF_DOMAIN",
+                    "dns01_challenge": {
+                        "provider": "cloudflare",
+                        "api_token": "$CF_TOKEN"
+                    }
+                },
+                "alpn": [
+                    "h3"
+                ]
+            }
+        }
+EOF
+)
+
 if [ -z "$CF_RECORD" ]; then
     echo "[INFO] DNS record not found. Creating a new DNS record..."
     RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X POST "$CF_API_BASE/zones/${CF_ZONE_ID}/dns_records" \
@@ -69,10 +119,24 @@ fi
 
 if [ "$RESPONSE" -eq 200 ]; then
     echo "[SUCCESS] A record for ${CF_SERVICE}.${CF_DOMAIN} has been updated with IP ${CF_IP}."
+
+sudo tee /etc/sing-box/config.json > /dev/null << EOF
+{
+    "inbounds": [
+$CONFIG_PAYLOAD
+    ]
+}
+
+sudo systemctl daemon-reload
+sudo systemctl enable sing-box
+sudo systemctl restart sing-box
+EOF
 else
     echo "[ERROR] Failed to create or modify A record for ${CF_SERVICE}.${CF_DOMAIN}. HTTP status code: $RESPONSE"
     exit 1
 fi
 
+
+
 # curl -fsSL https://raw.githubusercontent.com/Mon-ius/XTPU/refs/heads/main/cloudflare/account/create-cloudflare-token.sh | sh -s -- root_token
-# curl -fsSL https://raw.githubusercontent.com/Mon-ius/XTPU/refs/heads/main/cloudflare/account/create-cloudflare-sbox.sh | sh -s -- token service
+# curl -fsSL https://raw.githubusercontent.com/Mon-ius/XTPU/refs/heads/main/cloudflare/account/create-cloudflare-dns.sh | sh -s -- token service
