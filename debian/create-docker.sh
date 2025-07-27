@@ -22,9 +22,10 @@ sudo tee /etc/docker/daemon.json <<EOF
 }
 EOF
 sudo systemctl daemon-reload
-sudo systemctl enable docker
+sudo systemctl enable --now docker
 sudo systemctl restart docker
 
 sudo /usr/sbin/groupadd docker
-sudo /usr/sbin/usermod -aG docker "$USER"
+sudo /usr/sbin/usermod -aG docker "${USER}"
+sudo chmod 666 /var/run/docker.sock
 sudo chown root:docker /var/run/docker.sock
