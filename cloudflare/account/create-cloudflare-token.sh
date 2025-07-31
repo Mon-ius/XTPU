@@ -62,10 +62,6 @@ JSON_PAYLOAD='{
             },
             "permission_groups": [
                 {
-                    "id": "c03055bc037c4ea9afb9a9f104b7b721",
-                    "name": "Zone SSL and Certificates Write"
-                },
-                {
                     "id": "c8fed203ed3043cba015a93ad1616f1f",
                     "name": "Zone Read"
                 }
@@ -77,6 +73,10 @@ JSON_PAYLOAD='{
                 "com.cloudflare.api.account.'"${CF_ACCOUNT_ID}"'": "*"
             },
             "permission_groups": [
+                {
+                    "id": "c03055bc037c4ea9afb9a9f104b7b721",
+                    "name": "Zone SSL and Certificates Write"
+                },
                 {
                     "id": "eb56a6953c034b9d97dd838155666f06",
                     "name": "Account API Tokens Read"
