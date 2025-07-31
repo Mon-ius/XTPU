@@ -12,6 +12,11 @@ if [ -z "$1" ]; then
     echo "Usage: $0 <cloudflare_token> [hostname] [origin_server]"
     echo "Example:"
     echo "  $0 eW91ci10b2tlbg== custom.example.com origin.example.com"
+    echo ""
+    echo "Required API Token Permissions:"
+    echo "  - Zone:SSL and Certificates:Edit"
+    echo "  - Zone:Zone:Read"
+    echo "  - Account:Account API Tokens:Read"
     exit 1
 fi
 
@@ -27,11 +32,13 @@ CF_EXISTING=$(curl -fsSL -X GET -H "Authorization: Bearer $CF_TOKEN" "$CF_API_BA
 
 if [ -z "$CF_ACCOUNT_ID" ]; then
     echo "Error: Unable to retrieve account ID. Please check your API token."
+    echo "Required permissions: Account:Account API Tokens:Read"
     exit 1
 fi
 
 if [ -z "$CF_ZONE_ID" ]; then
     echo "Error: Unable to retrieve zone ID. Please check your API token permissions."
+    echo "Account:Account API Tokens:Read"
     exit 1
 fi
 
@@ -54,7 +61,7 @@ CUSTOM_HOSTNAME_PAYLOAD='{
 }'
 
 echo "[INFO] Creating custom hostname..."
-RESPONSE=$(curl -X POST "$CF_API_BASE/zones/$CF_ZONE_ID/custom_hostnames" \
+RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X POST "$CF_API_BASE/zones/$CF_ZONE_ID/custom_hostnames" \
     -H "Authorization: Bearer $CF_TOKEN" \
     -H "Content-Type: application/json" \
     -d "$CUSTOM_HOSTNAME_PAYLOAD")
@@ -66,6 +73,7 @@ if [ "$RESPONSE" -eq 201 ] || [ "$RESPONSE" -eq 200 ]; then
     echo "[INFO] Custom hostname ID: $CF_NEW_ID"
 else
     echo "[ERROR] Failed to create custom hostname $CF_HOSTNAME. HTTP status code: $RESPONSE"
+    echo "[ERROR] Ensure token has permissions: Zone:SSL and Certificates:Edit"
     exit 1
 fi
 
