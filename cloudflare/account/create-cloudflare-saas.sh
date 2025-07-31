@@ -54,7 +54,7 @@ CUSTOM_HOSTNAME_PAYLOAD='{
 }'
 
 echo "[INFO] Creating custom hostname..."
-RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X POST "$CF_API_BASE/zones/$CF_ZONE_ID/custom_hostnames" \
+RESPONSE=$(curl -X POST "$CF_API_BASE/zones/$CF_ZONE_ID/custom_hostnames" \
     -H "Authorization: Bearer $CF_TOKEN" \
     -H "Content-Type: application/json" \
     -d "$CUSTOM_HOSTNAME_PAYLOAD")

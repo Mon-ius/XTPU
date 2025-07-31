@@ -74,6 +74,10 @@ JSON_PAYLOAD='{
             },
             "permission_groups": [
                 {
+                    "id": "db37e5f1cb1a4e1aabaef8deaea43575",
+                    "name": "Account SSL and Certificates Write"
+                },
+                {
                     "id": "eb56a6953c034b9d97dd838155666f06",
                     "name": "Account API Tokens Read"
                 },
