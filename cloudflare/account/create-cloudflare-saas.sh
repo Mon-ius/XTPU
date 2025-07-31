@@ -70,4 +70,4 @@ else
 fi
 
 # curl -fsSL https://raw.githubusercontent.com/Mon-ius/XTPU/refs/heads/main/cloudflare/account/create-cloudflare-token.sh | sh -s -- root_token
-# curl -fsSL https://raw.githubusercontent.com/Mon-ius/XTPU/refs/heads/main/cloudflare/account/create-cloudflare-saas.sh | sh -s -- token custom.example.xyz origin.example.com
+# curl -fsSL https://raw.githubusercontent.com/Mon-ius/XTPU/refs/heads/main/cloudflare/account/create-cloudflare-saas.sh | sh -s -- $CF_TOKEN_BASE64 custom.example.xyz origin.example.com
