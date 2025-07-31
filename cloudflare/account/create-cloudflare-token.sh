@@ -62,8 +62,8 @@ JSON_PAYLOAD='{
             },
             "permission_groups": [
                 {
-                    "id": "c8fed203ed3043cba015a93ad1616f1f",
-                    "name": "Zone Read"
+                    "id": "e6d2666161e84845a636613608cee8d5",
+                    "name": "Zone Write"
                 }
             ]
         },
