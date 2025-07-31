@@ -54,14 +54,11 @@ echo "[INFO] Origin Server: CF_ORIGIN=$CF_ORIGIN"
 
 CUSTOM_HOSTNAME_PAYLOAD='{
     "hostname": "'"$CF_HOSTNAME"'",
-    "custom_origin_server": "'"$CF_ORIGIN"'",
-    "ssl": {
-        "cloudflare_branding": true
-    }
+    "custom_origin_server": "'"$CF_ORIGIN"'"
 }'
 
 echo "[INFO] Creating custom hostname..."
-RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X POST "$CF_API_BASE/zones/$CF_ZONE_ID/custom_hostnames" \
+RESPONSE=$(curl -X POST "$CF_API_BASE/zones/$CF_ZONE_ID/custom_hostnames" \
     -H "Authorization: Bearer $CF_TOKEN" \
     -H "Content-Type: application/json" \
     -d "$CUSTOM_HOSTNAME_PAYLOAD")
