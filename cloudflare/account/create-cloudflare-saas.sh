@@ -54,11 +54,6 @@ echo "[INFO] Origin Server: CF_ORIGIN=$CF_ORIGIN"
 
 CUSTOM_HOSTNAME_PAYLOAD='{
     "hostname": "'"$CF_HOSTNAME"'",
-    "custom_origin_server": "'"$CF_ORIGIN"'"
-}'
-
-CUSTOM_HOSTNAME_PAYLOAD='{
-    "hostname": "'"$CF_HOSTNAME"'",
     "custom_origin_server": "'"$CF_ORIGIN"'",
     "ssl": {
         "method": "txt",
@@ -75,13 +70,6 @@ CUSTOM_HOSTNAME_PAYLOAD='{
         },
         "bundle_method": "ubiquitous",
         "wildcard": false,
-        "cloudflare_branding": true
-    }
-}'
-CUSTOM_HOSTNAME_PAYLOAD='{
-    "hostname": "'"$CF_HOSTNAME"'",
-    "custom_origin_server": "'"$CF_ORIGIN"'",
-    "ssl": {
         "cloudflare_branding": true
     }
 }'
