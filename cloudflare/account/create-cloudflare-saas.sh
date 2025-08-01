@@ -57,6 +57,35 @@ CUSTOM_HOSTNAME_PAYLOAD='{
     "custom_origin_server": "'"$CF_ORIGIN"'"
 }'
 
+CUSTOM_HOSTNAME_PAYLOAD='{
+    "hostname": "'"$CF_HOSTNAME"'",
+    "custom_origin_server": "'"$CF_ORIGIN"'",
+    "ssl": {
+        "method": "txt",
+        "type": "dv",
+        "settings": {
+            "http2": "on",
+            "min_tls_version": "1.0",
+            "tls_1_3": "on",
+            "ciphers": [
+                "ECDHE-RSA-AES128-GCM-SHA256",
+                "AES128-SHA"
+            ],
+            "early_hints": "on"
+        },
+        "bundle_method": "ubiquitous",
+        "wildcard": false,
+        "cloudflare_branding": true
+    }
+}'
+CUSTOM_HOSTNAME_PAYLOAD='{
+    "hostname": "'"$CF_HOSTNAME"'",
+    "custom_origin_server": "'"$CF_ORIGIN"'",
+    "ssl": {
+        "cloudflare_branding": true
+    }
+}'
+
 echo "[INFO] Creating custom hostname..."
 RESPONSE=$(curl -X POST "$CF_API_BASE/zones/$CF_ZONE_ID/custom_hostnames" \
     -H "Authorization: Bearer $CF_TOKEN" \

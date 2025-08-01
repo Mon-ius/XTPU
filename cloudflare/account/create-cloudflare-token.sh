@@ -64,10 +64,6 @@ JSON_PAYLOAD='{
                 {
                     "id": "e6d2666161e84845a636613608cee8d5",
                     "name": "Zone Write"
-                },
-                {
-                    "id": "c03055bc037c4ea9afb9a9f104b7b721",
-                    "name": "Zone SSL and Certificates Write"
                 }
             ]
         },
