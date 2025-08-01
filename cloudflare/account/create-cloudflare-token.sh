@@ -7,6 +7,9 @@ CF_API_BASE="https://api.cloudflare.com/client/v4"
 if [ -z "$1" ]; then
     echo "Usage: $0 <cloudflare_token>"
     echo "Example: $0 base64token"
+    echo "Required API Token Permissions:"
+    echo "  - Account:Account API Tokens:Edit"
+    echo "  - Zone:Zone:Write"
     exit 1
 fi
 

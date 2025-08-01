@@ -75,4 +75,4 @@ else
 fi
 
 # curl -fsSL https://raw.githubusercontent.com/Mon-ius/XTPU/refs/heads/main/cloudflare/account/create-cloudflare-token.sh | sh -s -- root_token
-# curl -fsSL https://raw.githubusercontent.com/Mon-ius/XTPU/refs/heads/main/cloudflare/account/create-cloudflare-sbox.sh | sh -s -- token service
+# curl -fsSL https://raw.githubusercontent.com/Mon-ius/XTPU/refs/heads/main/cloudflare/account/create-cloudflare-dns.sh | sh -s -- token service
