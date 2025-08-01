@@ -15,8 +15,7 @@ if [ -z "$1" ]; then
     echo ""
     echo "Required API Token Permissions:"
     echo "  - Zone:SSL and Certificates:Edit"
-    echo "  - Zone:Zone:Read"
-    echo "  - Account:Account API Tokens:Read"
+    echo "  - Zone:Zone:Edit"
     exit 1
 fi
 
@@ -75,19 +74,31 @@ CUSTOM_HOSTNAME_PAYLOAD='{
 }'
 
 echo "[INFO] Creating custom hostname..."
-RESPONSE=$(curl -X POST "$CF_API_BASE/zones/$CF_ZONE_ID/custom_hostnames" \
+RESPONSE=$(curl -fsSL -X POST "$CF_API_BASE/zones/$CF_ZONE_ID/custom_hostnames" \
     -H "Authorization: Bearer $CF_TOKEN" \
     -H "Content-Type: application/json" \
     -d "$CUSTOM_HOSTNAME_PAYLOAD")
 
-if [ "$RESPONSE" -eq 201 ] || [ "$RESPONSE" -eq 200 ]; then
-    echo "[SUCCESS] Custom hostname $CF_HOSTNAME with origin $CF_ORIGIN has been created."
-    
-    CF_NEW_ID=$(curl -fsSL -X GET -H "Authorization: Bearer $CF_TOKEN" "$CF_API_BASE/zones/$CF_ZONE_ID/custom_hostnames?hostname=$CF_HOSTNAME" | grep -o '"id":"[^"]*' | cut -d'"' -f4 | head -n 1)
-    echo "[INFO] Custom hostname ID: $CF_NEW_ID"
+TXT_NAME=$(echo "$RESPONSE" | grep -o '"name": "[^"]*' | cut -d'"' -f4 | head -n 1)
+TXT_VALUE=$(echo "$RESPONSE" | grep -o '"value": "[^"]*' | cut -d'"' -f4 | head -n 1)
+
+TXT_NAME=$(echo "$RESPONSE" | grep -o '"name": "[^"]*' | cut -d'"' -f4 | head -n 1)
+TXT_VALUE=$(echo "$RESPONSE" | grep -o '"value": "[^"]*' | cut -d'"' -f4 | head -n 1)
+
+if [ -n "$TXT_NAME" ] && [ -n "$TXT_VALUE" ]; then
+    echo ""
+    echo "[SUCCESS] Custom hostname created successfully!"
+    echo ""
+    echo "TXT_NAME: $TXT_NAME"
+    echo "TXT_VALUE: $TXT_VALUE"
 else
-    echo "[ERROR] Failed to create custom hostname $CF_HOSTNAME. HTTP status code: $RESPONSE"
-    echo "[ERROR] Ensure token has permissions: Zone:SSL and Certificates:Edit"
+    ERROR_MESSAGE=$(echo "$RESPONSE" | grep -o '"message":"[^"]*' | cut -d'"' -f4 | head -n 1)
+    if [ -n "$ERROR_MESSAGE" ]; then
+        echo "[ERROR] Failed to create custom hostname: $ERROR_MESSAGE"
+    else
+        echo "[ERROR] Failed to create custom hostname"
+        echo "$RESPONSE"
+    fi
     exit 1
 fi
 
