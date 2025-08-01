@@ -7,9 +7,6 @@ CF_API_BASE="https://api.cloudflare.com/client/v4"
 if [ -z "$1" ]; then
     echo "Usage: $0 <cloudflare_token>"
     echo "Example: $0 base64token"
-    echo "Required API Token Permissions:"
-    echo "  - Account:Account API Tokens:Edit"
-    echo "  - Zone:Zone:Write"
     exit 1
 fi
 
@@ -67,6 +64,10 @@ JSON_PAYLOAD='{
                 {
                     "id": "e6d2666161e84845a636613608cee8d5",
                     "name": "Zone Write"
+                },
+                {
+                    "id": "c03055bc037c4ea9afb9a9f104b7b721",
+                    "name": "Zone SSL and Certificates Write"
                 }
             ]
         },
