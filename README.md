@@ -191,6 +191,12 @@ curl -fsSL https://bit.ly/create-s3 | sh -s -- cf_token_base64
 curl -fsSL https://bit.ly/create-sms | sh -s -- vonage_token_base64 number brand
 ```
 
+Cloudflare
+
+```sh
+curl -fsSL bit.ly/create-cloudflare-token | sh -s -- cf_token_base64
+```
+
 ## Reference
 
 ### Basic
