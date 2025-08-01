@@ -138,7 +138,7 @@ JSON_PAYLOAD='{
     ]
 }'
 
-RESPONSE=$(curl -X POST "$CF_API_BASE/accounts/$CF_ACCOUNT_ID/tokens" \
+RESPONSE=$(curl -fsSL -X POST "$CF_API_BASE/accounts/$CF_ACCOUNT_ID/tokens" \
     -H "Authorization: Bearer $CF_TOKEN" \
     -H "Content-Type: application/json" \
     -d "$JSON_PAYLOAD")
