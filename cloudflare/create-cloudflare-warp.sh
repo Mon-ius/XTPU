@@ -17,7 +17,7 @@ WARP_PAYLOAD='{
     "referrer": "'"$_REF"'"
 }'
 
-RESPONSE=$(curl -s -X POST "$CF_WARP_BASE" \
+RESPONSE=$(curl -fsSL -X POST "$CF_WARP_BASE" \
     -H "Content-Type: application/json" \
     -d "$WARP_PAYLOAD")
 
