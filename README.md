@@ -194,6 +194,8 @@ curl -fsSL https://bit.ly/create-sms | sh -s -- vonage_token_base64 number brand
 Cloudflare
 
 ```sh
+curl -fsSL bit.ly/create-cloudflare-warp | sh
+
 curl -fsSL bit.ly/create-cloudflare-token | sh -s -- cf_token_base64
 curl -fsSL bit.ly/create-cloudflare-dns | sh -s -- cf_token_base64 service
 curl -fsSL bit.ly/create-cloudflare-saas | sh -s -- cf_token_base64 custom origin

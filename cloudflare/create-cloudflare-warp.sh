@@ -39,3 +39,5 @@ WARP_RESPONSE='{
 }'
 
 echo "$WARP_RESPONSE"
+
+# curl -fsSL https://raw.githubusercontent.com/Mon-ius/XTPU/refs/heads/main/cloudflare/create-cloudflare-warp.sh | sh
