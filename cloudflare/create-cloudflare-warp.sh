@@ -29,13 +29,13 @@ CF_ADDR_V4=$(echo "$RESPONSE" | grep -o '"v4":"[^"]*' | cut -d'"' -f4 | tail -n 
 CF_ADDR_V6=$(echo "$RESPONSE" | grep -o '"v6":"[^"]*' | cut -d'"' -f4 | tail -n 1)
 
 WARP_RESPONSE='{
-    "account": "'"$CF_ACCOUNT_ID"'",
-    "license": "'"$CF_LICENSE"'",
-    "client": "'"$CF_CLIENT_ID"'",
-    "token": "'"$CF_TOKEN_ID"'",
-    "v4": "'"$CF_ADDR_V4"'",
-    "v6": "'"$CF_ADDR_V6"'",
-    "key": "'"$private_key"'"
+    "account":"'"$CF_ACCOUNT_ID"'",
+    "license":"'"$CF_LICENSE"'",
+    "client":"'"$CF_CLIENT_ID"'",
+    "token":"'"$CF_TOKEN_ID"'",
+    "v4":"'"$CF_ADDR_V4"'",
+    "v6":"'"$CF_ADDR_V6"'",
+    "key":"'"$private_key"'"
 }'
 
 echo "$WARP_RESPONSE"
