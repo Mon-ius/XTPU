@@ -25,6 +25,7 @@ CF_ACCOUNT_ID=$(echo "$RESPONSE" | grep -o '"id":"[^"]*' | cut -d'"' -f4 | head 
 CF_CLIENT_ID=$(echo "$RESPONSE" | grep -o '"client_id":"[^"]*' | cut -d'"' -f4 | head -n 1)
 CF_TOKEN_ID=$(echo "$RESPONSE" | grep -o '"token":"[^"]*' | cut -d'"' -f4 | head -n 1)
 CF_LICENSE=$(echo "$RESPONSE" | grep -o '"license":"[^"]*' | cut -d'"' -f4 | head -n 1)
+CF_PUBLIC_KEY=$(echo "$RESPONSE" | grep -o '"public_key":"[^"]*' | cut -d'"' -f4 | head -n 1)
 CF_ADDR_V4=$(echo "$RESPONSE" | grep -o '"v4":"[^"]*' | cut -d'"' -f4 | tail -n 1)
 CF_ADDR_V6=$(echo "$RESPONSE" | grep -o '"v6":"[^"]*' | cut -d'"' -f4 | tail -n 1)
 
@@ -35,7 +36,8 @@ WARP_RESPONSE='{
     "token":"'"$CF_TOKEN_ID"'",
     "v4":"'"$CF_ADDR_V4"'",
     "v6":"'"$CF_ADDR_V6"'",
-    "key":"'"$private_key"'"
+    "key":"'"$CF_PUBLIC_KEY"'",
+    "secret":"'"$private_key"'"
 }'
 
 echo "$WARP_RESPONSE"
