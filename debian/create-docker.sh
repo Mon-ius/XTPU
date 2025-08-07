@@ -2,6 +2,7 @@
 
 export DEBIAN_FRONTEND=noninteractive
 DOCKER="https://download.docker.com/linux/debian/gpg"
+
 VER=$(lsb_release -cs)
 ARCH=$(dpkg --print-architecture)
 
