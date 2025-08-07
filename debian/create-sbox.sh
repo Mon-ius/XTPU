@@ -1,5 +1,6 @@
 #!/bin/dash
 
+set +e
 export DEBIAN_FRONTEND=noninteractive
 SAGER_NET="https://sing-box.app/gpg.key"
 

@@ -1,5 +1,6 @@
 #!/bin/dash
 
+set +e
 export DEBIAN_FRONTEND=noninteractive
 NODEJS="https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key"
 NODE_VERSION="24"
