@@ -18,34 +18,23 @@ echo "[INFO] Domain: CF_DOMAIN=$CF_DOMAIN"
 
 IN_PART=$(cat <<EOF
         {
-            "type": "anytls",
-            "tag": "anytls-in",
+            "type": "vless",
+            "tag": "vless-in",
             "listen": "::",
             "listen_port": 443,
             "users": [
                 {
-                    "name": "trial",
-                    "password": "$CF_TOKEN_BASE64"
+                    "flow": "xtls-rprx-vision",
+                    "uuid": "$(echo "$CF_TOKEN_BASE64" | sha1sum | cut -c1-32 | sed 's/^\(........\)\(....\)\(....\)\(....\)\(............\).*$/\1-\2-\3-\4-\5/')"
                 },
                 {
-                    "name": "user",
-                    "password": "user-$CF_TOKEN_BASE64"
+                    "flow": "xtls-rprx-vision",
+                    "uuid": "$(echo "user-$CF_TOKEN_BASE64" | sha1sum | cut -c1-32 | sed 's/^\(........\)\(....\)\(....\)\(....\)\(............\).*$/\1-\2-\3-\4-\5/')"
                 },
                 {
-                    "name": "admin",
-                    "password": "admin-$CF_TOKEN_BASE64"
+                    "flow": "xtls-rprx-vision",
+                    "uuid": "$(echo "admin-$CF_TOKEN_BASE64" | sha1sum | cut -c1-32 | sed 's/^\(........\)\(....\)\(....\)\(....\)\(............\).*$/\1-\2-\3-\4-\5/')"
                 }
-            ],
-            "padding_scheme": [
-                "stop=8",
-                "0=30-30",
-                "1=100-400",
-                "2=400-500,c,500-1000,c,500-1000,c,500-1000,c,500-1000",
-                "3=9-9,500-1000",
-                "4=500-1000",
-                "5=500-1000",
-                "6=500-1000",
-                "7=500-1000"
             ],
             "tls": {
                 "enabled": true,
