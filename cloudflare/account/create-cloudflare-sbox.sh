@@ -66,29 +66,40 @@ DNS_PAYLOAD='{
 
 CONFIG_PAYLOAD=$(cat <<EOF
         {
-            "type": "vless",
-            "tag": "vless-in",
+            "type": "anytls",
+            "tag": "anytls-in",
             "listen": "::",
             "listen_port": 443,
             "users": [
                 {
-                    "flow": "xtls-rprx-vision",
-                    "uuid": "$(echo "$CF_TOKEN_BASE64" | sha1sum | cut -c1-32 | sed 's/^\(........\)\(....\)\(....\)\(....\)\(............\).*$/\1-\2-\3-\4-\5/')"
+                    "name": "trial",
+                    "password": "$CF_TOKEN_BASE64"
                 },
                 {
-                    "flow": "xtls-rprx-vision",
-                    "uuid": "$(echo "user-$CF_TOKEN_BASE64" | sha1sum | cut -c1-32 | sed 's/^\(........\)\(....\)\(....\)\(....\)\(............\).*$/\1-\2-\3-\4-\5/')"
+                    "name": "user",
+                    "password": "user-$CF_TOKEN_BASE64"
                 },
                 {
-                    "flow": "xtls-rprx-vision",
-                    "uuid": "$(echo "admin-$CF_TOKEN_BASE64" | sha1sum | cut -c1-32 | sed 's/^\(........\)\(....\)\(....\)\(....\)\(............\).*$/\1-\2-\3-\4-\5/')"
+                    "name": "admin",
+                    "password": "admin-$CF_TOKEN_BASE64"
                 }
+            ],
+            "padding_scheme": [
+                "stop=8",
+                "0=30-30",
+                "1=100-400",
+                "2=400-500,c,500-1000,c,500-1000,c,500-1000,c,500-1000",
+                "3=9-9,500-1000",
+                "4=500-1000",
+                "5=500-1000",
+                "6=500-1000",
+                "7=500-1000"
             ],
             "tls": {
                 "enabled": true,
-                "server_name": "$CF_SERVICE.$CF_DOMAIN",
+                "server_name": "$CF_ZONE.$CF_DOMAIN",
                 "acme": {
-                    "domain": "$CF_SERVICE.$CF_DOMAIN",
+                    "domain": "$CF_ZONE.$CF_DOMAIN",
                     "email": "admin@$CF_DOMAIN",
                     "dns01_challenge": {
                         "provider": "cloudflare",
