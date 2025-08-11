@@ -97,9 +97,9 @@ CONFIG_PAYLOAD=$(cat <<EOF
             ],
             "tls": {
                 "enabled": true,
-                "server_name": "$CF_ZONE.$CF_DOMAIN",
+                "server_name": "$CF_SERVICE.$CF_DOMAIN",
                 "acme": {
-                    "domain": "$CF_ZONE.$CF_DOMAIN",
+                    "domain": "$CF_SERVICE.$CF_DOMAIN",
                     "email": "admin@$CF_DOMAIN",
                     "dns01_challenge": {
                         "provider": "cloudflare",
