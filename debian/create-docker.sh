@@ -19,7 +19,12 @@ sudo mkdir -p /etc/docker
 sudo tee /etc/docker/daemon.json <<EOF
 {
     "ipv6": true,
-    "fixed-cidr-v6": "fd00::/64"
+    "fixed-cidr-v6": "fd00::/64",
+    "live-restore": true,
+    "storage-driver": "overlay2",
+    "log-opts": {
+        "max-size": "10m"
+    }
 }
 EOF
 sudo systemctl daemon-reload

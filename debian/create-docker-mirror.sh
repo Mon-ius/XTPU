@@ -16,7 +16,14 @@ sudo tee /etc/docker/daemon.json <<EOF
 {
     "registry-mirrors": [
         "https://docker.1ms.run"
-    ]
+    ],
+    "ipv6": true,
+    "fixed-cidr-v6": "fd00::/64",
+    "live-restore": true,
+    "storage-driver": "overlay2",
+    "log-opts": {
+        "max-size": "10m"
+    }
 }
 EOF
 sudo systemctl daemon-reload
