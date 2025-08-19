@@ -8,11 +8,12 @@ CF_API_BASE="https://api.cloudflare.com/client/v4"
 
 _CF_TOKEN_BASE64="base64encodedtoken"
 _CF_SERVICE="example"
+_PADDING_SCHEME="WyJzdG9wPTciLCIwPTE2LTE2IiwiMT04MC0yODAiLCIyPTIwMC0zMDAsYywzMDAtNjAwLGMsMzAwLTYwMCxjLDMwMC02MDAsYywzMDAtNjAwIiwiMz02LTYsMzUwLTcwMCIsIjQ9MzUwLTcwMCIsIjU9MzUwLTcwMCIsIjY9MzUwLTcwMCJd"
 
 if [ -z "$1" ]; then
     echo "Usage: $0 <cloudflare_token> [service]"
     echo "Example:"
-    echo "  $0 eW91ci10b2tlbg== example"
+    echo "  $0 eW91ci10b2tlbg== example WyJzdG9wPTMiLCIwPTkwMC0xNDAwIiwiMT05MDAtMTQwMCIsIjI9OTAwLTE0MDAiXQo="
     exit 1
 fi
 
@@ -27,6 +28,7 @@ sudo -E apt-get -qq install -o Dpkg::Options::="--force-confold" -y sing-box
 
 CF_TOKEN_BASE64="${1:-$_CF_TOKEN_BASE64}"
 CF_SERVICE="${2:-$_CF_SERVICE}"
+PADDING_SCHEME="${3:-$_PADDING_SCHEME}"
 CF_TOKEN=$(echo "$CF_TOKEN_BASE64" | base64 -d)
 
 CF_IP=$(curl -fsSL https://ipinfo.io/ip)
@@ -84,16 +86,7 @@ CONFIG_PAYLOAD=$(cat <<EOF
                     "password": "admin-$CF_TOKEN_BASE64"
                 }
             ],
-            "padding_scheme": [
-                "stop=7",
-                "0=16-16",
-                "1=80-280",
-                "2=200-300,c,300-600,c,300-600,c,300-600,c,300-600",
-                "3=6-6,350-700",
-                "4=350-700",
-                "5=350-700",
-                "6=350-700"
-            ],
+            "padding_scheme": $(echo "$PADDING_SCHEME" | base64 -d)
             "tls": {
                 "enabled": true,
                 "server_name": "$CF_SERVICE.$CF_DOMAIN",
