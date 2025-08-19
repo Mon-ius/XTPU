@@ -98,7 +98,6 @@ CONFIG_PAYLOAD=$(cat <<EOF
             "tls": {
                 "enabled": true,
                 "server_name": "$CF_SERVICE.$CF_DOMAIN",
-                "alpn": ["h2", "http/1.1"],
                 "min_version": "1.2",
                 "max_version": "1.3",
                 "cipher_suites": [
@@ -115,7 +114,8 @@ CONFIG_PAYLOAD=$(cat <<EOF
                     }
                 },
                 "alpn": [
-                    "h3"
+                    "h2",
+                    "http/1.1"
                 ]
             }
         }
