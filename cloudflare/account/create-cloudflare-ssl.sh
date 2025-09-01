@@ -21,13 +21,6 @@ CF_TOKEN=$(echo "$CF_TOKEN_BASE64" | base64 -d)
 NG_ACME=~/.acme.sh/acme.sh
 NG_SSL=/etc/nginx/ssl
 
-if ! command -v crontab >/dev/null 2>&1; then
-    echo "[INFO] Installing cron..."
-    sudo apt-get update && sudo apt-get install -y cron
-    sudo systemctl enable cron
-    sudo systemctl start cron
-fi
-
 CF_ACCOUNT_ID=$(curl -fsSL -X GET -H "Authorization: Bearer $CF_TOKEN" "$CF_API_BASE/accounts" | grep -o '"id":"[^"]*' | cut -d'"' -f4 | head -n 1)
 CF_TOKEN_ID=$(curl -fsSL -X GET -H "Authorization: Bearer $CF_TOKEN" "$CF_API_BASE/accounts/$CF_ACCOUNT_ID/tokens/verify" | grep -o '"id":"[^"]*' | cut -d'"' -f4 | head -n 1)
 CF_ZONE_ID=$(curl -fsSL -X GET -H "Authorization: Bearer $CF_TOKEN" "$CF_API_BASE/accounts/$CF_ACCOUNT_ID/tokens/$CF_TOKEN_ID" | grep -o 'com.cloudflare.api.account.zone.[^"]*' | sed 's/.*\.zone\.//')
