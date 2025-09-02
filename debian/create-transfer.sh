@@ -56,29 +56,29 @@ if [ -z "$TW_QUOTE_ID" ]; then
     exit 1
 fi
 
-TW_ADDRESS_PAYLOAD='{
-    "profile": '$TW_PROFILE_ID',
-    "details": {
-        "firstLine": "123 Main Street",
-        "city": "Hong Kong",
-        "country": "HK",
-        "postCode": "00000"
-    }
-}'
+# TW_ADDRESS_PAYLOAD='{
+#     "profile": '$TW_PROFILE_ID',
+#     "details": {
+#         "firstLine": "123 Main Street",
+#         "city": "Hong Kong",
+#         "country": "HK",
+#         "postCode": "00000"
+#     }
+# }'
 
-TW_ADDRESS_RESPONSE=$(curl -fsSL -X POST "$TW_API_BASE/v1/addresses" \
-    -H "Authorization: Bearer $TW_TOKEN" \
-    -H "Content-Type: application/json" \
-    -d "$TW_ADDRESS_PAYLOAD")
+# TW_ADDRESS_RESPONSE=$(curl -fsSL -X POST "$TW_API_BASE/v1/addresses" \
+#     -H "Authorization: Bearer $TW_TOKEN" \
+#     -H "Content-Type: application/json" \
+#     -d "$TW_ADDRESS_PAYLOAD")
 
-TW_ADDRESS_ID=$(echo "$TW_ADDRESS_RESPONSE" | grep -o '"id":[0-9]*' | cut -d':' -f2 | head -n 1)
+# TW_ADDRESS_ID=$(echo "$TW_ADDRESS_RESPONSE" | grep -o '"id":[0-9]*' | cut -d':' -f2 | head -n 1)
 
-if [ -z "$TW_ADDRESS_ID" ]; then
-    echo "[WARNING] Could not add address to profile, continuing..."
-    echo "$TW_ADDRESS_RESPONSE"
-else
-    echo "[INFO] Address added to profile: ID=$TW_ADDRESS_ID"
-fi
+# if [ -z "$TW_ADDRESS_ID" ]; then
+#     echo "[WARNING] Could not add address to profile, continuing..."
+#     echo "$TW_ADDRESS_RESPONSE"
+# else
+#     echo "[INFO] Address added to profile: ID=$TW_ADDRESS_ID"
+# fi
 
 TW_RECIPIENT_PAYLOAD_HK='{
     "type": "hongkong",
@@ -88,7 +88,13 @@ TW_RECIPIENT_PAYLOAD_HK='{
     "details": {
         "legalType": "PRIVATE",
         "bankCode": "'$TW_TARGET_BANK'",
-        "accountNumber": "'$TW_TARGET_ACCOUNT'"
+        "accountNumber": "'$TW_TARGET_ACCOUNT'",
+        "address": {
+            "firstLine": "123 Main Street",
+            "city": "Hong Kong",
+            "country": "HK",
+            "postCode": "00000"
+        }
     }
 }'
 
@@ -103,7 +109,6 @@ TW_RECIPIENT_RESPONSE=$(curl -fsSL -X POST "$TW_API_BASE/v1/accounts" \
     -d "$TW_RECIPIENT_PAYLOAD_HK")
 
 TW_RECIPIENT_ID=$(echo "$TW_RECIPIENT_RESPONSE" | grep -o '"id":[0-9]*' | cut -d':' -f2 | head -n 1)
-
 
 TW_TRANSFER_PAYLOAD='{
     "targetAccount": '$TW_RECIPIENT_ID',
@@ -136,8 +141,6 @@ echo "[INFO] Profile ID: TW_PROFILE_ID=$TW_PROFILE_ID"
 echo "[INFO] Quote ID: TW_QUOTE_ID=$TW_QUOTE_ID"
 echo "[INFO] Recipient ID: $TW_RECIPIENT_ID"
 echo "[INFO] Transfer ID: $TW_TRANSFER_ID"
-
-echo "$TW_RECIPIENT_RESPONSE"
 
 # if [ -n "$TW_PAYMENT_STATUS" ]; then
 #     echo "[SUCCESS] Transfer funded from balance"
