@@ -34,18 +34,6 @@ TW_QUOTE_PAYLOAD='{
     "sourceAmount": '$TW_AMOUNT'
 }'
 
-TW_RECIPIENT_PAYLOAD_HK='{
-    "currency": "'$TW_TARGET_CURRENCY'",
-    "type": "hongkong",
-    "profile": '$TW_PROFILE_ID',
-    "accountHolderName": "'$TW_TARGET_NAME'",
-    "details": {
-        "legalType": "PRIVATE",
-        "bankCode": "'$TW_TARGET_BANK'",
-        "accountNumber": "'$TW_TARGET_ACCOUNT'"
-    }
-}'
-
 
 TW_PROFILE_ID=$(curl -fsSL -X GET -H "Authorization: Bearer $TW_TOKEN" "$TW_API_BASE/v2/profiles" | grep -o '"id":[0-9]*' | cut -d':' -f2 | head -n 1)
 
@@ -67,6 +55,18 @@ fi
 echo "[INFO] Profile ID: TW_PROFILE_ID=$TW_PROFILE_ID"
 echo "[INFO] Quote ID: TW_QUOTE_ID=$TW_QUOTE_ID"
 
+TW_RECIPIENT_PAYLOAD_HK='{
+    "type": "hongkong",
+    "currency": "'$TW_TARGET_CURRENCY'",
+    "profile": "'$TW_PROFILE_ID'",
+    "accountHolderName": '$TW_TARGET_NAME',
+    "details": {
+        "legalType": "PRIVATE",
+        "bankCode": "'$TW_TARGET_BANK'",
+        "accountNumber": "'$TW_TARGET_ACCOUNT'"
+    }
+}'
+
 # TW_ACCOUNT_REQUIREMENTS=$(curl -fsSL -X GET "$TW_API_BASE/v1/quotes/$TW_QUOTE_ID/account-requirements" \
 #     -H "Authorization: Bearer $TW_TOKEN")
 
@@ -74,5 +74,3 @@ curl -X POST "$TW_API_BASE/v1/accounts" \
     -H "Authorization: Bearer $TW_TOKEN" \
     -H "Content-Type: application/json" \
     -d "$TW_RECIPIENT_PAYLOAD_HK"
-
-echo $TW_RECIPIENT_PAYLOAD_HK
