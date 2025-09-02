@@ -107,6 +107,7 @@ echo "[INFO] Transfer ID: $TW_TRANSFER_ID"
 curl -X POST "$TW_API_BASE/v3/profiles/$TW_PROFILE_ID/transfers/$TW_TRANSFER_ID/payments" \
     -H "Authorization: Bearer $TW_TOKEN" \
     -H "Content-Type: application/json" \
+    -H "X-idempotence-uuid: $TW_QUOTE_ID" \
     -d '{
         "type": "BALANCE"
     }'
