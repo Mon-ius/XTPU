@@ -73,27 +73,32 @@ TW_RECIPIENT_PAYLOAD_HK='{
     }
 }'
 
-TW_RECIPIENT_ID=$(curl -fsSL -X POST "$TW_API_BASE/v1/accounts" \
+curl -X POST "$TW_API_BASE/v1/accounts" \
     -H "Authorization: Bearer $TW_TOKEN" \
     -H "Content-Type: application/json" \
-    -d "$TW_RECIPIENT_PAYLOAD_HK" | grep -o '"id":[0-9]*' | cut -d':' -f2 | head -n 1)
+    -d "$TW_RECIPIENT_PAYLOAD_HK"
 
-TW_TRANSFER_PAYLOAD='{
-    "targetAccount": '$TW_RECIPIENT_ID',
-    "quoteUuid": "'$TW_QUOTE_ID'",
-    "customerTransactionId": "'$TW_QUOTE_ID'",
-    "details": {
-        "reference": "Transfer to '$TW_TARGET_NAME'",
-        "transferPurpose": "verification.transfers.purpose.pay.bills",
-        "transferPurposeSubTransferPurpose": "verification.sub.transfers.purpose.pay.interpretation.service",
-        "sourceOfFunds": "verification.source.of.funds.other"
-    }
-}'
+# TW_RECIPIENT_ID=$(curl -fsSL -X POST "$TW_API_BASE/v1/accounts" \
+#     -H "Authorization: Bearer $TW_TOKEN" \
+#     -H "Content-Type: application/json" \
+#     -d "$TW_RECIPIENT_PAYLOAD_HK" | grep -o '"id":[0-9]*' | cut -d':' -f2 | head -n 1)
 
-curl -X POST "$TW_API_BASE/v1/transfers" \
-    -H "Authorization: Bearer $TW_TOKEN" \
-    -H "Content-Type: application/json" \
-    -d "$TW_TRANSFER_PAYLOAD"
+# TW_TRANSFER_PAYLOAD='{
+#     "targetAccount": '$TW_RECIPIENT_ID',
+#     "quoteUuid": "'$TW_QUOTE_ID'",
+#     "customerTransactionId": "'$TW_QUOTE_ID'",
+#     "details": {
+#         "reference": "Transfer to '$TW_TARGET_NAME'",
+#         "transferPurpose": "verification.transfers.purpose.pay.bills",
+#         "transferPurposeSubTransferPurpose": "verification.sub.transfers.purpose.pay.interpretation.service",
+#         "sourceOfFunds": "verification.source.of.funds.other"
+#     }
+# }'
+
+# curl -X POST "$TW_API_BASE/v1/transfers" \
+#     -H "Authorization: Bearer $TW_TOKEN" \
+#     -H "Content-Type: application/json" \
+#     -d "$TW_TRANSFER_PAYLOAD"
 
 
 # TW_TRANSFER_ID=$(curl -fsSL -X POST "$TW_API_BASE/v1/transfers" \
