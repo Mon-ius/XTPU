@@ -51,8 +51,7 @@ if [ -z "$TW_QUOTE_ID" ]; then
     exit 1
 fi
 
-echo "[INFO] Profile ID: TW_PROFILE_ID=$TW_PROFILE_ID"
-echo "[INFO] Quote ID: TW_QUOTE_ID=$TW_QUOTE_ID"
+
 
 TW_RECIPIENT_PAYLOAD_HK='{
     "type": "hongkong",
@@ -67,27 +66,11 @@ TW_RECIPIENT_PAYLOAD_HK='{
     }
 }'
 
-TW_RECIPIENT_RESPONSE=$(curl -fsSL -X POST "$TW_API_BASE/v1/accounts" \
+TW_RECIPIENT_ID=$(curl -fsSL -X POST "$TW_API_BASE/v1/accounts" \
     -H "Authorization: Bearer $TW_TOKEN" \
     -H "Content-Type: application/json" \
-    -d "$TW_RECIPIENT_PAYLOAD_HK")
+    -d "$TW_RECIPIENT_PAYLOAD_HK" | grep -o '"id":[0-9]*' | cut -d':' -f2 | head -n 1)
 
-if [ $? -ne 0 ]; then
-    echo "[ERROR] Failed to create recipient account"
-    echo "[DEBUG] Payload: $TW_RECIPIENT_PAYLOAD_HK"
-    echo "[DEBUG] Response: $TW_RECIPIENT_RESPONSE"
-    exit 1
-fi
-
-TW_RECIPIENT_ID=$(echo "$TW_RECIPIENT_RESPONSE" | grep -o '"id":[0-9]*' | cut -d':' -f2 | head -n 1)
-
-if [ -z "$TW_RECIPIENT_ID" ]; then
-    echo "[ERROR] Unable to extract recipient ID from response"
-    echo "[DEBUG] Response: $TW_RECIPIENT_RESPONSE"
-    exit 1
-fi
-
-echo "[SUCCESS] Recipient account created successfully"
+echo "[INFO] Profile ID: TW_PROFILE_ID=$TW_PROFILE_ID"
+echo "[INFO] Quote ID: TW_QUOTE_ID=$TW_QUOTE_ID"
 echo "[INFO] Recipient ID: $TW_RECIPIENT_ID"
-echo "[INFO] Full response:"
-echo "$TW_RECIPIENT_RESPONSE" | sed 's/,/,\n/g' | sed 's/{/{\n/g' | sed 's/}/\n}/g'
