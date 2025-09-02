@@ -88,16 +88,7 @@ TW_TRANSFER_PAYLOAD='{
     "quoteUuid": "'$TW_QUOTE_ID'",
     "customerTransactionId": "'$TW_QUOTE_ID'",
     "details": {
-        "reference": "Transfer to '$TW_TARGET_NAME'",
-        "transferPurpose": "verification.transfers.purpose.pay.bills",
-        "transferPurposeSubTransferPurpose": "verification.sub.transfers.purpose.pay.interpretation.service",
-        "sourceOfFunds": "verification.source.of.funds.other"
-    },
-    "address": {
-        "firstLine": "123 Main Street",
-        "city": "Hong Kong",
-        "country": "HK",
-        "postCode": "00000"
+        "reference": "Transfer to '$TW_TARGET_NAME'"
     }
 }'
 
