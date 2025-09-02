@@ -68,7 +68,7 @@ TW_RECIPIENT_PAYLOAD_HK='{
     "address": {
         "firstLine": "123 Main Street",
         "city": "Hong Kong",
-        "countryCode": "HK",
+        "country": "HK",
         "postCode": 00000
     }
 }'
