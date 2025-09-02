@@ -64,6 +64,10 @@ TW_RECIPIENT_PAYLOAD_HK='{
         "legalType": "PRIVATE",
         "bankCode": "'$TW_TARGET_BANK'",
         "accountNumber": "'$TW_TARGET_ACCOUNT'"
+    },
+    "address": {
+        "country": "HK",
+        "city": "Hong Kong"
     }
 }'
 
