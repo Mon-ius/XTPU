@@ -104,11 +104,11 @@ echo "[INFO] Quote ID: TW_QUOTE_ID=$TW_QUOTE_ID"
 echo "[INFO] Recipient ID: $TW_RECIPIENT_ID"
 echo "[INFO] Transfer ID: $TW_TRANSFER_ID"
 
-TW_FUND_RESPONSE=$(curl -fsSL -X POST "$TW_API_BASE/v3/profiles/$TW_PROFILE_ID/transfers/$TW_TRANSFER_ID/payments" \
-    -H "Authorization: Bearer $TW_TOKEN" \
-    -H "Content-Type: application/json" \
-    -d '{
-        "type": "BALANCE"
-    }')
+# TW_FUND_RESPONSE=$(curl -fsSL -X POST "$TW_API_BASE/v3/profiles/$TW_PROFILE_ID/transfers/$TW_TRANSFER_ID/payments" \
+#     -H "Authorization: Bearer $TW_TOKEN" \
+#     -H "Content-Type: application/json" \
+#     -d '{
+#         "type": "BALANCE"
+#     }')
 
-echo "$TW_FUND_RESPONSE"
+# echo "$TW_FUND_RESPONSE"
