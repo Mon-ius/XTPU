@@ -66,9 +66,9 @@ TW_RECIPIENT_PAYLOAD_HK='{
         "accountNumber": "'$TW_TARGET_ACCOUNT'"
     },
     "address": {
-        "country": "HK",
-        "city": "Hong Kong",
         "firstLine": "123 Main Street",
+        "city": "Hong Kong",
+        "countryCode": "HK",
         "postCode": 00000
     }
 }'
