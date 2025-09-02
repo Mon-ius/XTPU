@@ -66,6 +66,24 @@ TW_RECIPIENT_ID=$(curl -fsSL -X POST "$TW_API_BASE/v1/accounts" \
     -H "Content-Type: application/json" \
     -d "$TW_RECIPIENT_PAYLOAD_HK" | grep -o '"id":[0-9]*' | cut -d':' -f2 | head -n 1)
 
+TW_TRANSFER_PAYLOAD='{
+    "targetAccount": '$TW_RECIPIENT_ID',
+    "quoteUuid": "'$TW_QUOTE_ID'",
+    "customerTransactionId": "'$(date +%s%N)'",
+    "details": {
+        "reference": "Transfer to '$TW_TARGET_NAME'",
+        "transferPurpose": "verification.transfers.purpose.pay.bills",
+        "transferPurposeSubTransferPurpose": "verification.sub.transfers.purpose.pay.interpretation.service",
+        "sourceOfFunds": "verification.source.of.funds.other"
+    }
+}'
+
+TW_TRANSFER_RESPONSE=$(curl -fsSL -X POST "$TW_API_BASE/v1/transfers" \
+    -H "Authorization: Bearer $TW_TOKEN" \
+    -H "Content-Type: application/json" \
+    -d "$TW_TRANSFER_PAYLOAD")
+
+
 echo "[INFO] Profile ID: TW_PROFILE_ID=$TW_PROFILE_ID"
 echo "[INFO] Quote ID: TW_QUOTE_ID=$TW_QUOTE_ID"
 echo "[INFO] Recipient ID: $TW_RECIPIENT_ID"
