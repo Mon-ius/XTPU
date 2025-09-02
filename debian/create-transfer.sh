@@ -92,6 +92,12 @@ TW_TRANSFER_PAYLOAD='{
         "transferPurpose": "verification.transfers.purpose.pay.bills",
         "transferPurposeSubTransferPurpose": "verification.sub.transfers.purpose.pay.interpretation.service",
         "sourceOfFunds": "verification.source.of.funds.other"
+    },
+    "address": {
+        "firstLine": "123 Main Street",
+        "city": "Hong Kong",
+        "country": "HK",
+        "postCode": "00000"
     }
 }'
 
