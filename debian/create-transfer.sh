@@ -87,7 +87,7 @@ TW_TRANSFER_PAYLOAD='{
 curl -X POST "$TW_API_BASE/v1/transfers" \
     -H "Authorization: Bearer $TW_TOKEN" \
     -H "Content-Type: application/json" \
-    -d "$TW_TRANSFER_PAYLOAD" | grep -o '"id":[0-9]*' | cut -d':' -f2 | head -n 1
+    -d "$TW_TRANSFER_PAYLOAD"
 
 
 TW_TRANSFER_ID=$(curl -fsSL -X POST "$TW_API_BASE/v1/transfers" \
