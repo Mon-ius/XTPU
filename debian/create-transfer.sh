@@ -41,6 +41,8 @@ fi
 
 echo "[INFO] Profile ID: TW_PROFILE_ID=$TW_PROFILE_ID"
 
+echo $TW_QUOTE_PAYLOAD
+
 curl -X POST "$TW_API_BASE/v3/profiles/$TW_PROFILE_ID/quotes" \
     -H "Authorization: Bearer $TW_TOKEN" \
     -H "Content-Type: application/json" \
