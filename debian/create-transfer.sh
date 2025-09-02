@@ -78,6 +78,11 @@ TW_RECIPIENT_ID=$(curl -fsSL -X POST "$TW_API_BASE/v1/accounts" \
     -H "Content-Type: application/json" \
     -d "$TW_RECIPIENT_PAYLOAD_HK" | grep -o '"id":[0-9]*' | cut -d':' -f2 | head -n 1)
 
+if [ -z "$TW_RECIPIENT_ID" ]; then
+    echo "[ERROR] Unable to get recipient id. Recipient creation may have failed."
+    exit 1
+fi
+
 TW_TRANSFER_PAYLOAD='{
     "targetAccount": '$TW_RECIPIENT_ID',
     "quoteUuid": "'$TW_QUOTE_ID'",
@@ -91,6 +96,11 @@ TW_TRANSFER_ID=$(curl -fsSL -X POST "$TW_API_BASE/v1/transfers" \
     -H "Authorization: Bearer $TW_TOKEN" \
     -H "Content-Type: application/json" \
     -d "$TW_TRANSFER_PAYLOAD" | grep -o '"id":[0-9]*' | cut -d':' -f2 | head -n 1)
+
+if [ -z "$TW_TRANSFER_ID" ]; then
+    echo "[ERROR] Unable to get transfer id. Transfer creation may have failed."
+    exit 1
+fi
 
 TW_FUND_RESPONSE=$(curl -fsSL -X POST "$TW_API_BASE/v3/profiles/$TW_PROFILE_ID/transfers/$TW_TRANSFER_ID/payments" \
     -H "Authorization: Bearer $TW_TOKEN" \
