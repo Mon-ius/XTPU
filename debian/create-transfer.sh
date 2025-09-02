@@ -1,21 +1,20 @@
 #!/bin/dash
-
 set +e
 
 TW_API_BASE="https://api.transferwise.com"
 _TW_TOKEN_BASE64='base64encodedtoken'
 _TW_SOURCE_CURRENCY='USD'
-_TW_TARGET_CURRENCY='HKD' # HKD/CNY
+_TW_TARGET_CURRENCY='HKD'
 _TW_AMOUNT=100
-
 _TW_TARGET_ACCOUNT='123456789012'
 _TW_TARGET_NAME='John Smith'
 _TW_TARGET_BANK='004'
+_TW_TARGET_DOB='1990-01-01'
 
 if [ -z "$1" ]; then
-    echo "Usage: $0 <wise_token> [source_currency] [target_currency] [amount] [target_account] [target_name] [target_bank]"
+    echo "Usage: $0 <wise_token> [source_currency] [target_currency] [amount] [target_account] [target_name] [target_bank] [target_dob]"
     echo "Example:"
-    echo "  $0 eW91ci10b2tlbg== USD HKD 100 123456789012 'John Smith' 004" 
+    echo "  $0 eW91ci10b2tlbg== USD HKD 100 123456789012 'John Smith' 004 1990-01-01"
     exit 1
 fi
 
@@ -26,6 +25,7 @@ TW_AMOUNT="${4:-$_TW_AMOUNT}"
 TW_TARGET_ACCOUNT="${5:-$_TW_TARGET_ACCOUNT}"
 TW_TARGET_NAME="${6:-$_TW_TARGET_NAME}"
 TW_TARGET_BANK="${7:-$_TW_TARGET_BANK}"
+TW_TARGET_DOB="${8:-$_TW_TARGET_DOB}"
 
 TW_TOKEN=$(echo "$TW_TOKEN_BASE64" | base64 -d)
 TW_QUOTE_PAYLOAD='{
@@ -34,11 +34,10 @@ TW_QUOTE_PAYLOAD='{
     "sourceAmount": '$TW_AMOUNT'
 }'
 
-
 TW_PROFILE_ID=$(curl -fsSL -X GET -H "Authorization: Bearer $TW_TOKEN" "$TW_API_BASE/v2/profiles" | grep -o '"id":[0-9]*' | cut -d':' -f2 | head -n 1)
 
 if [ -z "$TW_PROFILE_ID" ]; then
-    echo "[ERROR] Unable to profile id. Please check your API token."
+    echo "[ERROR] Unable to get profile id. Please check your API token."
     exit 1
 fi
 
@@ -58,21 +57,37 @@ echo "[INFO] Quote ID: TW_QUOTE_ID=$TW_QUOTE_ID"
 TW_RECIPIENT_PAYLOAD_HK='{
     "type": "hongkong",
     "currency": "'$TW_TARGET_CURRENCY'",
-    "profile": "'$TW_PROFILE_ID'",
-    "accountHolderName": '$TW_TARGET_NAME',
+    "profile": '$TW_PROFILE_ID',
+    "accountHolderName": "'$TW_TARGET_NAME'",
     "details": {
         "legalType": "PRIVATE",
         "bankCode": "'$TW_TARGET_BANK'",
-        "accountNumber": "'$TW_TARGET_ACCOUNT'"
+        "accountNumber": "'$TW_TARGET_ACCOUNT'",
+        "dateOfBirth": "'$TW_TARGET_DOB'"
     }
 }'
 
-# TW_ACCOUNT_REQUIREMENTS=$(curl -fsSL -X GET "$TW_API_BASE/v1/quotes/$TW_QUOTE_ID/account-requirements" \
-#     -H "Authorization: Bearer $TW_TOKEN")
-
-curl -X POST "$TW_API_BASE/v1/accounts" \
+TW_RECIPIENT_RESPONSE=$(curl -fsSL -X POST "$TW_API_BASE/v1/accounts" \
     -H "Authorization: Bearer $TW_TOKEN" \
     -H "Content-Type: application/json" \
-    -d "$TW_RECIPIENT_PAYLOAD_HK"
+    -d "$TW_RECIPIENT_PAYLOAD_HK")
 
-echo "$TW_RECIPIENT_PAYLOAD_HK"
+if [ $? -ne 0 ]; then
+    echo "[ERROR] Failed to create recipient account"
+    echo "[DEBUG] Payload: $TW_RECIPIENT_PAYLOAD_HK"
+    echo "[DEBUG] Response: $TW_RECIPIENT_RESPONSE"
+    exit 1
+fi
+
+TW_RECIPIENT_ID=$(echo "$TW_RECIPIENT_RESPONSE" | grep -o '"id":[0-9]*' | cut -d':' -f2 | head -n 1)
+
+if [ -z "$TW_RECIPIENT_ID" ]; then
+    echo "[ERROR] Unable to extract recipient ID from response"
+    echo "[DEBUG] Response: $TW_RECIPIENT_RESPONSE"
+    exit 1
+fi
+
+echo "[SUCCESS] Recipient account created successfully"
+echo "[INFO] Recipient ID: $TW_RECIPIENT_ID"
+echo "[INFO] Full response:"
+echo "$TW_RECIPIENT_RESPONSE" | sed 's/,/,\n/g' | sed 's/{/{\n/g' | sed 's/}/\n}/g'
