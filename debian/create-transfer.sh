@@ -102,23 +102,28 @@ if [ -z "$TW_TRANSFER_ID" ]; then
     exit 1
 fi
 
-TW_FUND_RESPONSE=$(curl -fsSL -X POST "$TW_API_BASE/v3/profiles/$TW_PROFILE_ID/transfers/$TW_TRANSFER_ID/payments" \
-    -H "Authorization: Bearer $TW_TOKEN" \
-    -H "Content-Type: application/json" \
-    -d "$TW_FUND_PAYLOAD")
+# TW_FUND_RESPONSE=$(curl -fsSL -X POST "$TW_API_BASE/v3/profiles/$TW_PROFILE_ID/transfers/$TW_TRANSFER_ID/payments" \
+#     -H "Authorization: Bearer $TW_TOKEN" \
+#     -H "Content-Type: application/json" \
+#     -d "$TW_FUND_PAYLOAD")
 
-TW_PAYMENT_STATUS=$(echo "$TW_FUND_RESPONSE" | grep -o '"status":"[^"]*' | cut -d'"' -f4 | head -n 1)
+# TW_PAYMENT_STATUS=$(echo "$TW_FUND_RESPONSE" | grep -o '"status":"[^"]*' | cut -d'"' -f4 | head -n 1)
 
 echo "[INFO] Profile ID: TW_PROFILE_ID=$TW_PROFILE_ID"
 echo "[INFO] Quote ID: TW_QUOTE_ID=$TW_QUOTE_ID"
 echo "[INFO] Recipient ID: $TW_RECIPIENT_ID"
 echo "[INFO] Transfer ID: $TW_TRANSFER_ID"
 
-if [ -n "$TW_PAYMENT_STATUS" ]; then
-    echo "[SUCCESS] Transfer funded from balance"
-    echo "[INFO] Payment Status: $TW_PAYMENT_STATUS"
-else
-    echo "[WARNING] Transfer funding initiated - check status"
-    echo "$TW_TRANSFER_RESPONSE" 
-fi
+curl -X POST "$TW_API_BASE/v3/profiles/$TW_PROFILE_ID/transfers/$TW_TRANSFER_ID/payments" \
+    -H "Authorization: Bearer $TW_TOKEN" \
+    -H "Content-Type: application/json" \
+    -d "$TW_FUND_PAYLOAD"
+
+# if [ -n "$TW_PAYMENT_STATUS" ]; then
+#     echo "[SUCCESS] Transfer funded from balance"
+#     echo "[INFO] Payment Status: $TW_PAYMENT_STATUS"
+# else
+#     echo "[WARNING] Transfer funding initiated - check status"
+#     echo "$TW_TRANSFER_RESPONSE" 
+# fi
 
