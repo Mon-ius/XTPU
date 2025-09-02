@@ -26,11 +26,17 @@ TW_TARGET_NAME="${6:-$_TW_TARGET_NAME}"
 TW_TARGET_BANK="${7:-$_TW_TARGET_BANK}"
 
 TW_TOKEN=$(echo "$TW_TOKEN_BASE64" | base64 -d)
+
 TW_QUOTE_PAYLOAD='{
     "sourceCurrency": "'$TW_SOURCE_CURRENCY'",
     "targetCurrency": "'$TW_TARGET_CURRENCY'",
     "sourceAmount": '$TW_AMOUNT'
 }'
+
+TW_FUND_PAYLOAD='{
+    "type": "BALANCE"
+}'
+
 
 TW_PROFILE_ID=$(curl -fsSL -X GET -H "Authorization: Bearer $TW_TOKEN" "$TW_API_BASE/v2/profiles" | grep -o '"id":[0-9]*' | cut -d':' -f2 | head -n 1)
 
@@ -83,7 +89,23 @@ TW_TRANSFER_ID=$(curl -fsSL -X POST "$TW_API_BASE/v1/transfers" \
     -H "Content-Type: application/json" \
     -d "$TW_TRANSFER_PAYLOAD" | grep -o '"id":[0-9]*' | cut -d':' -f2 | head -n 1)
 
+TW_FUND_RESPONSE=$(curl -fsSL -X POST "$TW_API_BASE/v3/profiles/$TW_PROFILE_ID/transfers/$TW_TRANSFER_ID/payments" \
+    -H "Authorization: Bearer $TW_TOKEN" \
+    -H "Content-Type: application/json" \
+    -d "$TW_FUND_PAYLOAD")
+
+TW_PAYMENT_STATUS=$(echo "$TW_FUND_RESPONSE" | grep -o '"status":"[^"]*' | cut -d'"' -f4 | head -n 1)
+
 echo "[INFO] Profile ID: TW_PROFILE_ID=$TW_PROFILE_ID"
 echo "[INFO] Quote ID: TW_QUOTE_ID=$TW_QUOTE_ID"
 echo "[INFO] Recipient ID: $TW_RECIPIENT_ID"
 echo "[INFO] Transfer ID: $TW_TRANSFER_ID"
+
+if [ -n "$TW_PAYMENT_STATUS" ]; then
+    echo "[SUCCESS] Transfer funded from balance"
+    echo "[INFO] Payment Status: $TW_PAYMENT_STATUS"
+else
+    echo "[WARNING] Transfer funding initiated - check status"
+    echo "$TW_TRANSFER_RESPONSE" 
+fi
+
