@@ -9,12 +9,11 @@ _TW_AMOUNT=100
 _TW_TARGET_ACCOUNT='123456789012'
 _TW_TARGET_NAME='John Smith'
 _TW_TARGET_BANK='004'
-_TW_TARGET_DOB='1990-01-01'
 
 if [ -z "$1" ]; then
-    echo "Usage: $0 <wise_token> [source_currency] [target_currency] [amount] [target_account] [target_name] [target_bank] [target_dob]"
+    echo "Usage: $0 <wise_token> [source_currency] [target_currency] [amount] [target_account] [target_name] [target_bank]"
     echo "Example:"
-    echo "  $0 eW91ci10b2tlbg== USD HKD 100 123456789012 'John Smith' 004 1990-01-01"
+    echo "  $0 eW91ci10b2tlbg== USD HKD 100 123456789012 'John Smith' 004"
     exit 1
 fi
 
@@ -25,7 +24,6 @@ TW_AMOUNT="${4:-$_TW_AMOUNT}"
 TW_TARGET_ACCOUNT="${5:-$_TW_TARGET_ACCOUNT}"
 TW_TARGET_NAME="${6:-$_TW_TARGET_NAME}"
 TW_TARGET_BANK="${7:-$_TW_TARGET_BANK}"
-TW_TARGET_DOB="${8:-$_TW_TARGET_DOB}"
 
 TW_TOKEN=$(echo "$TW_TOKEN_BASE64" | base64 -d)
 TW_QUOTE_PAYLOAD='{
@@ -51,8 +49,6 @@ if [ -z "$TW_QUOTE_ID" ]; then
     exit 1
 fi
 
-
-
 TW_RECIPIENT_PAYLOAD_HK='{
     "type": "hongkong",
     "currency": "'$TW_TARGET_CURRENCY'",
@@ -61,8 +57,7 @@ TW_RECIPIENT_PAYLOAD_HK='{
     "details": {
         "legalType": "PRIVATE",
         "bankCode": "'$TW_TARGET_BANK'",
-        "accountNumber": "'$TW_TARGET_ACCOUNT'",
-        "dateOfBirth": "'$TW_TARGET_DOB'"
+        "accountNumber": "'$TW_TARGET_ACCOUNT'"
     }
 }'
 
