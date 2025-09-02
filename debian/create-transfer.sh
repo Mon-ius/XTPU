@@ -75,7 +75,7 @@ TW_RECIPIENT_ID=$(curl -fsSL -X POST "$TW_API_BASE/v1/accounts" \
 TW_TRANSFER_PAYLOAD='{
     "targetAccount": '$TW_RECIPIENT_ID',
     "quoteUuid": "'$TW_QUOTE_ID'",
-    "customerTransactionId": "'$(date +%s%N)'",
+    "customerTransactionId": "'$TW_QUOTE_ID'",
     "details": {
         "reference": "Transfer to '$TW_TARGET_NAME'",
         "transferPurpose": "verification.transfers.purpose.pay.bills",
