@@ -108,10 +108,10 @@ curl -X POST "$TW_API_BASE/v1/transfers" \
 
 # TW_PAYMENT_STATUS=$(echo "$TW_FUND_RESPONSE" | grep -o '"status":"[^"]*' | cut -d'"' -f4 | head -n 1)
 
-# echo "[INFO] Profile ID: TW_PROFILE_ID=$TW_PROFILE_ID"
-# echo "[INFO] Quote ID: TW_QUOTE_ID=$TW_QUOTE_ID"
-# echo "[INFO] Recipient ID: $TW_RECIPIENT_ID"
-# echo "[INFO] Transfer ID: $TW_TRANSFER_ID"
+echo "[INFO] Profile ID: TW_PROFILE_ID=$TW_PROFILE_ID"
+echo "[INFO] Quote ID: TW_QUOTE_ID=$TW_QUOTE_ID"
+echo "[INFO] Recipient ID: $TW_RECIPIENT_ID"
+echo "[INFO] Transfer ID: $TW_TRANSFER_ID"
 
 # if [ -n "$TW_PAYMENT_STATUS" ]; then
 #     echo "[SUCCESS] Transfer funded from balance"
