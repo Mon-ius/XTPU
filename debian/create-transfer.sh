@@ -6,7 +6,7 @@ TW_API_BASE="https://api.transferwise.com"
 _TW_TOKEN_BASE64='base64encodedtoken'
 _TW_SOURCE_CURRENCY='USD'
 _TW_TARGET_CURRENCY='HKD' # HKD/CNY
-_TW_AMOUNT='100'
+_TW_AMOUNT=100
 
 _TW_TARGET_ACCOUNT='123456789012'
 _TW_TARGET_NAME='John Smith'
@@ -41,10 +41,19 @@ fi
 
 echo "[INFO] Profile ID: TW_PROFILE_ID=$TW_PROFILE_ID"
 
-curl -fsSL -X POST "$TW_API_BASE/v3/profiles/$TW_PROFILE_ID/quotes" \
+curl -X POST "$TW_API_BASE/v3/profiles/$TW_PROFILE_ID/quotes" \
     -H "Authorization: Bearer $TW_TOKEN" \
     -H "Content-Type: application/json" \
-    -d "$QUOTE_PAYLOAD"
+    -d "$TW_QUOTE_PAYLOAD"
+
+# curl -X POST "$TW_API_BASE/v3/profiles/$TW_PROFILE_ID/quotes" \
+#     -H "Authorization: Bearer $TW_TOKEN" \
+#     -H 'Content-Type: application/json' \
+#     -d '{
+#             "sourceCurrency": "USD",
+#             "targetCurrency": "HKD",
+#             "sourceAmount": 100
+#         }'
 
 # curl -X POST https://api.sandbox.transferwise.tech/v3/profiles/{{profileId}}/quotes \
 #      -H 'Authorization: Bearer <your api token>' \
