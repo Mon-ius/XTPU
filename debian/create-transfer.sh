@@ -28,7 +28,7 @@ TW_TARGET_BANK="${7:-$_TW_TARGET_BANK}"
 TW_TARGET_ADDRESS="${8:-$_TW_TARGET_ADDRESS}"
 
 TW_TOKEN=$(echo "$TW_TOKEN_BASE64" | base64 -d)
-TW_AMOUNT=$(echo "scale=2; ($TW_AMOUNT - 8) * 0.97" | bc)
+TW_AMOUNT=$(echo "scale=2; ($TW_AMOUNT - 2) * 0.95" | bc)
 TW_QUOTE_PAYLOAD='{
     "sourceCurrency": "'$TW_SOURCE_CURRENCY'",
     "targetCurrency": "'$TW_TARGET_CURRENCY'",
