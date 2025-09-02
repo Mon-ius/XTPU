@@ -75,4 +75,4 @@ curl -X POST "$TW_API_BASE/v1/accounts" \
     -H "Content-Type: application/json" \
     -d "$TW_RECIPIENT_PAYLOAD_HK"
 
-echo $TW_RECIPIENT_PAYLOAD_HK
+echo "$TW_RECIPIENT_PAYLOAD_HK"
