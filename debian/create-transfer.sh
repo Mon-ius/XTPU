@@ -9,11 +9,12 @@ _TW_AMOUNT=100
 _TW_TARGET_ACCOUNT='123456789012'
 _TW_TARGET_NAME='John Smith'
 _TW_TARGET_BANK='004'
+_TW_TARGET_ADDRESS='123 Main Street'
 
 if [ -z "$1" ]; then
-    echo "Usage: $0 <wise_token> [source_currency] [target_currency] [amount] [target_account] [target_name] [target_bank]"
+    echo "Usage: $0 <wise_token> [source_currency] [target_currency] [amount] [target_account] [target_name] [target_bank] [target_address]"
     echo "Example:"
-    echo "  $0 eW91ci10b2tlbg== USD HKD 100 123456789012 'John Smith' 004"
+    echo "  $0 eW91ci10b2tlbg== USD HKD 100 123456789012 'John Smith' 004 '123 Main Street'"
     exit 1
 fi
 
@@ -24,6 +25,7 @@ TW_AMOUNT="${4:-$_TW_AMOUNT}"
 TW_TARGET_ACCOUNT="${5:-$_TW_TARGET_ACCOUNT}"
 TW_TARGET_NAME="${6:-$_TW_TARGET_NAME}"
 TW_TARGET_BANK="${7:-$_TW_TARGET_BANK}"
+TW_TARGET_ADDRESS="${8:-$_TW_TARGET_ADDRESS}"
 
 TW_TOKEN=$(echo "$TW_TOKEN_BASE64" | base64 -d)
 
@@ -32,11 +34,6 @@ TW_QUOTE_PAYLOAD='{
     "targetCurrency": "'$TW_TARGET_CURRENCY'",
     "sourceAmount": '$TW_AMOUNT'
 }'
-
-TW_FUND_PAYLOAD='{
-    "type": "BALANCE"
-}'
-
 
 TW_PROFILE_ID=$(curl -fsSL -X GET -H "Authorization: Bearer $TW_TOKEN" "$TW_API_BASE/v2/profiles" | grep -o '"id":[0-9]*' | cut -d':' -f2 | head -n 1)
 
@@ -65,7 +62,7 @@ TW_RECIPIENT_PAYLOAD_HK='{
         "bankCode": "'$TW_TARGET_BANK'",
         "accountNumber": "'$TW_TARGET_ACCOUNT'",
         "address": {
-            "firstLine": "123 Main Street",
+            "firstLine": "'$TW_TARGET_ADDRESS'",
             "city": "Hong Kong",
             "country": "HK",
             "postCode": "00000"
@@ -102,13 +99,6 @@ if [ -z "$TW_TRANSFER_ID" ]; then
     exit 1
 fi
 
-# TW_FUND_RESPONSE=$(curl -fsSL -X POST "$TW_API_BASE/v3/profiles/$TW_PROFILE_ID/transfers/$TW_TRANSFER_ID/payments" \
-#     -H "Authorization: Bearer $TW_TOKEN" \
-#     -H "Content-Type: application/json" \
-#     -d "$TW_FUND_PAYLOAD")
-
-# TW_PAYMENT_STATUS=$(echo "$TW_FUND_RESPONSE" | grep -o '"status":"[^"]*' | cut -d'"' -f4 | head -n 1)
-
 echo "[INFO] Profile ID: TW_PROFILE_ID=$TW_PROFILE_ID"
 echo "[INFO] Quote ID: TW_QUOTE_ID=$TW_QUOTE_ID"
 echo "[INFO] Recipient ID: $TW_RECIPIENT_ID"
@@ -117,13 +107,6 @@ echo "[INFO] Transfer ID: $TW_TRANSFER_ID"
 curl -X POST "$TW_API_BASE/v3/profiles/$TW_PROFILE_ID/transfers/$TW_TRANSFER_ID/payments" \
     -H "Authorization: Bearer $TW_TOKEN" \
     -H "Content-Type: application/json" \
-    -d "$TW_FUND_PAYLOAD"
-
-# if [ -n "$TW_PAYMENT_STATUS" ]; then
-#     echo "[SUCCESS] Transfer funded from balance"
-#     echo "[INFO] Payment Status: $TW_PAYMENT_STATUS"
-# else
-#     echo "[WARNING] Transfer funding initiated - check status"
-#     echo "$TW_TRANSFER_RESPONSE" 
-# fi
-
+    -d '{
+        "type": "BALANCE"
+    }'
