@@ -78,12 +78,10 @@ TW_TRANSFER_PAYLOAD='{
     }
 }'
 
-TW_TRANSFER_RESPONSE=$(curl -fsSL -X POST "$TW_API_BASE/v1/transfers" \
+TW_TRANSFER_ID=$(curl -fsSL -X POST "$TW_API_BASE/v1/transfers" \
     -H "Authorization: Bearer $TW_TOKEN" \
     -H "Content-Type: application/json" \
-    -d "$TW_TRANSFER_PAYLOAD")
-
-TW_TRANSFER_ID=$(echo "$TW_TRANSFER_RESPONSE" | grep -o '"id":[0-9]*' | cut -d':' -f2 | head -n 1)
+    -d "$TW_TRANSFER_PAYLOAD" | grep -o '"id":[0-9]*' | cut -d':' -f2 | head -n 1)
 
 echo "[INFO] Profile ID: TW_PROFILE_ID=$TW_PROFILE_ID"
 echo "[INFO] Quote ID: TW_QUOTE_ID=$TW_QUOTE_ID"
