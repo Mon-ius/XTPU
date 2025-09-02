@@ -45,7 +45,6 @@ if [ -z "$TW_PROFILE_ID" ]; then
     exit 1
 fi
 
-
 TW_QUOTE_ID=$(curl -fsSL -X POST "$TW_API_BASE/v3/profiles/$TW_PROFILE_ID/quotes" \
     -H "Authorization: Bearer $TW_TOKEN" \
     -H "Content-Type: application/json" \
@@ -55,30 +54,6 @@ if [ -z "$TW_QUOTE_ID" ]; then
     echo "[ERROR] Unable to get quote id. Quote creation may have failed."
     exit 1
 fi
-
-# TW_ADDRESS_PAYLOAD='{
-#     "profile": '$TW_PROFILE_ID',
-#     "details": {
-#         "firstLine": "123 Main Street",
-#         "city": "Hong Kong",
-#         "country": "HK",
-#         "postCode": "00000"
-#     }
-# }'
-
-# TW_ADDRESS_RESPONSE=$(curl -fsSL -X POST "$TW_API_BASE/v1/addresses" \
-#     -H "Authorization: Bearer $TW_TOKEN" \
-#     -H "Content-Type: application/json" \
-#     -d "$TW_ADDRESS_PAYLOAD")
-
-# TW_ADDRESS_ID=$(echo "$TW_ADDRESS_RESPONSE" | grep -o '"id":[0-9]*' | cut -d':' -f2 | head -n 1)
-
-# if [ -z "$TW_ADDRESS_ID" ]; then
-#     echo "[WARNING] Could not add address to profile, continuing..."
-#     echo "$TW_ADDRESS_RESPONSE"
-# else
-#     echo "[INFO] Address added to profile: ID=$TW_ADDRESS_ID"
-# fi
 
 TW_RECIPIENT_PAYLOAD_HK='{
     "type": "hongkong",
@@ -98,17 +73,10 @@ TW_RECIPIENT_PAYLOAD_HK='{
     }
 }'
 
-# curl -X POST "$TW_API_BASE/v1/accounts" \
-#     -H "Authorization: Bearer $TW_TOKEN" \
-#     -H "Content-Type: application/json" \
-#     -d "$TW_RECIPIENT_PAYLOAD_HK"
-
-TW_RECIPIENT_RESPONSE=$(curl -fsSL -X POST "$TW_API_BASE/v1/accounts" \
+TW_RECIPIENT_ID=$(curl -fsSL -X POST "$TW_API_BASE/v1/accounts" \
     -H "Authorization: Bearer $TW_TOKEN" \
     -H "Content-Type: application/json" \
-    -d "$TW_RECIPIENT_PAYLOAD_HK")
-
-TW_RECIPIENT_ID=$(echo "$TW_RECIPIENT_RESPONSE" | grep -o '"id":[0-9]*' | cut -d':' -f2 | head -n 1)
+    -d "$TW_RECIPIENT_PAYLOAD_HK" | grep -o '"id":[0-9]*' | cut -d':' -f2 | head -n 1)
 
 TW_TRANSFER_PAYLOAD='{
     "targetAccount": '$TW_RECIPIENT_ID',
@@ -119,34 +87,28 @@ TW_TRANSFER_PAYLOAD='{
     }
 }'
 
-curl -X POST "$TW_API_BASE/v1/transfers" \
+TW_TRANSFER_ID=$(curl -fsSL -X POST "$TW_API_BASE/v1/transfers" \
     -H "Authorization: Bearer $TW_TOKEN" \
     -H "Content-Type: application/json" \
-    -d "$TW_TRANSFER_PAYLOAD"
+    -d "$TW_TRANSFER_PAYLOAD" | grep -o '"id":[0-9]*' | cut -d':' -f2 | head -n 1)
 
+TW_FUND_RESPONSE=$(curl -fsSL -X POST "$TW_API_BASE/v3/profiles/$TW_PROFILE_ID/transfers/$TW_TRANSFER_ID/payments" \
+    -H "Authorization: Bearer $TW_TOKEN" \
+    -H "Content-Type: application/json" \
+    -d "$TW_FUND_PAYLOAD")
 
-# TW_TRANSFER_ID=$(curl -fsSL -X POST "$TW_API_BASE/v1/transfers" \
-#     -H "Authorization: Bearer $TW_TOKEN" \
-#     -H "Content-Type: application/json" \
-#     -d "$TW_TRANSFER_PAYLOAD" | grep -o '"id":[0-9]*' | cut -d':' -f2 | head -n 1)
-
-# TW_FUND_RESPONSE=$(curl -fsSL -X POST "$TW_API_BASE/v3/profiles/$TW_PROFILE_ID/transfers/$TW_TRANSFER_ID/payments" \
-#     -H "Authorization: Bearer $TW_TOKEN" \
-#     -H "Content-Type: application/json" \
-#     -d "$TW_FUND_PAYLOAD")
-
-# TW_PAYMENT_STATUS=$(echo "$TW_FUND_RESPONSE" | grep -o '"status":"[^"]*' | cut -d'"' -f4 | head -n 1)
+TW_PAYMENT_STATUS=$(echo "$TW_FUND_RESPONSE" | grep -o '"status":"[^"]*' | cut -d'"' -f4 | head -n 1)
 
 echo "[INFO] Profile ID: TW_PROFILE_ID=$TW_PROFILE_ID"
 echo "[INFO] Quote ID: TW_QUOTE_ID=$TW_QUOTE_ID"
 echo "[INFO] Recipient ID: $TW_RECIPIENT_ID"
 echo "[INFO] Transfer ID: $TW_TRANSFER_ID"
 
-# if [ -n "$TW_PAYMENT_STATUS" ]; then
-#     echo "[SUCCESS] Transfer funded from balance"
-#     echo "[INFO] Payment Status: $TW_PAYMENT_STATUS"
-# else
-#     echo "[WARNING] Transfer funding initiated - check status"
-#     echo "$TW_TRANSFER_RESPONSE" 
-# fi
+if [ -n "$TW_PAYMENT_STATUS" ]; then
+    echo "[SUCCESS] Transfer funded from balance"
+    echo "[INFO] Payment Status: $TW_PAYMENT_STATUS"
+else
+    echo "[WARNING] Transfer funding initiated - check status"
+    echo "$TW_TRANSFER_RESPONSE" 
+fi
 
