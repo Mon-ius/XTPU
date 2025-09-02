@@ -104,7 +104,7 @@ echo "[INFO] Quote ID: TW_QUOTE_ID=$TW_QUOTE_ID"
 echo "[INFO] Recipient ID: $TW_RECIPIENT_ID"
 echo "[INFO] Transfer ID: $TW_TRANSFER_ID"
 
-curl -X POST "$TW_API_BASE/v3/profiles/$TW_PROFILE_ID/transfers/$TW_TRANSFER_ID/payments" \
+curl -X POST "$TW_API_BASE/v1/transfers/$TW_TRANSFER_ID/payments" \
     -H "Authorization: Bearer $TW_TOKEN" \
     -H "Content-Type: application/json" \
     -H "X-idempotence-uuid: $TW_QUOTE_ID" \
