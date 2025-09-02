@@ -15,7 +15,7 @@ fi
 TW_TOKEN_BASE64="${1:-$_TW_TOKEN_BASE64}"
 TW_TOKEN=$(echo "$TW_TOKEN_BASE64" | base64 -d)
 
-TW_PROFILE_ID=$(curl -fsSL -X GET -H "Authorization: Bearer $TW_TOKEN" "$TW_API_BASE/v2/profiles" | grep -o '"id":"[^"]*' | cut -d'"' -f4 | head -n 1)
+TW_PROFILE_ID=$(curl -fsSL -X GET -H "Authorization: Bearer $TW_TOKEN" "$TW_API_BASE/v2/profiles" | grep -o '"id":[0-9]*' | cut -d':' -f2 | head -n 1)
 
 if [ -z "$TW_PROFILE_ID" ]; then
     echo "[ERROR] Unable to profile id. Please check your API token."
