@@ -41,7 +41,9 @@ fi
 
 echo "[INFO] Profile ID: TW_PROFILE_ID=$TW_PROFILE_ID"
 
-curl -X POST "$TW_API_BASE/v3/profiles/$TW_PROFILE_ID/quotes" \
+TW_QUOTE_ID=$(curl -fsSL -X POST "$TW_API_BASE/v3/profiles/$TW_PROFILE_ID/quotes" \
     -H "Authorization: Bearer $TW_TOKEN" \
     -H "Content-Type: application/json" \
-    -d "$TW_QUOTE_PAYLOAD"
+    -d "$TW_QUOTE_PAYLOAD" | grep -o '"id":"[^"]*' | cut -d'"' -f4 | head -n 1)
+
+echo "[INFO] Quote ID: TW_QUOTE_ID=$TW_QUOTE_ID"
