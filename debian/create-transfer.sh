@@ -78,10 +78,13 @@ TW_RECIPIENT_PAYLOAD_HK='{
 #     -H "Content-Type: application/json" \
 #     -d "$TW_RECIPIENT_PAYLOAD_HK"
 
-TW_RECIPIENT_ID=$(curl -fsSL -X POST "$TW_API_BASE/v1/accounts" \
+TW_RECIPIENT_RESPONSE=$(curl -fsSL -X POST "$TW_API_BASE/v1/accounts" \
     -H "Authorization: Bearer $TW_TOKEN" \
     -H "Content-Type: application/json" \
-    -d "$TW_RECIPIENT_PAYLOAD_HK" | grep -o '"id":[0-9]*' | cut -d':' -f2 | head -n 1)
+    -d "$TW_RECIPIENT_PAYLOAD_HK")
+
+TW_TRANSFER_ID=$(echo "$TW_RECIPIENT_RESPONSE" | grep -o '"id":[0-9]*' | cut -d':' -f2 | head -n 1)
+
 
 TW_TRANSFER_PAYLOAD='{
     "targetAccount": '$TW_RECIPIENT_ID',
@@ -114,6 +117,8 @@ echo "[INFO] Profile ID: TW_PROFILE_ID=$TW_PROFILE_ID"
 echo "[INFO] Quote ID: TW_QUOTE_ID=$TW_QUOTE_ID"
 echo "[INFO] Recipient ID: $TW_RECIPIENT_ID"
 echo "[INFO] Transfer ID: $TW_TRANSFER_ID"
+
+echo "$TW_RECIPIENT_RESPONSE"
 
 # if [ -n "$TW_PAYMENT_STATUS" ]; then
 #     echo "[SUCCESS] Transfer funded from balance"
