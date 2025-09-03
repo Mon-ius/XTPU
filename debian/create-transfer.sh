@@ -10,12 +10,13 @@ _TW_TARGET_ACCOUNT='123456789012'
 _TW_TARGET_NAME='John Smith'
 _TW_TARGET_BANK='004'
 _TW_TARGET_ADDRESS='123 Main Street'
+_TW_TARGET_CITY='Hong Kong'
 _TW_POST_CODE='00000'
 
 if [ -z "$1" ]; then
-    echo "Usage: $0 <wise_token> [source_currency] [target_currency] [amount] [target_account] [target_name] [target_bank] [target_address] [post_code]"
+    echo "Usage: $0 <wise_token> [source_currency] [target_currency] [amount] [target_account] [target_name] [target_bank] [target_address] [city] [post_code]"
     echo "Example:"
-    echo "  $0 eW91ci10b2tlbg== USD HKD 100 123456789012 'John Smith' 004 '123 Main Street' '999077'"
+    echo "  $0 eW91ci10b2tlbg== USD HKD 100 123456789012 'John Smith' 004 '123 Main Street' 'Hong Kong' '999077'"
     exit 1
 fi
 
@@ -27,7 +28,8 @@ TW_TARGET_ACCOUNT="${5:-$_TW_TARGET_ACCOUNT}"
 TW_TARGET_NAME="${6:-$_TW_TARGET_NAME}"
 TW_TARGET_BANK="${7:-$_TW_TARGET_BANK}"
 TW_TARGET_ADDRESS="${8:-$_TW_TARGET_ADDRESS}"
-TW_POST_CODE="${9:-$_TW_POST_CODE}"
+TW_TARGET_CITY="${9:-$_TW_TARGET_CITY}"
+TW_POST_CODE="${10:-$_TW_POST_CODE}"
 
 TW_TOKEN=$(echo "$TW_TOKEN_BASE64" | base64 -d)
 TW_AMOUNT=$(echo "scale=2; ($TW_AMOUNT - 2) * 0.95" | bc)
@@ -54,7 +56,43 @@ if [ -z "$TW_QUOTE_ID" ]; then
     exit 1
 fi
 
-TW_RECIPIENT_PAYLOAD_HK='{
+TW_RECIPIENT_PAYLOAD_AUD='{
+    "type": "australia",
+    "currency": "'$TW_TARGET_CURRENCY'",
+    "profile": '$TW_PROFILE_ID',
+    "accountHolderName": "'$TW_TARGET_NAME'",
+    "details": {
+        "legalType": "PRIVATE",
+        "bsbCode": "'$TW_TARGET_BANK'",
+        "accountNumber": "'$TW_TARGET_ACCOUNT'",
+        "address": {
+            "firstLine": "'$TW_TARGET_ADDRESS'",
+            "city": "'$TW_TARGET_CITY'",
+            "country": "AU",
+            "postCode": "'$TW_POST_CODE'"
+        }
+    }
+}'
+
+TW_RECIPIENT_PAYLOAD_CNY='{
+    "type": "chinese",
+    "currency": "'$TW_TARGET_CURRENCY'",
+    "profile": '$TW_PROFILE_ID',
+    "accountHolderName": "'$TW_TARGET_NAME'",
+    "details": {
+        "legalType": "PRIVATE",
+        "bankCode": "'$TW_TARGET_BANK'",
+        "accountNumber": "'$TW_TARGET_ACCOUNT'",
+        "address": {
+            "firstLine": "'$TW_TARGET_ADDRESS'",
+            "city": "'$TW_TARGET_CITY'",
+            "country": "CN",
+            "postCode": "'$TW_POST_CODE'"
+        }
+    }
+}'
+
+TW_RECIPIENT_PAYLOAD_HKD='{
     "type": "hongkong",
     "currency": "'$TW_TARGET_CURRENCY'",
     "profile": '$TW_PROFILE_ID',
@@ -65,17 +103,28 @@ TW_RECIPIENT_PAYLOAD_HK='{
         "accountNumber": "'$TW_TARGET_ACCOUNT'",
         "address": {
             "firstLine": "'$TW_TARGET_ADDRESS'",
-            "city": "Hong Kong",
+            "city": "'$TW_TARGET_CITY'",
             "country": "HK",
             "postCode": "'$TW_POST_CODE'"
         }
     }
 }'
 
+if [ "$TW_TARGET_CURRENCY" = "AUD" ]; then
+    TW_RECIPIENT_PAYLOAD="$TW_RECIPIENT_PAYLOAD_AUD"
+elif [ "$TW_TARGET_CURRENCY" = "HKD" ]; then
+    TW_RECIPIENT_PAYLOAD="$TW_RECIPIENT_PAYLOAD_HKD"
+elif [ "$TW_TARGET_CURRENCY" = "CNY" ]; then
+    TW_RECIPIENT_PAYLOAD="$TW_RECIPIENT_PAYLOAD_CNY"
+else
+    echo "[ERROR] Unsupported target currency: $TW_TARGET_CURRENCY. Supported: AUD, HKD, CNY"
+    exit 1
+fi
+
 TW_RECIPIENT_ID=$(curl -fsSL -X POST "$TW_API_BASE/v1/accounts" \
     -H "Authorization: Bearer $TW_TOKEN" \
     -H "Content-Type: application/json" \
-    -d "$TW_RECIPIENT_PAYLOAD_HK" | grep -o '"id":[0-9]*' | cut -d':' -f2 | head -n 1)
+    -d "$TW_RECIPIENT_PAYLOAD" | grep -o '"id":[0-9]*' | cut -d':' -f2 | head -n 1)
 
 if [ -z "$TW_RECIPIENT_ID" ]; then
     echo "[ERROR] Unable to get recipient id. Recipient creation may have failed."
