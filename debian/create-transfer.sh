@@ -10,11 +10,12 @@ _TW_TARGET_ACCOUNT='123456789012'
 _TW_TARGET_NAME='John Smith'
 _TW_TARGET_BANK='004'
 _TW_TARGET_ADDRESS='123 Main Street'
+_TW_POST_CODE='00000'
 
 if [ -z "$1" ]; then
-    echo "Usage: $0 <wise_token> [source_currency] [target_currency] [amount] [target_account] [target_name] [target_bank] [target_address]"
+    echo "Usage: $0 <wise_token> [source_currency] [target_currency] [amount] [target_account] [target_name] [target_bank] [target_address] [post_code]"
     echo "Example:"
-    echo "  $0 eW91ci10b2tlbg== USD HKD 100 123456789012 'John Smith' 004 '123 Main Street'"
+    echo "  $0 eW91ci10b2tlbg== USD HKD 100 123456789012 'John Smith' 004 '123 Main Street' '999077'"
     exit 1
 fi
 
@@ -26,6 +27,7 @@ TW_TARGET_ACCOUNT="${5:-$_TW_TARGET_ACCOUNT}"
 TW_TARGET_NAME="${6:-$_TW_TARGET_NAME}"
 TW_TARGET_BANK="${7:-$_TW_TARGET_BANK}"
 TW_TARGET_ADDRESS="${8:-$_TW_TARGET_ADDRESS}"
+TW_POST_CODE="${9:-$_TW_POST_CODE}"
 
 TW_TOKEN=$(echo "$TW_TOKEN_BASE64" | base64 -d)
 TW_AMOUNT=$(echo "scale=2; ($TW_AMOUNT - 2) * 0.95" | bc)
@@ -65,7 +67,7 @@ TW_RECIPIENT_PAYLOAD_HK='{
             "firstLine": "'$TW_TARGET_ADDRESS'",
             "city": "Hong Kong",
             "country": "HK",
-            "postCode": "00000"
+            "postCode": "'$TW_POST_CODE'"
         }
     }
 }'
