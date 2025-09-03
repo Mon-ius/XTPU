@@ -5,7 +5,7 @@ TW_API_BASE="https://api.transferwise.com"
 _TW_TOKEN_BASE64='base64encodedtoken'
 _TW_SOURCE_CURRENCY='USD'
 _TW_TARGET_CURRENCY='HKD'
-_TW_AMOUNT=100
+_TW_SOURCE_AMOUNT=100
 _TW_TARGET_ACCOUNT='123456789012'
 _TW_TARGET_NAME='John Smith'
 _TW_TARGET_BANK='004'
@@ -23,7 +23,7 @@ fi
 TW_TOKEN_BASE64="${1:-$_TW_TOKEN_BASE64}"
 TW_SOURCE_CURRENCY="${2:-$_TW_SOURCE_CURRENCY}"
 TW_TARGET_CURRENCY="${3:-$_TW_TARGET_CURRENCY}"
-TW_AMOUNT="${4:-$_TW_AMOUNT}"
+TW_SOURCE_AMOUNT="${4:-$_TW_SOURCE_AMOUNT}"
 TW_TARGET_ACCOUNT="${5:-$_TW_TARGET_ACCOUNT}"
 TW_TARGET_NAME="${6:-$_TW_TARGET_NAME}"
 TW_TARGET_BANK="${7:-$_TW_TARGET_BANK}"
@@ -32,11 +32,11 @@ TW_TARGET_CITY="${9:-$_TW_TARGET_CITY}"
 TW_POST_CODE="${10:-$_TW_POST_CODE}"
 
 TW_TOKEN=$(echo "$TW_TOKEN_BASE64" | base64 -d)
-TW_AMOUNT=$(echo "scale=2; ($TW_AMOUNT - 2) * 0.95" | bc)
+TW_SOURCE_AMOUNT=$(echo "scale=2; ($TW_SOURCE_AMOUNT - 2) * 0.95" | bc)
 TW_QUOTE_PAYLOAD='{
     "sourceCurrency": "'$TW_SOURCE_CURRENCY'",
     "targetCurrency": "'$TW_TARGET_CURRENCY'",
-    "sourceAmount": '$TW_AMOUNT'
+    "sourceAmount": '$TW_SOURCE_AMOUNT'
 }'
 
 TW_PROFILE_ID=$(curl -fsSL -X GET -H "Authorization: Bearer $TW_TOKEN" "$TW_API_BASE/v2/profiles" | grep -o '"id":[0-9]*' | cut -d':' -f2 | head -n 1)
