@@ -16,7 +16,7 @@ _TW_POST_CODE='00000'
 if [ -z "$1" ]; then
     echo "Usage: $0 <wise_token> [source_currency] [target_currency] [amount] [target_account] [target_name] [target_bank] [target_address] [city] [post_code]"
     echo "Example:"
-    echo "  $0 eW91ci10b2tlbg== USD HKD 100 123456789012 'John Smith' 004 '123 Main Street' 'Hong Kong' '999077'"
+    echo "  $0 eW91ci10b2tlbg== USD HKD 100 123456789012 'John Smith' 004 '123 Main Street' 'Hong Kong' '00000'"
     exit 1
 fi
 
