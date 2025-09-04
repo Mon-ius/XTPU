@@ -16,7 +16,10 @@ _TW_POST_CODE='00000'
 if [ -z "$1" ]; then
     echo "Usage: $0 <wise_token> [source_currency] [target_currency] [amount] [target_account] [target_name] [target_bank] [target_address] [city] [post_code]"
     echo "Example:"
-    echo "  $0 eW91ci10b2tlbg== USD HKD 100 123456789012 'John Smith' 004 '123 Main Street' 'Hong Kong' '00000'"
+    echo "  HKD: $0 eW91ci10b2tlbg== USD HKD 100 123456789012 'John Smith' 004 '123 Main Street' 'Hong Kong' '00000'"
+    echo "  AUD: $0 eW91ci10b2tlbg== USD AUD 100 '123456 789012345' 'John Smith' 004 '123 Main Street' 'Sydney' '2000'"
+    echo ""
+    echo "Note: For AUD transfers, provide target_account as 'BSB ACCOUNTNUM' (space-separated)"
     exit 1
 fi
 
@@ -33,6 +36,7 @@ TW_POST_CODE="${10:-$_TW_POST_CODE}"
 
 TW_TOKEN=$(echo "$TW_TOKEN_BASE64" | base64 -d)
 TW_SOURCE_AMOUNT=$(echo "scale=2; ($TW_SOURCE_AMOUNT - 2) * 0.95" | bc)
+
 TW_QUOTE_PAYLOAD='{
     "sourceCurrency": "'$TW_SOURCE_CURRENCY'",
     "targetCurrency": "'$TW_TARGET_CURRENCY'",
@@ -56,66 +60,62 @@ if [ -z "$TW_QUOTE_ID" ]; then
     exit 1
 fi
 
-TW_RECIPIENT_PAYLOAD_AUD='{
-    "type": "australia",
-    "currency": "'$TW_TARGET_CURRENCY'",
-    "profile": '$TW_PROFILE_ID',
-    "accountHolderName": "'$TW_TARGET_NAME'",
-    "details": {
-        "legalType": "PRIVATE",
-        "bsbCode": "'$TW_TARGET_BANK'",
-        "accountNumber": "'$TW_TARGET_ACCOUNT'",
-        "address": {
-            "firstLine": "'$TW_TARGET_ADDRESS'",
-            "city": "'$TW_TARGET_CITY'",
-            "country": "AU",
-            "postCode": "'$TW_POST_CODE'"
-        }
-    }
-}'
-
-TW_RECIPIENT_PAYLOAD_CNY='{
-    "type": "chinese",
-    "currency": "'$TW_TARGET_CURRENCY'",
-    "profile": '$TW_PROFILE_ID',
-    "accountHolderName": "'$TW_TARGET_NAME'",
-    "details": {
-        "legalType": "PRIVATE",
-        "bankCode": "'$TW_TARGET_BANK'",
-        "accountNumber": "'$TW_TARGET_ACCOUNT'",
-        "address": {
-            "firstLine": "'$TW_TARGET_ADDRESS'",
-            "city": "'$TW_TARGET_CITY'",
-            "country": "CN",
-            "postCode": "'$TW_POST_CODE'"
-        }
-    }
-}'
-
-TW_RECIPIENT_PAYLOAD_HKD='{
-    "type": "hongkong",
-    "currency": "'$TW_TARGET_CURRENCY'",
-    "profile": '$TW_PROFILE_ID',
-    "accountHolderName": "'$TW_TARGET_NAME'",
-    "details": {
-        "legalType": "PRIVATE",
-        "bankCode": "'$TW_TARGET_BANK'",
-        "accountNumber": "'$TW_TARGET_ACCOUNT'",
-        "address": {
-            "firstLine": "'$TW_TARGET_ADDRESS'",
-            "city": "'$TW_TARGET_CITY'",
-            "country": "HK",
-            "postCode": "'$TW_POST_CODE'"
-        }
-    }
-}'
-
 if [ "$TW_TARGET_CURRENCY" = "AUD" ]; then
-    TW_RECIPIENT_PAYLOAD="$TW_RECIPIENT_PAYLOAD_AUD"
+    TW_TARGET_ACCOUNT_BSB=$(echo "$TW_TARGET_ACCOUNT" | awk '{print $1}')
+    TW_TARGET_ACCOUNT=$(echo "$TW_TARGET_ACCOUNT" | awk '{print $2}')
+    TW_RECIPIENT_PAYLOAD='{
+        "type": "australia",
+        "currency": "'$TW_TARGET_CURRENCY'",
+        "profile": '$TW_PROFILE_ID',
+        "accountHolderName": "'$TW_TARGET_NAME'",
+        "details": {
+            "legalType": "PRIVATE",
+            "bsbCode": "'$TW_TARGET_ACCOUNT_BSB'",
+            "accountNumber": "'$TW_TARGET_ACCOUNT'",
+            "address": {
+                "firstLine": "'$TW_TARGET_ADDRESS'",
+                "city": "'$TW_TARGET_CITY'",
+                "country": "AU",
+                "postCode": "'$TW_POST_CODE'"
+            }
+        }
+    }'
 elif [ "$TW_TARGET_CURRENCY" = "HKD" ]; then
-    TW_RECIPIENT_PAYLOAD="$TW_RECIPIENT_PAYLOAD_HKD"
+    TW_RECIPIENT_PAYLOAD='{
+        "type": "hongkong",
+        "currency": "'$TW_TARGET_CURRENCY'",
+        "profile": '$TW_PROFILE_ID',
+        "accountHolderName": "'$TW_TARGET_NAME'",
+        "details": {
+            "legalType": "PRIVATE",
+            "bankCode": "'$TW_TARGET_BANK'",
+            "accountNumber": "'$TW_TARGET_ACCOUNT'",
+            "address": {
+                "firstLine": "'$TW_TARGET_ADDRESS'",
+                "city": "'$TW_TARGET_CITY'",
+                "country": "HK",
+                "postCode": "'$TW_POST_CODE'"
+            }
+        }
+    }'
 elif [ "$TW_TARGET_CURRENCY" = "CNY" ]; then
-    TW_RECIPIENT_PAYLOAD="$TW_RECIPIENT_PAYLOAD_CNY"
+    TW_RECIPIENT_PAYLOAD='{
+        "type": "chinese",
+        "currency": "'$TW_TARGET_CURRENCY'",
+        "profile": '$TW_PROFILE_ID',
+        "accountHolderName": "'$TW_TARGET_NAME'",
+        "details": {
+            "legalType": "PRIVATE",
+            "bankCode": "'$TW_TARGET_BANK'",
+            "accountNumber": "'$TW_TARGET_ACCOUNT'",
+            "address": {
+                "firstLine": "'$TW_TARGET_ADDRESS'",
+                "city": "'$TW_TARGET_CITY'",
+                "country": "CN",
+                "postCode": "'$TW_POST_CODE'"
+            }
+        }
+    }'
 else
     echo "[ERROR] Unsupported target currency: $TW_TARGET_CURRENCY. Supported: AUD, HKD, CNY"
     exit 1
