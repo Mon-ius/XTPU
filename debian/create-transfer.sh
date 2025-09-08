@@ -35,7 +35,17 @@ TW_TARGET_CITY="${9:-$_TW_TARGET_CITY}"
 TW_POST_CODE="${10:-$_TW_POST_CODE}"
 
 TW_TOKEN=$(echo "$TW_TOKEN_BASE64" | base64 -d)
-TW_SOURCE_AMOUNT=$(echo "scale=2; ($TW_SOURCE_AMOUNT - 2) * 0.95" | bc)
+
+if [ "$TW_TARGET_CURRENCY" = "AUD" ]; then
+    TW_SOURCE_AMOUNT=$(echo "scale=2; ($TW_SOURCE_AMOUNT - 2) * 0.95" | bc)
+elif [ "$TW_TARGET_CURRENCY" = "HKD" ]; then
+    TW_SOURCE_AMOUNT=$(echo "scale=2; ($TW_SOURCE_AMOUNT - 2) * 0.95" | bc)
+elif [ "$TW_TARGET_CURRENCY" = "CNY" ]; then
+    TW_SOURCE_AMOUNT=$(echo "scale=2; ($TW_SOURCE_AMOUNT - 2) * 0.9" | bc)
+else
+    echo "[ERROR] Unsupported target currency: $TW_TARGET_CURRENCY. Supported: AUD, HKD, CNY"
+    exit 1
+fi
 
 TW_QUOTE_PAYLOAD='{
     "sourceCurrency": "'$TW_SOURCE_CURRENCY'",
@@ -100,20 +110,13 @@ elif [ "$TW_TARGET_CURRENCY" = "HKD" ]; then
     }'
 elif [ "$TW_TARGET_CURRENCY" = "CNY" ]; then
     TW_RECIPIENT_PAYLOAD='{
-        "type": "chinese",
+        "type": "chinese_alipay",
         "currency": "'$TW_TARGET_CURRENCY'",
         "profile": '$TW_PROFILE_ID',
         "accountHolderName": "'$TW_TARGET_NAME'",
         "details": {
             "legalType": "PRIVATE",
-            "bankCode": "'$TW_TARGET_BANK'",
-            "accountNumber": "'$TW_TARGET_ACCOUNT'",
-            "address": {
-                "firstLine": "'$TW_TARGET_ADDRESS'",
-                "city": "'$TW_TARGET_CITY'",
-                "country": "CN",
-                "postCode": "'$TW_POST_CODE'"
-            }
+            "accountNumber": "'$TW_TARGET_ACCOUNT'"
         }
     }'
 else
@@ -136,7 +139,10 @@ TW_TRANSFER_PAYLOAD='{
     "quoteUuid": "'$TW_QUOTE_ID'",
     "customerTransactionId": "'$TW_QUOTE_ID'",
     "details": {
-        "reference": "Transfer to '$TW_TARGET_NAME'"
+        "reference": "Payment to '$TW_TARGET_NAME'",
+        "transferPurpose": "verification.transfers.purpose.send.to.family",
+        "transferPurposeSubTransferPurpose": "verification.sub.transfers.purpose.send.to.family",
+        "sourceOfFunds": "verification.source.of.funds.other"
     }
 }'
 

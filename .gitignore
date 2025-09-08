@@ -1,3 +1,5 @@
 .DS_Store
 .vscode/
 .example/
+*.json
+test.sh
