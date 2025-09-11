@@ -22,7 +22,7 @@ if [ -z "$1" ]; then
     echo "Note:"
     echo "  - For HKD transfers: provide target_account as 'BANKCODE ACCOUNTNUM' (e.g., '004 123456789012')"
     echo "  - For AUD transfers: provide target_account as 'BSB ACCOUNTNUM' (e.g., '123456 789012345')"
-    echo "  - For CNY transfers: provide target_account as UnionPay card number (e.g., '6222021234567890123')"
+    echo "  - For CNY transfers: provide target_account as UnionPay card number (e.g., '123456@qq.com')"
     exit 1
 fi
 
