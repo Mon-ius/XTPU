@@ -181,16 +181,31 @@ if [ -z "$TW_TRANSFER_ID" ]; then
     exit 1
 fi
 
-echo "[INFO] Profile ID: TW_PROFILE_ID=$TW_PROFILE_ID"
-echo "[INFO] Quote ID: TW_QUOTE_ID=$TW_QUOTE_ID"
-echo "[INFO] Recipient ID: $TW_RECIPIENT_ID"
-echo "[INFO] Transfer ID: $TW_TRANSFER_ID"
 
-TW_FUND_RESPONSE=$(curl -fsSL -X POST "$TW_API_BASE/v3/profiles/$TW_PROFILE_ID/transfers/$TW_TRANSFER_ID/payments" \
+echo "#[INFO] Profile ID:\n TW_PROFILE_ID=$TW_PROFILE_ID"
+echo "#[INFO] Quote ID:\n TW_QUOTE_ID=$TW_QUOTE_ID"
+echo "#[INFO] Recipient ID:\n $TW_RECIPIENT_ID"
+echo "#[INFO] Transfer ID:\n $TW_TRANSFER_ID"
+
+TW_FUND_PAYLOAD='{
+    "type": "BALANCE"
+}'
+
+TW_FUND_ID=$(curl -fsSL -X POST "$TW_API_BASE/v3/profiles/$TW_PROFILE_ID/transfers/$TW_TRANSFER_ID/payments" \
     -H "Authorization: Bearer $TW_TOKEN" \
     -H "Content-Type: application/json" \
-    -d '{
-        "type": "BALANCE"
-    }')
+    -d "$TW_FUND_PAYLOAD" | grep -o '"balanceTransactionId":[0-9]*' | cut -d':' -f2)
 
-echo "$TW_FUND_RESPONSE"
+if [ -z "$TW_FUND_ID" ]; then
+    echo "[ERROR] Unable to get fund id. Transfer funding may have failed."
+    echo "[DEBUG] Payload sent: $TW_FUND_PAYLOAD"
+    echo "[DEBUG] Retrying for detailed error..."
+    TW_FUND_RESPONSE=$(curl -sS -X POST "$TW_API_BASE/v3/profiles/$TW_PROFILE_ID/transfers/$TW_TRANSFER_ID/payments" \
+        -H "Authorization: Bearer $TW_TOKEN" \
+        -H "Content-Type: application/json" \
+        -d "$TW_FUND_PAYLOAD" 2>&1)
+    echo "[DEBUG] Response: $TW_FUND_RESPONSE"
+    exit 1
+fi
+
+echo "#[INFO] Fund ID:\n $TW_FUND_ID"
