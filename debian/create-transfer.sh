@@ -55,20 +55,24 @@ TW_QUOTE_PAYLOAD='{
     "sourceAmount": '$TW_SOURCE_AMOUNT'
 }'
 
-TW_PROFILE_ID=$(curl -fsSL -X GET -H "Authorization: Bearer $TW_TOKEN" "$TW_API_BASE/v2/profiles" | grep -o '"id":[0-9]*' | cut -d':' -f2 | head -n 1)
+TW_PROFILE_RESPONSE=$(curl -fsSL -X GET -H "Authorization: Bearer $TW_TOKEN" "$TW_API_BASE/v2/profiles")
+TW_PROFILE_ID=$(echo "$TW_PROFILE_RESPONSE" | grep -o '"id":[0-9]*' | cut -d':' -f2 | head -n 1)
 
 if [ -z "$TW_PROFILE_ID" ]; then
     echo "[ERROR] Unable to get profile id. Please check your API token."
+    echo "[DEBUG] Full response: $TW_PROFILE_RESPONSE"
     exit 1
 fi
 
-TW_QUOTE_ID=$(curl -fsSL -X POST "$TW_API_BASE/v3/profiles/$TW_PROFILE_ID/quotes" \
+TW_QUOTE_RESPONSE=$(curl -fsSL -X POST "$TW_API_BASE/v3/profiles/$TW_PROFILE_ID/quotes" \
     -H "Authorization: Bearer $TW_TOKEN" \
     -H "Content-Type: application/json" \
-    -d "$TW_QUOTE_PAYLOAD" | grep -o '"id":"[^"]*' | cut -d'"' -f4 | head -n 1)
+    -d "$TW_QUOTE_PAYLOAD")
+TW_QUOTE_ID=$(echo "$TW_QUOTE_RESPONSE" | grep -o '"id":"[^"]*' | cut -d'"' -f4 | head -n 1)
 
 if [ -z "$TW_QUOTE_ID" ]; then
     echo "[ERROR] Unable to get quote id. Quote creation may have failed."
+    echo "[DEBUG] Full response: $TW_QUOTE_RESPONSE"
     exit 1
 fi
 
@@ -131,13 +135,15 @@ else
     exit 1
 fi
 
-TW_RECIPIENT_ID=$(curl -fsSL -X POST "$TW_API_BASE/v1/accounts" \
+TW_RECIPIENT_RESPONSE=$(curl -fsSL -X POST "$TW_API_BASE/v1/accounts" \
     -H "Authorization: Bearer $TW_TOKEN" \
     -H "Content-Type: application/json" \
-    -d "$TW_RECIPIENT_PAYLOAD" | grep -o '"id":[0-9]*' | cut -d':' -f2 | head -n 1)
+    -d "$TW_RECIPIENT_PAYLOAD")
+TW_RECIPIENT_ID=$(echo "$TW_RECIPIENT_RESPONSE" | grep -o '"id":[0-9]*' | cut -d':' -f2 | head -n 1)
 
 if [ -z "$TW_RECIPIENT_ID" ]; then
     echo "[ERROR] Unable to get recipient id. Recipient creation may have failed."
+    echo "[DEBUG] Full response: $TW_RECIPIENT_RESPONSE"
     exit 1
 fi
 
@@ -147,13 +153,15 @@ TW_TRANSFER_PAYLOAD='{
     "customerTransactionId": "'$TW_QUOTE_ID'"
 }'
 
-TW_TRANSFER_ID=$(curl -fsSL -X POST "$TW_API_BASE/v1/transfers" \
+TW_TRANSFER_RESPONSE=$(curl -fsSL -X POST "$TW_API_BASE/v1/transfers" \
     -H "Authorization: Bearer $TW_TOKEN" \
     -H "Content-Type: application/json" \
-    -d "$TW_TRANSFER_PAYLOAD" | grep -o '"id":[0-9]*' | cut -d':' -f2 | head -n 1)
+    -d "$TW_TRANSFER_PAYLOAD")
+TW_TRANSFER_ID=$(echo "$TW_TRANSFER_RESPONSE" | grep -o '"id":[0-9]*' | cut -d':' -f2 | head -n 1)
 
 if [ -z "$TW_TRANSFER_ID" ]; then
     echo "[ERROR] Unable to get transfer id. Transfer creation may have failed."
+    echo "[DEBUG] Full response: $TW_TRANSFER_RESPONSE"
     exit 1
 fi
 
