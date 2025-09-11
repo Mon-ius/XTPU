@@ -8,18 +8,21 @@ _TW_TARGET_CURRENCY='HKD'
 _TW_SOURCE_AMOUNT=100
 _TW_TARGET_ACCOUNT='123456789012'
 _TW_TARGET_NAME='John Smith'
-_TW_TARGET_BANK='004'
 _TW_TARGET_ADDRESS='123 Main Street'
 _TW_TARGET_CITY='Hong Kong'
 _TW_POST_CODE='00000'
 
 if [ -z "$1" ]; then
-    echo "Usage: $0 <wise_token> [source_currency] [target_currency] [amount] [target_account] [target_name] [target_bank] [target_address] [city] [post_code]"
+    echo "Usage: $0 <wise_token> [source_currency] [target_currency] [amount] [target_account] [target_name] [target_address] [city] [post_code]"
     echo "Example:"
-    echo "  HKD: $0 eW91ci10b2tlbg== USD HKD 100 123456789012 'John Smith' 004 '123 Main Street' 'Hong Kong' '00000'"
-    echo "  AUD: $0 eW91ci10b2tlbg== USD AUD 100 '123456 789012345' 'John Smith' 004 '123 Main Street' 'Sydney' '2000'"
+    echo "  HKD: $0 eW91ci10b2tlbg== USD HKD 100 '004 123456789012' 'John Smith' '123 Main Street' 'Hong Kong' '00000'"
+    echo "  AUD: $0 eW91ci10b2tlbg== USD AUD 100 '123456 789012345' 'John Smith' '123 Main Street' 'Sydney' 'NSW 00000'"
+    echo "  CNY: $0 eW91ci10b2tlbg== USD CNY 100 '123456@qq.com' 'John Smith' '123 Main Street' 'Beijing' '00000'"
     echo ""
-    echo "Note: For AUD transfers, provide target_account as 'BSB ACCOUNTNUM' (space-separated)"
+    echo "Note:"
+    echo "  - For HKD transfers: provide target_account as 'BANKCODE ACCOUNTNUM' (e.g., '004 123456789012')"
+    echo "  - For AUD transfers: provide target_account as 'BSB ACCOUNTNUM' (e.g., '123456 789012345')"
+    echo "  - For CNY transfers: provide target_account as UnionPay card number (e.g., '6222021234567890123')"
     exit 1
 fi
 
@@ -29,10 +32,9 @@ TW_TARGET_CURRENCY="${3:-$_TW_TARGET_CURRENCY}"
 TW_SOURCE_AMOUNT="${4:-$_TW_SOURCE_AMOUNT}"
 TW_TARGET_ACCOUNT="${5:-$_TW_TARGET_ACCOUNT}"
 TW_TARGET_NAME="${6:-$_TW_TARGET_NAME}"
-TW_TARGET_BANK="${7:-$_TW_TARGET_BANK}"
-TW_TARGET_ADDRESS="${8:-$_TW_TARGET_ADDRESS}"
-TW_TARGET_CITY="${9:-$_TW_TARGET_CITY}"
-TW_POST_CODE="${10:-$_TW_POST_CODE}"
+TW_TARGET_ADDRESS="${7:-$_TW_TARGET_ADDRESS}"
+TW_TARGET_CITY="${8:-$_TW_TARGET_CITY}"
+TW_POST_CODE="${9:-$_TW_POST_CODE}"
 
 TW_TOKEN=$(echo "$TW_TOKEN_BASE64" | base64 -d)
 
@@ -73,8 +75,10 @@ fi
 if [ "$TW_TARGET_CURRENCY" = "AUD" ]; then
     TW_TARGET_ACCOUNT_BSB=$(echo "$TW_TARGET_ACCOUNT" | awk '{print $1}')
     TW_TARGET_ACCOUNT=$(echo "$TW_TARGET_ACCOUNT" | awk '{print $2}')
+    TW_STATE_CODE=$(echo "$TW_POST_CODE" | awk '{print $1}')
+    TW_POST_CODE=$(echo "$TW_POST_CODE" | awk '{print $2}')
     TW_RECIPIENT_PAYLOAD='{
-        "type": "australia",
+        "type": "australian",
         "currency": "'$TW_TARGET_CURRENCY'",
         "profile": '$TW_PROFILE_ID',
         "accountHolderName": "'$TW_TARGET_NAME'",
@@ -85,12 +89,15 @@ if [ "$TW_TARGET_CURRENCY" = "AUD" ]; then
             "address": {
                 "firstLine": "'$TW_TARGET_ADDRESS'",
                 "city": "'$TW_TARGET_CITY'",
+                "state": "'$TW_STATE_CODE'",
                 "country": "AU",
                 "postCode": "'$TW_POST_CODE'"
             }
         }
     }'
 elif [ "$TW_TARGET_CURRENCY" = "HKD" ]; then
+    TW_TARGET_BANK=$(echo "$TW_TARGET_ACCOUNT" | awk '{print $1}')
+    TW_TARGET_ACCOUNT=$(echo "$TW_TARGET_ACCOUNT" | awk '{print $2}')
     TW_RECIPIENT_PAYLOAD='{
         "type": "hongkong",
         "currency": "'$TW_TARGET_CURRENCY'",
@@ -137,13 +144,7 @@ fi
 TW_TRANSFER_PAYLOAD='{
     "targetAccount": '$TW_RECIPIENT_ID',
     "quoteUuid": "'$TW_QUOTE_ID'",
-    "customerTransactionId": "'$TW_QUOTE_ID'",
-    "details": {
-        "reference": "Payment to '$TW_TARGET_NAME'",
-        "transferPurpose": "verification.transfers.purpose.send.to.family",
-        "transferPurposeSubTransferPurpose": "verification.sub.transfers.purpose.send.to.family",
-        "sourceOfFunds": "verification.source.of.funds.other"
-    }
+    "customerTransactionId": "'$TW_QUOTE_ID'"
 }'
 
 TW_TRANSFER_ID=$(curl -fsSL -X POST "$TW_API_BASE/v1/transfers" \
