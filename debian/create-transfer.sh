@@ -59,9 +59,9 @@ TW_PROFILE_ID=$(curl -fsSL -X GET -H "Authorization: Bearer $TW_TOKEN" "$TW_API_
 
 if [ -z "$TW_PROFILE_ID" ]; then
     echo "[ERROR] Unable to get profile id. Please check your API token."
-    echo "[DEBUG] Retrying without -fsSL for detailed error..."
-    TW_PROFILE_RESPONSE=$(curl -X GET -H "Authorization: Bearer $TW_TOKEN" "$TW_API_BASE/v2/profiles" 2>&1)
-    echo "[DEBUG] Full response: $TW_PROFILE_RESPONSE"
+    echo "[DEBUG] Retrying for detailed error..."
+    TW_PROFILE_RESPONSE=$(curl -sS -X GET -H "Authorization: Bearer $TW_TOKEN" "$TW_API_BASE/v2/profiles" 2>&1)
+    echo "[DEBUG] Response: $TW_PROFILE_RESPONSE"
     exit 1
 fi
 
@@ -73,12 +73,12 @@ TW_QUOTE_ID=$(curl -fsSL -X POST "$TW_API_BASE/v3/profiles/$TW_PROFILE_ID/quotes
 if [ -z "$TW_QUOTE_ID" ]; then
     echo "[ERROR] Unable to get quote id. Quote creation may have failed."
     echo "[DEBUG] Payload sent: $TW_QUOTE_PAYLOAD"
-    echo "[DEBUG] Retrying without -fsSL for detailed error..."
-    TW_QUOTE_RESPONSE=$(curl -X POST "$TW_API_BASE/v3/profiles/$TW_PROFILE_ID/quotes" \
+    echo "[DEBUG] Retrying for detailed error..."
+    TW_QUOTE_RESPONSE=$(curl -sS -X POST "$TW_API_BASE/v3/profiles/$TW_PROFILE_ID/quotes" \
         -H "Authorization: Bearer $TW_TOKEN" \
         -H "Content-Type: application/json" \
         -d "$TW_QUOTE_PAYLOAD" 2>&1)
-    echo "[DEBUG] Full response: $TW_QUOTE_RESPONSE"
+    echo "[DEBUG] Response: $TW_QUOTE_RESPONSE"
     exit 1
 fi
 
@@ -149,12 +149,12 @@ TW_RECIPIENT_ID=$(curl -fsSL -X POST "$TW_API_BASE/v1/accounts" \
 if [ -z "$TW_RECIPIENT_ID" ]; then
     echo "[ERROR] Unable to get recipient id. Recipient creation may have failed."
     echo "[DEBUG] Payload sent: $TW_RECIPIENT_PAYLOAD"
-    echo "[DEBUG] Retrying without -fsSL for detailed error..."
-    TW_RECIPIENT_RESPONSE=$(curl -X POST "$TW_API_BASE/v1/accounts" \
+    echo "[DEBUG] Retrying for detailed error..."
+    TW_RECIPIENT_RESPONSE=$(curl -sS -X POST "$TW_API_BASE/v1/accounts" \
         -H "Authorization: Bearer $TW_TOKEN" \
         -H "Content-Type: application/json" \
         -d "$TW_RECIPIENT_PAYLOAD" 2>&1)
-    echo "[DEBUG] Full response: $TW_RECIPIENT_RESPONSE"
+    echo "[DEBUG] Response: $TW_RECIPIENT_RESPONSE"
     exit 1
 fi
 
@@ -172,12 +172,12 @@ TW_TRANSFER_ID=$(curl -fsSL -X POST "$TW_API_BASE/v1/transfers" \
 if [ -z "$TW_TRANSFER_ID" ]; then
     echo "[ERROR] Unable to get transfer id. Transfer creation may have failed."
     echo "[DEBUG] Payload sent: $TW_TRANSFER_PAYLOAD"
-    echo "[DEBUG] Retrying without -fsSL for detailed error..."
-    TW_TRANSFER_RESPONSE=$(curl -X POST "$TW_API_BASE/v1/transfers" \
+    echo "[DEBUG] Retrying for detailed error..."
+    TW_TRANSFER_RESPONSE=$(curl -sS -X POST "$TW_API_BASE/v1/transfers" \
         -H "Authorization: Bearer $TW_TOKEN" \
         -H "Content-Type: application/json" \
         -d "$TW_TRANSFER_PAYLOAD" 2>&1)
-    echo "[DEBUG] Full response: $TW_TRANSFER_RESPONSE"
+    echo "[DEBUG] Response: $TW_TRANSFER_RESPONSE"
     exit 1
 fi
 
