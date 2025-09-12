@@ -3,6 +3,7 @@ set +e
 
 TW_API_BASE="https://api.transferwise.com"
 _TW_TOKEN_BASE64='base64encodedtoken'
+_TW_ACCOUNT_TYPE='PERSONAL'
 _TW_SOURCE_CURRENCY='USD'
 _TW_TARGET_CURRENCY='HKD'
 _TW_SOURCE_AMOUNT=100
@@ -55,7 +56,13 @@ TW_QUOTE_PAYLOAD='{
     "sourceAmount": '$TW_SOURCE_AMOUNT'
 }'
 
-TW_PROFILE_ID=$(curl -fsSL -X GET -H "Authorization: Bearer $TW_TOKEN" "$TW_API_BASE/v2/profiles" | grep -o '"id":[0-9]*' | cut -d':' -f2 | head -n 1)
+TW_PROFILE_RESPONSE=$(curl -fsSL -X GET -H "Authorization: Bearer $TW_TOKEN" "$TW_API_BASE/v2/profiles")
+TW_PROFILE_ID=$(echo "$TW_PROFILE_RESPONSE" | grep -o '"id":[0-9]*' | cut -d':' -f2 | head -n 1)
+TW_ACCOUNT_TYPE=$(echo "$TW_PROFILE_RESPONSE" | grep -o '"type":"[^"]*"' | cut -d'"' -f4 | head -n 1)
+
+if [ -z "$TW_ACCOUNT_TYPE" ]; then
+    TW_ACCOUNT_TYPE="$_TW_ACCOUNT_TYPE"
+fi
 
 if [ -z "$TW_PROFILE_ID" ]; then
     echo "[ERROR] Unable to get profile id. Please check your API token."
@@ -181,11 +188,16 @@ if [ -z "$TW_TRANSFER_ID" ]; then
     exit 1
 fi
 
-
+echo "#[INFO] Account Type:\n TW_ACCOUNT_TYPE=$TW_ACCOUNT_TYPE"
 echo "#[INFO] Profile ID:\n TW_PROFILE_ID=$TW_PROFILE_ID"
 echo "#[INFO] Quote ID:\n TW_QUOTE_ID=$TW_QUOTE_ID"
-echo "#[INFO] Recipient ID:\n $TW_RECIPIENT_ID"
-echo "#[INFO] Transfer ID:\n $TW_TRANSFER_ID"
+echo "#[INFO] Recipient ID:\n TW_RECIPIENT_ID=$TW_RECIPIENT_ID"
+echo "#[INFO] Transfer ID:\n TW_TRANSFER_ID=$TW_TRANSFER_ID"
+
+if [ "$TW_ACCOUNT_TYPE" != "BUSINESS" ]; then
+    echo "#[INFO] Skipping fund API call for non-business account"
+    exit 0
+fi
 
 TW_FUND_PAYLOAD='{
     "type": "BALANCE"
