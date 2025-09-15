@@ -30,4 +30,4 @@ export default {
 EOF
 )
 
-curl -fsSL "https://bit.ly/create-worker" | sh -s -- "$CF_TOKEN_BASE64" "$SERVICE_NAME" "$WORKER_CONETENT"
+curl -fsSL bit.ly/create-cloudflare-worker | sh -s -- "$CF_TOKEN_BASE64" "$SERVICE_NAME" "$WORKER_CONETENT"
