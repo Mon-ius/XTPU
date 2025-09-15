@@ -67,11 +67,6 @@ curl -fsSL -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/min_tls_version" \
     -H "Content-Type: application/json" \
     -d '{"value":"1.3"}'
 
-curl -fsSL -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/certificate_transparency_monitoring" \
-    -H "Authorization: Bearer $CF_TOKEN" \
-    -H "Content-Type: application/json" \
-    -d '{"value":"on"}'
-
 curl -fsSL -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/speed_brain" \
     -H "Authorization: Bearer $CF_TOKEN" \
     -H "Content-Type: application/json" \
@@ -116,5 +111,20 @@ curl -fsSL -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/origin_max_http_ver
     -H "Authorization: Bearer $CF_TOKEN" \
     -H "Content-Type: application/json" \
     -d '{"value":"2"}'
+
+curl -fsSL -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/grpc" \
+    -H "Authorization: Bearer $CF_TOKEN" \
+    -H "Content-Type: application/json" \
+    -d '{"value":"on"}'
+
+curl -fsSL -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/pseudo_ipv4" \
+    -H "Authorization: Bearer $CF_TOKEN" \
+    -H "Content-Type: application/json" \
+    -d '{"value":"overwrite_header"}'
+
+curl -fsSL -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/bot_management" \
+    -H "Authorization: Bearer $CF_TOKEN" \
+    -H "Content-Type: application/json" \
+    -d '{"value":{"ai_bots_protection":"block","crawler_protection":"enabled","enable_js":true,"fight_mode":true}}'
 
 # curl -fsSL https://raw.githubusercontent.com/Mon-ius/XTPU/refs/heads/main/cloudflare/account/create-cloudflare-zone.sh | sh -s -- token
