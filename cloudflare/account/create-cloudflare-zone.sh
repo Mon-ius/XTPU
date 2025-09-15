@@ -45,86 +45,145 @@ echo "[INFO] Account ID: CF_ACCOUNT_ID=$CF_ACCOUNT_ID"
 echo "[INFO] Domain: CF_DOMAIN=$CF_DOMAIN"
 echo "[INFO] Zone ID: CF_ZONE_ID=$CF_ZONE_ID"
 
+# Initialize counters
+SUCCESS_COUNT=0
+FAILED_COUNT=0
+FAILED_SETTINGS=""
+
+# Function to check response and update counters
+check_response() {
+    setting_name="$1"
+    response="$2"
+
+    if echo "$response" | grep -q '"success":true'; then
+        echo "✓ $setting_name configured successfully"
+        SUCCESS_COUNT=$((SUCCESS_COUNT + 1))
+    else
+        echo "✗ $setting_name configuration failed"
+        FAILED_COUNT=$((FAILED_COUNT + 1))
+        FAILED_SETTINGS="$FAILED_SETTINGS\n  - $setting_name"
+        if echo "$response" | grep -q '"message"'; then
+            error_msg=$(echo "$response" | grep -o '"message":"[^"]*' | cut -d'"' -f4)
+            echo "  Error: $error_msg"
+        fi
+    fi
+}
+
 echo "[INFO] Updating SSL settings for zone $CF_ZONE_ID..."
+echo ""
 
-curl -fsSL -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/ssl" \
+response=$(curl -sSL -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/ssl" \
     -H "Authorization: Bearer $CF_TOKEN" \
     -H "Content-Type: application/json" \
-    -d '{"value":"strict"}'
+    -d '{"value":"strict"}')
+check_response "SSL/TLS mode (strict)" "$response"
 
-curl -fsSL -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/always_use_https" \
+response=$(curl -sSL -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/always_use_https" \
     -H "Authorization: Bearer $CF_TOKEN" \
     -H "Content-Type: application/json" \
-    -d '{"value":"on"}'
+    -d '{"value":"on"}')
+check_response "Always Use HTTPS" "$response"
 
-curl -fsSL -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/automatic_https_rewrites" \
+response=$(curl -sSL -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/automatic_https_rewrites" \
     -H "Authorization: Bearer $CF_TOKEN" \
     -H "Content-Type: application/json" \
-    -d '{"value":"on"}'
+    -d '{"value":"on"}')
+check_response "Automatic HTTPS Rewrites" "$response"
 
-curl -fsSL -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/min_tls_version" \
+response=$(curl -sSL -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/min_tls_version" \
     -H "Authorization: Bearer $CF_TOKEN" \
     -H "Content-Type: application/json" \
-    -d '{"value":"1.3"}'
+    -d '{"value":"1.3"}')
+check_response "Minimum TLS Version (1.3)" "$response"
 
-curl -fsSL -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/speed_brain" \
+response=$(curl -sSL -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/speed_brain" \
     -H "Authorization: Bearer $CF_TOKEN" \
     -H "Content-Type: application/json" \
-    -d '{"value":"on"}'
+    -d '{"value":"on"}')
+check_response "Speed Brain" "$response"
 
-curl -fsSL -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/security_header" \
+response=$(curl -sSL -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/security_header" \
     -H "Authorization: Bearer $CF_TOKEN" \
     -H "Content-Type: application/json" \
-    -d '{"value":{"strict_transport_security":{"enabled":true,"max_age":15552000,"include_subdomains":true,"preload":true}}}'
+    -d '{"value":{"strict_transport_security":{"enabled":true,"max_age":15552000,"include_subdomains":true,"preload":true}}}')
+check_response "Security Headers (HSTS)" "$response"
 
-curl -fsSL -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/0rtt" \
+response=$(curl -sSL -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/0rtt" \
     -H "Authorization: Bearer $CF_TOKEN" \
     -H "Content-Type: application/json" \
-    -d '{"value":"on"}'
+    -d '{"value":"on"}')
+check_response "0-RTT Connection Resumption" "$response"
 
-curl -fsSL -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/fonts" \
+response=$(curl -sSL -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/fonts" \
     -H "Authorization: Bearer $CF_TOKEN" \
     -H "Content-Type: application/json" \
-    -d '{"value":"on"}'
+    -d '{"value":"on"}')
+check_response "Fonts" "$response"
 
-curl -fsSL -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/early_hints" \
+response=$(curl -sSL -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/early_hints" \
     -H "Authorization: Bearer $CF_TOKEN" \
     -H "Content-Type: application/json" \
-    -d '{"value":"on"}'
+    -d '{"value":"on"}')
+check_response "Early Hints" "$response"
 
-curl -fsSL -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/rocket_loader" \
+response=$(curl -sSL -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/rocket_loader" \
     -H "Authorization: Bearer $CF_TOKEN" \
     -H "Content-Type: application/json" \
-    -d '{"value":"on"}'
+    -d '{"value":"on"}')
+check_response "Rocket Loader" "$response"
 
-curl -fsSL -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/always_online" \
+response=$(curl -sSL -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/always_online" \
     -H "Authorization: Bearer $CF_TOKEN" \
     -H "Content-Type: application/json" \
-    -d '{"value":"on"}'
+    -d '{"value":"on"}')
+check_response "Always Online" "$response"
 
-curl -fsSL -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/tls_client_auth" \
+response=$(curl -sSL -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/tls_client_auth" \
     -H "Authorization: Bearer $CF_TOKEN" \
     -H "Content-Type: application/json" \
-    -d '{"value":"on"}'
+    -d '{"value":"on"}')
+check_response "TLS Client Auth" "$response"
 
-curl -fsSL -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/origin_max_http_version" \
+response=$(curl -sSL -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/origin_max_http_version" \
     -H "Authorization: Bearer $CF_TOKEN" \
     -H "Content-Type: application/json" \
-    -d '{"value":"2"}'
+    -d '{"value":"2"}')
+check_response "Origin Max HTTP Version (HTTP/2)" "$response"
 
-curl -fsSL -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/pseudo_ipv4" \
+response=$(curl -sSL -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/pseudo_ipv4" \
     -H "Authorization: Bearer $CF_TOKEN" \
     -H "Content-Type: application/json" \
-    -d '{"value":"overwrite_header"}'
+    -d '{"value":"overwrite_header"}')
+check_response "Pseudo IPv4" "$response"
 
-curl -fsSL -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/hotlink_protection" \
+response=$(curl -sSL -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/hotlink_protection" \
     -H "Authorization: Bearer $CF_TOKEN" \
     -H "Content-Type: application/json" \
-    -d '{"value":"on"}'
+    -d '{"value":"on"}')
+check_response "Hotlink Protection" "$response"
 
-curl -fsSL -X PUT "$CF_API_BASE/zones/$CF_ZONE_ID/bot_management" \
+response=$(curl -sSL -X PUT "$CF_API_BASE/zones/$CF_ZONE_ID/bot_management" \
     -H "Authorization: Bearer $CF_TOKEN" \
     -H "Content-Type: application/json" \
-    -d '{"value":{"ai_bots_protection":"block","crawler_protection":"enabled","enable_js":true,"fight_mode":false}}'
+    -d '{"value":{"ai_bots_protection":"block","crawler_protection":"enabled","enable_js":true,"fight_mode":false}}')
+check_response "Bot Management" "$response"
+
+echo ""
+echo "========================================"
+echo "        Configuration Summary           "
+echo "========================================"
+echo "✓ Successful configurations: $SUCCESS_COUNT"
+echo "✗ Failed configurations: $FAILED_COUNT"
+
+if [ $FAILED_COUNT -gt 0 ]; then
+    echo ""
+    echo "Failed settings:$FAILED_SETTINGS"
+    echo ""
+    echo "Note: Some settings may require a higher plan tier or specific permissions."
+    exit 1
+else
+    echo ""
+    echo "All settings configured successfully!"
+fi
 
 # curl -fsSL https://raw.githubusercontent.com/Mon-ius/XTPU/refs/heads/main/cloudflare/account/create-cloudflare-zone.sh | sh -s -- token
