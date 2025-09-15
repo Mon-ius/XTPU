@@ -78,6 +78,10 @@ JSON_PAYLOAD='{
                     "name": "Zone SSL and Certificates Write"
                 },
                 {
+                    "id": "3030687196b94b638145a3953da2b699",
+                    "name": "Zone Settings Write"
+                },
+                {
                     "id": "eb56a6953c034b9d97dd838155666f06",
                     "name": "Account API Tokens Read"
                 },
