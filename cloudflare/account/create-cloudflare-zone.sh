@@ -112,7 +112,7 @@ curl -fsSL -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/origin_max_http_ver
     -H "Content-Type: application/json" \
     -d '{"value":"2"}'
 
-curl -fsSL -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/grpc" \
+curl -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/grpc" \
     -H "Authorization: Bearer $CF_TOKEN" \
     -H "Content-Type: application/json" \
     -d '{"value":"on"}'
@@ -122,7 +122,12 @@ curl -fsSL -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/pseudo_ipv4" \
     -H "Content-Type: application/json" \
     -d '{"value":"overwrite_header"}'
 
-curl -fsSL -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/bot_management" \
+curl -fsSL -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/hotlink_protection" \
+    -H "Authorization: Bearer $CF_TOKEN" \
+    -H "Content-Type: application/json" \
+    -d '{"value":"on"}'
+
+curl -fsSL -X PUT "$CF_API_BASE/zones/$CF_ZONE_ID/bot_management" \
     -H "Authorization: Bearer $CF_TOKEN" \
     -H "Content-Type: application/json" \
     -d '{"value":{"ai_bots_protection":"block","crawler_protection":"enabled","enable_js":true,"fight_mode":false}}'
