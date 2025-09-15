@@ -21,6 +21,7 @@ echo "=========================================="
 echo ""
 
 AI_PROVIDERS="openai gemini claude grok cohere groq mistral huggingface"
+OPEN_SOURCE="gitlab github github-raw"
 # AI_PROVIDERS="openai gemini claude grok cohere groq mistral huggingface ai21 deepseek fireworks nvidia replicate together voyage"
 REGISTRIES="docker ghcr k8s"
 # REGISTRIES="docker quay gcr k8s-gcr k8s ghcr cloudsmith nvcr"
@@ -41,11 +42,26 @@ for provider in $AI_PROVIDERS; do
 done
 
 echo ""
+echo "🌐 Deploying Open Source Mirrors..."
+echo "------------------------------------"
+for source in $OPEN_SOURCE; do
+    script="https://raw.githubusercontent.com/Mon-ius/XTPU/refs/heads/main/cloudflare/workers/create-cloudflare-${source}.sh"
+
+    if curl -fsSL --head "$script" >/dev/null 2>&1; then
+        echo "  ⏳ Deploying $source..."
+        curl -fsSL "$script" | sh -s -- "$CF_TOKEN_BASE64"
+        echo "  ✅ $source deployed"
+    else
+        echo "  ⚠️  Skipping $source (script not found at URL)"
+    fi
+done
+
+echo ""
 echo "📦 Deploying Container Registry Mirrors..."
 echo "------------------------------------------"
 for registry in $REGISTRIES; do
     script="https://raw.githubusercontent.com/Mon-ius/XTPU/refs/heads/main/cloudflare/workers/create-cloudflare-${registry}.sh"
-    
+
     if curl -fsSL --head "$script" >/dev/null 2>&1; then
         echo "  ⏳ Deploying $registry..."
         curl -fsSL "$script" | sh -s -- "$CF_TOKEN_BASE64"
