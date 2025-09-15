@@ -102,16 +102,6 @@ curl -fsSL -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/rocket_loader" \
     -H "Content-Type: application/json" \
     -d '{"value":"on"}'
 
-curl -fsSL -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/amp_real_url" \
-    -H "Authorization: Bearer $CF_TOKEN" \
-    -H "Content-Type: application/json" \
-    -d '{"value":"on"}'
-
-curl -fsSL -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/crawler_hints" \
-    -H "Authorization: Bearer $CF_TOKEN" \
-    -H "Content-Type: application/json" \
-    -d '{"value":"on"}'
-
 curl -fsSL -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/always_online" \
     -H "Authorization: Bearer $CF_TOKEN" \
     -H "Content-Type: application/json" \
@@ -122,29 +112,9 @@ curl -fsSL -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/tls_client_auth" \
     -H "Content-Type: application/json" \
     -d '{"value":"on"}'
 
-curl -fsSL -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/true_client_ip_header" \
-    -H "Authorization: Bearer $CF_TOKEN" \
-    -H "Content-Type: application/json" \
-    -d '{"value":"on"}'
-
-curl -fsSL -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/proxy_read_timeout" \
-    -H "Authorization: Bearer $CF_TOKEN" \
-    -H "Content-Type: application/json" \
-    -d '{"value":"300"}'
-
 curl -fsSL -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/origin_max_http_version" \
     -H "Authorization: Bearer $CF_TOKEN" \
     -H "Content-Type: application/json" \
     -d '{"value":"2"}'
-
-curl -fsSL -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/normalize_url" \
-    -H "Authorization: Bearer $CF_TOKEN" \
-    -H "Content-Type: application/json" \
-    -d '{"value":{"type":"cloudflare","scope":"incoming"}}'
-
-curl -fsSL -X POST "$CF_API_BASE/zones/$CF_ZONE_ID/rules/transform/managed" \
-    -H "Authorization: Bearer $CF_TOKEN" \
-    -H "Content-Type: application/json" \
-    -d '{"enabled":true,"action":"remove","target":"response_headers","name":"X-Powered-By"}'
 
 # curl -fsSL https://raw.githubusercontent.com/Mon-ius/XTPU/refs/heads/main/cloudflare/account/create-cloudflare-zone.sh | sh -s -- token
