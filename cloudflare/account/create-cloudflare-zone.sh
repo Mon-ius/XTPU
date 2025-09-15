@@ -112,11 +112,6 @@ curl -fsSL -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/origin_max_http_ver
     -H "Content-Type: application/json" \
     -d '{"value":"2"}'
 
-curl -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/grpc" \
-    -H "Authorization: Bearer $CF_TOKEN" \
-    -H "Content-Type: application/json" \
-    -d '{"value":"on"}'
-
 curl -fsSL -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/pseudo_ipv4" \
     -H "Authorization: Bearer $CF_TOKEN" \
     -H "Content-Type: application/json" \
