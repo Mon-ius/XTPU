@@ -82,6 +82,10 @@ JSON_PAYLOAD='{
                     "name": "Zone Settings Write"
                 },
                 {
+                    "id": "3b94c49258ec4573b06d51d99b6416c0",
+                    "name": "Bot Management Write"
+                },
+                {
                     "id": "eb56a6953c034b9d97dd838155666f06",
                     "name": "Account API Tokens Read"
                 },
