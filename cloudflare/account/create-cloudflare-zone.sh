@@ -45,12 +45,10 @@ echo "[INFO] Account ID: CF_ACCOUNT_ID=$CF_ACCOUNT_ID"
 echo "[INFO] Domain: CF_DOMAIN=$CF_DOMAIN"
 echo "[INFO] Zone ID: CF_ZONE_ID=$CF_ZONE_ID"
 
-# Initialize counters
 SUCCESS_COUNT=0
 FAILED_COUNT=0
 FAILED_SETTINGS=""
 
-# Function to check response and update counters
 check_response() {
     setting_name="$1"
     response="$2"

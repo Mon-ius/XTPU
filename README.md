@@ -203,6 +203,7 @@ curl -fsSL bit.ly/create-cloudflare-zone | sh -s -- cf_token_base64
 curl -fsSL bit.ly/create-cloudflare-dns | sh -s -- cf_token_base64 service
 curl -fsSL bit.ly/create-cloudflare-ssl | sh -s -- cf_token_base64 service
 curl -fsSL bit.ly/create-cloudflare-saas | sh -s -- cf_token_base64 custom origin
+curl -fsSL bit.ly/create-cloudflare-worker | sh -s -- cf_token_base64 service worker_js
 ```
 
 ## Reference
