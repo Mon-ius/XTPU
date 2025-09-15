@@ -198,6 +198,8 @@ Cloudflare
 curl -fsSL bit.ly/create-cloudflare-warp | sh
 
 curl -fsSL bit.ly/create-cloudflare-token | sh -s -- cf_token_base64
+curl -fsSL bit.ly/create-cloudflare-mirrors | sh -s -- cf_token_base64
+curl -fsSL bit.ly/create-cloudflare-zone | sh -s -- cf_token_base64
 curl -fsSL bit.ly/create-cloudflare-dns | sh -s -- cf_token_base64 service
 curl -fsSL bit.ly/create-cloudflare-ssl | sh -s -- cf_token_base64 service
 curl -fsSL bit.ly/create-cloudflare-saas | sh -s -- cf_token_base64 custom origin
