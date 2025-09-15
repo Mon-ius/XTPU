@@ -125,6 +125,6 @@ curl -fsSL -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/pseudo_ipv4" \
 curl -fsSL -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/bot_management" \
     -H "Authorization: Bearer $CF_TOKEN" \
     -H "Content-Type: application/json" \
-    -d '{"value":{"ai_bots_protection":"block","crawler_protection":"enabled","enable_js":true,"fight_mode":true}}'
+    -d '{"value":{"ai_bots_protection":"block","crawler_protection":"enabled","enable_js":true,"fight_mode":false}}'
 
 # curl -fsSL https://raw.githubusercontent.com/Mon-ius/XTPU/refs/heads/main/cloudflare/account/create-cloudflare-zone.sh | sh -s -- token
