@@ -166,9 +166,9 @@ if [ -z "$TW_RECIPIENT_ID" ]; then
 fi
 
 TW_TRANSFER_PAYLOAD='{
-    "targetAccount": '$TW_RECIPIENT_ID',
-    "quoteUuid": "'$TW_QUOTE_ID'",
-    "customerTransactionId": "'$TW_QUOTE_ID'"
+    "targetAccount": '"$TW_RECIPIENT_ID"',
+    "quoteUuid": "'"$TW_QUOTE_ID"'",
+    "customerTransactionId": "'"$(uuidgen)"'"
 }'
 
 TW_TRANSFER_ID=$(curl -fsSL -X POST "$TW_API_BASE/v1/transfers" \
