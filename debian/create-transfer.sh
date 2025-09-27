@@ -155,6 +155,7 @@ TW_RECIPIENT_ID=$(curl -fsSL -X POST "$TW_API_BASE/v1/accounts" \
 
 if [ -z "$TW_RECIPIENT_ID" ]; then
     echo "[ERROR] Unable to get recipient id. Recipient creation may have failed."
+    echo "[DEBUG] Payload sent: $TW_QUOTE_PAYLOAD"
     echo "[DEBUG] Payload sent: $TW_RECIPIENT_PAYLOAD"
     echo "[DEBUG] Retrying for detailed error..."
     TW_RECIPIENT_RESPONSE=$(curl -sS -X POST "$TW_API_BASE/v1/accounts" \
@@ -178,6 +179,8 @@ TW_TRANSFER_ID=$(curl -fsSL -X POST "$TW_API_BASE/v1/transfers" \
 
 if [ -z "$TW_TRANSFER_ID" ]; then
     echo "[ERROR] Unable to get transfer id. Transfer creation may have failed."
+    echo "[DEBUG] Payload sent: $TW_QUOTE_PAYLOAD"
+    echo "[DEBUG] Payload sent: $TW_RECIPIENT_PAYLOAD"
     echo "[DEBUG] Payload sent: $TW_TRANSFER_PAYLOAD"
     echo "[DEBUG] Retrying for detailed error..."
     TW_TRANSFER_RESPONSE=$(curl -sS -X POST "$TW_API_BASE/v1/transfers" \
@@ -212,6 +215,7 @@ if [ -z "$TW_FUND_ID" ]; then
     echo "[ERROR] Unable to get fund id. Transfer funding may have failed."
     echo "[DEBUG] Payload sent: $TW_QUOTE_PAYLOAD"
     echo "[DEBUG] Payload sent: $TW_RECIPIENT_PAYLOAD"
+    echo "[DEBUG] Payload sent: $TW_TRANSFER_PAYLOAD"
     echo "[DEBUG] Payload sent: $TW_FUND_PAYLOAD"
     echo "[DEBUG] Retrying for detailed error..."
     TW_FUND_RESPONSE=$(curl -sS -X POST "$TW_API_BASE/v3/profiles/$TW_PROFILE_ID/transfers/$TW_TRANSFER_ID/payments" \
