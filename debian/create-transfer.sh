@@ -148,8 +148,6 @@ else
     exit 1
 fi
 
-echo "$TW_RECIPIENT_PAYLOAD"
-
 TW_RECIPIENT_ID=$(curl -fsSL -X POST "$TW_API_BASE/v1/accounts" \
     -H "Authorization: Bearer $TW_TOKEN" \
     -H "Content-Type: application/json" \
@@ -212,6 +210,8 @@ TW_FUND_ID=$(curl -fsSL -X POST "$TW_API_BASE/v3/profiles/$TW_PROFILE_ID/transfe
 
 if [ -z "$TW_FUND_ID" ]; then
     echo "[ERROR] Unable to get fund id. Transfer funding may have failed."
+    echo "[DEBUG] Payload sent: $TW_QUOTE_PAYLOAD"
+    echo "[DEBUG] Payload sent: $TW_RECIPIENT_PAYLOAD"
     echo "[DEBUG] Payload sent: $TW_FUND_PAYLOAD"
     echo "[DEBUG] Retrying for detailed error..."
     TW_FUND_RESPONSE=$(curl -sS -X POST "$TW_API_BASE/v3/profiles/$TW_PROFILE_ID/transfers/$TW_TRANSFER_ID/payments" \
