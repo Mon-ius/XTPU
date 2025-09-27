@@ -148,6 +148,8 @@ else
     exit 1
 fi
 
+echo "$TW_RECIPIENT_PAYLOAD"
+
 TW_RECIPIENT_ID=$(curl -fsSL -X POST "$TW_API_BASE/v1/accounts" \
     -H "Authorization: Bearer $TW_TOKEN" \
     -H "Content-Type: application/json" \
