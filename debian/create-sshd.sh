@@ -23,5 +23,4 @@ ClientAliveInterval 60
 ClientAliveCountMax 3
 EOF
 
-sudo systemctl restart sshd
-sudo systemctl restart ssh
+sudo systemctl restart sshd || sudo systemctl restart ssh
