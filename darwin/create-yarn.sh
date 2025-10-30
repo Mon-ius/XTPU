@@ -1,5 +1,7 @@
 #!/bin/dash
 
+brew update && brew upgrade
+
 brew install corepack
 corepack enable && corepack prepare yarn@stable --activate
 

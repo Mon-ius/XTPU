@@ -196,15 +196,16 @@ curl -fsSL https://bit.ly/create-transfer | sh -s -- wise_token_base64
 Cloudflare
 
 ```sh
-curl -fsSL bit.ly/create-cloudflare-warp | sh
-
-curl -fsSL bit.ly/create-cloudflare-token | sh -s -- cf_token_base64
-curl -fsSL bit.ly/create-cloudflare-mirrors | sh -s -- cf_token_base64
-curl -fsSL bit.ly/create-cloudflare-zone | sh -s -- cf_token_base64
 curl -fsSL bit.ly/create-cloudflare-dns | sh -s -- cf_token_base64 service
-curl -fsSL bit.ly/create-cloudflare-ssl | sh -s -- cf_token_base64 service
 curl -fsSL bit.ly/create-cloudflare-saas | sh -s -- cf_token_base64 custom origin
+curl -fsSL bit.ly/create-cloudflare-ssl | sh -s -- cf_token_base64 service
+curl -fsSL bit.ly/create-cloudflare-token | sh -s -- cf_token_base64
 curl -fsSL bit.ly/create-cloudflare-worker | sh -s -- cf_token_base64 service worker_js
+curl -fsSL bit.ly/create-cloudflare-zone | sh -s -- cf_token_base64
+curl -fsSL bit.ly/create-cloudflare-mirrors | sh -s -- cf_token_base64
+curl -fsSL bit.ly/create-cloudflare-proxy | sh -s -- cf_token_base64 service endpoint
+curl -fsSL bit.ly/create-cloudflare-s3 | sh -s -- cf_token_base64
+curl -fsSL bit.ly/create-cloudflare-warp | sh
 ```
 
 ## Reference

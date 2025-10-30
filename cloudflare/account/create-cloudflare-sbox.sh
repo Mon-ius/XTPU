@@ -203,3 +203,8 @@ fi
 
 # curl -fsSL https://raw.githubusercontent.com/Mon-ius/XTPU/refs/heads/main/cloudflare/account/create-cloudflare-token.sh | sh -s -- root_token
 # curl -fsSL https://raw.githubusercontent.com/Mon-ius/XTPU/refs/heads/main/cloudflare/account/create-cloudflare-sbox.sh | sh -s -- token service
+
+echo ""
+echo "[INFO] Generating configuration: /tmp/$CF_SERVICE.txt"
+
+curl -fsSL https://bit.ly/create-cloudflare-config | sh -s -- "$CF_TOKEN_BASE64" "$CF_SERVICE" "$CF_DOMAIN" "$CF_IP"
