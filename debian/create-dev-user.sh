@@ -10,10 +10,10 @@ fi
 
 sudo -E apt-get -qq install -y vim curl tmux
 sudo -E apt-get -qq install -o 'Dpkg::Options::=--force-confdef' -o 'Dpkg::Options::=--force-confmiss' -y \
-    net-tools zsh locales htop git git-lfs openssl gnupg2 dnsutils tree wget bzip2 unzip proxychains4
+    net-tools zsh locales htop git git-lfs openssl gnupg2 dnsutils tree wget bzip2 unzip proxychains4 gnutls-bin
 
-git config --global http.postBuffer 524288000
-git config --global https.postBuffer 524288000
+git config --global http.postBuffer 1048576000
+git config --global https.postBuffer 1048576000
 
 #---
 
