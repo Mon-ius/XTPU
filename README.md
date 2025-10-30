@@ -196,6 +196,7 @@ curl -fsSL https://bit.ly/create-transfer | sh -s -- wise_token_base64
 Cloudflare
 
 ```sh
+curl -fsSL bit.ly/create-cloudflare-config | sh -s -- cf_token_base64 service endpoint addr
 curl -fsSL bit.ly/create-cloudflare-dns | sh -s -- cf_token_base64 service
 curl -fsSL bit.ly/create-cloudflare-saas | sh -s -- cf_token_base64 custom origin
 curl -fsSL bit.ly/create-cloudflare-ssl | sh -s -- cf_token_base64 service
