@@ -200,6 +200,7 @@ curl -fsSL bit.ly/create-cloudflare-config | sh -s -- cf_token_base64 service en
 curl -fsSL bit.ly/create-cloudflare-dns | sh -s -- cf_token_base64 service
 curl -fsSL bit.ly/create-cloudflare-saas | sh -s -- cf_token_base64 custom origin
 curl -fsSL bit.ly/create-cloudflare-ssl | sh -s -- cf_token_base64 service
+curl -fsSL bit.ly/create-cloudflare-sbox | sh -s -- cf_token_base64 service
 curl -fsSL bit.ly/create-cloudflare-token | sh -s -- cf_token_base64
 curl -fsSL bit.ly/create-cloudflare-worker | sh -s -- cf_token_base64 service worker_js
 curl -fsSL bit.ly/create-cloudflare-zone | sh -s -- cf_token_base64
