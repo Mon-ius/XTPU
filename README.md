@@ -191,6 +191,8 @@ curl -fsSL https://bit.ly/create-r2 | sh -s -- cf_token_base64 mybucket
 curl -fsSL https://bit.ly/create-s3 | sh -s -- cf_token_base64
 curl -fsSL https://bit.ly/create-sms | sh -s -- vonage_token_base64 number brand
 curl -fsSL https://bit.ly/create-transfer | sh -s -- wise_token_base64
+
+curl -fsSL https://bit.ly/create-ssh-tun | sh -s -- username pem
 ```
 
 Cloudflare
