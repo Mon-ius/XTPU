@@ -158,7 +158,7 @@ curl -fsSL bit.ly/create-warp | sh
 curl -fsSL bit.ly/create-golang | sh
 curl -fsSL bit.ly/create-dart | sh
 
-curl -fsSL bit.ly/create-reverse-ssh | sh -s -- remote_ip remote_port
+curl -fsSL bit.ly/create-reverse-ssh | sh -s -- remote_addr remote_port
 curl -fsSL bit.ly/create-ssl | sh -s -- cf_token cf_subdomain
 curl -fsSL bit.ly/create-github | sh -s -- cf_token github_name
 curl -fsSL bit.ly/create-worker | sh -s -- cf_token_base64 my-service worker.js 
