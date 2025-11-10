@@ -16,7 +16,7 @@ _SNAME=tun
 RHOST="${1:-$_RHOST}"
 RPORT="${2:-$_RPORT}"
 SNAME="${3:-$_SNAME}"
-SECRET=/etc/ssl/certs/$SNAME
+SECRET=/etc/ssl/certs/$SNAME.pem
 
 IPV4=$(dig +short A "$RHOST" | head -n1)
 
