@@ -92,11 +92,6 @@ CONFIG_PAYLOAD=$(cat <<EOF
                 "server_name": "$CF_SERVICE.$CF_DOMAIN",
                 "min_version": "1.2",
                 "max_version": "1.3",
-                "cipher_suites": [
-                    "TLS_AES_128_GCM_SHA256",
-                    "TLS_AES_256_GCM_SHA384",
-                    "TLS_CHACHA20_POLY1305_SHA256"
-                ],
                 "acme": {
                     "domain": "$CF_SERVICE.$CF_DOMAIN",
                     "email": "admin@$CF_DOMAIN",
@@ -105,6 +100,11 @@ CONFIG_PAYLOAD=$(cat <<EOF
                         "api_token": "$CF_TOKEN"
                     }
                 },
+                "cipher_suites": [
+                    "TLS_AES_128_GCM_SHA256",
+                    "TLS_AES_256_GCM_SHA384",
+                    "TLS_CHACHA20_POLY1305_SHA256"
+                ],
                 "alpn": [
                     "h3"
                 ]

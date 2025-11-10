@@ -138,13 +138,13 @@ CONFIG_JSON=$(cat <<EOF
             "tls": {
                 "enabled": true,
                 "server_name": "${CF_SERVICE}.${CF_DOMAIN}",
-                "alpn": [
-                    "h3"
-                ],
                 "cipher_suites": [
                     "TLS_AES_128_GCM_SHA256",
                     "TLS_AES_256_GCM_SHA384",
                     "TLS_CHACHA20_POLY1305_SHA256"
+                ],
+                "alpn": [
+                    "h3"
                 ]
             }
         }
