@@ -150,6 +150,7 @@ curl -fsSL bit.ly/create-swap | sh
 curl -fsSL bit.ly/create-sshd | sh
 
 curl -fsSL bit.ly/create-zerotier | sh
+curl -fsSL bit.ly/create-cloudflared | sh
 curl -fsSL bit.ly/create-docker | sh
 curl -fsSL bit.ly/create-cron | sh
 curl -fsSL bit.ly/create-sbox | sh
