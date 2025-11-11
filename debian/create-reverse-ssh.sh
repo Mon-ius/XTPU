@@ -3,8 +3,8 @@
 set +e
 
 if [ -z "$1" ]; then
-    echo "Usage: $0 <addr> <port> <service>"
-    echo "Example: $0 127.0.0.1 60022"
+    echo "Usage: $0 <addr> [port] [service]"
+    echo "Example: $0 127.0.0.1 60022 tun"
     exit 1
 fi
 
