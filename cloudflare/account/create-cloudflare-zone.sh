@@ -94,12 +94,6 @@ response=$(curl -sSL -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/min_tls_v
     -d '{"value":"1.3"}')
 check_response "Minimum TLS Version (1.3)" "$response"
 
-response=$(curl -sSL -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/speed_brain" \
-    -H "Authorization: Bearer $CF_TOKEN" \
-    -H "Content-Type: application/json" \
-    -d '{"value":"on"}')
-check_response "Speed Brain" "$response"
-
 response=$(curl -sSL -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/security_header" \
     -H "Authorization: Bearer $CF_TOKEN" \
     -H "Content-Type: application/json" \
@@ -111,12 +105,6 @@ response=$(curl -sSL -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/0rtt" \
     -H "Content-Type: application/json" \
     -d '{"value":"on"}')
 check_response "0-RTT Connection Resumption" "$response"
-
-response=$(curl -sSL -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/fonts" \
-    -H "Authorization: Bearer $CF_TOKEN" \
-    -H "Content-Type: application/json" \
-    -d '{"value":"on"}')
-check_response "Fonts" "$response"
 
 response=$(curl -sSL -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/early_hints" \
     -H "Authorization: Bearer $CF_TOKEN" \
@@ -142,29 +130,11 @@ response=$(curl -sSL -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/tls_clien
     -d '{"value":"on"}')
 check_response "TLS Client Auth" "$response"
 
-response=$(curl -sSL -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/origin_max_http_version" \
-    -H "Authorization: Bearer $CF_TOKEN" \
-    -H "Content-Type: application/json" \
-    -d '{"value":"2"}')
-check_response "Origin Max HTTP Version (HTTP/2)" "$response"
-
 response=$(curl -sSL -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/pseudo_ipv4" \
     -H "Authorization: Bearer $CF_TOKEN" \
     -H "Content-Type: application/json" \
     -d '{"value":"overwrite_header"}')
 check_response "Pseudo IPv4" "$response"
-
-response=$(curl -sSL -X PATCH "$CF_API_BASE/zones/$CF_ZONE_ID/settings/hotlink_protection" \
-    -H "Authorization: Bearer $CF_TOKEN" \
-    -H "Content-Type: application/json" \
-    -d '{"value":"on"}')
-check_response "Hotlink Protection" "$response"
-
-response=$(curl -sSL -X PUT "$CF_API_BASE/zones/$CF_ZONE_ID/bot_management" \
-    -H "Authorization: Bearer $CF_TOKEN" \
-    -H "Content-Type: application/json" \
-    -d '{"value":{"ai_bots_protection":"block","crawler_protection":"enabled","enable_js":true,"fight_mode":false}}')
-check_response "Bot Management" "$response"
 
 echo ""
 echo "========================================"
