@@ -5,13 +5,13 @@ set +e
 CF_API_BASE="https://api.cloudflare.com/client/v4"
 
 _CF_TOKEN_BASE64="base64encodedtoken"
-_CF_HOSTNAME="custom.target.com"
 _CF_ORIGIN="origin.example.com"
+_CF_HOSTNAME="custom.target.com"
 
 if [ -z "$1" ]; then
-    echo "Usage: $0 <cloudflare_token> [hostname] [origin_server]"
+    echo "Usage: $0 <cloudflare_token> [origin] [hostname]"
     echo "Example:"
-    echo "  $0 eW91ci10b2tlbg== custom.target.com origin.example.com"
+    echo "  $0 eW91ci10b2tlbg== origin.example.com custom.target.com"
     echo ""
     echo "Required API Token Permissions:"
     echo "  - Zone:SSL and Certificates:Edit"
@@ -20,8 +20,8 @@ if [ -z "$1" ]; then
 fi
 
 CF_TOKEN_BASE64="${1:-$_CF_TOKEN_BASE64}"
-CF_HOSTNAME="${2:-$_CF_HOSTNAME}"
-CF_ORIGIN="${3:-$_CF_ORIGIN}"
+CF_ORIGIN="${2:-$_CF_ORIGIN}"
+CF_HOSTNAME="${3:-$_CF_HOSTNAME}"
 CF_TOKEN=$(echo "$CF_TOKEN_BASE64" | base64 -d)
 
 CF_ACCOUNT_ID=$(curl -fsSL -X GET -H "Authorization: Bearer $CF_TOKEN" "$CF_API_BASE/accounts" | grep -o '"id":"[^"]*' | cut -d'"' -f4 | head -n 1)
