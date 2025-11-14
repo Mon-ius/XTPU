@@ -5,13 +5,13 @@ set +e
 CF_API_BASE="https://api.cloudflare.com/client/v4"
 
 _CF_TOKEN_BASE64="base64encodedtoken"
-_CF_HOSTNAME="custom.example.com"
+_CF_HOSTNAME="custom.target.com"
 _CF_ORIGIN="origin.example.com"
 
 if [ -z "$1" ]; then
     echo "Usage: $0 <cloudflare_token> [hostname] [origin_server]"
     echo "Example:"
-    echo "  $0 eW91ci10b2tlbg== custom.example.com origin.example.com"
+    echo "  $0 eW91ci10b2tlbg== custom.target.com origin.example.com"
     echo ""
     echo "Required API Token Permissions:"
     echo "  - Zone:SSL and Certificates:Edit"
