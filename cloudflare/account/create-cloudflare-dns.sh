@@ -50,30 +50,46 @@ DNS_PAYLOAD='{
     "type": "A",
     "name": "'"${CF_SERVICE}.${CF_DOMAIN}"'",
     "content": "'"${CF_IP}"'",
-    "ttl": 1,
     "proxied": false
 }'
 
 if [ -z "$CF_RECORD" ]; then
     echo "[INFO] DNS record not found. Creating a new DNS record..."
-    RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X POST "$CF_API_BASE/zones/${CF_ZONE_ID}/dns_records" \
+    DNS_RESULT=$(curl -fsSL -X POST "$CF_API_BASE/zones/${CF_ZONE_ID}/dns_records" \
         -H "Authorization: Bearer $CF_TOKEN" \
         -H "Content-Type: application/json" \
-        -d "$DNS_PAYLOAD")
+        -d "$DNS_PAYLOAD" | grep -o '"success":true')
+
+    if [ -z "$DNS_RESULT" ]; then
+        echo "[ERROR] Failed to create A record for ${CF_SERVICE}.${CF_DOMAIN}."
+        echo "[DEBUG] Retrying for detailed error..."
+        DNS_RESPONSE=$(curl -sS -X POST "$CF_API_BASE/zones/${CF_ZONE_ID}/dns_records" \
+            -H "Authorization: Bearer $CF_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d "$DNS_PAYLOAD" 2>&1)
+        echo "[DEBUG] Response: $DNS_RESPONSE"
+        exit 1
+    fi
 else
     echo "[INFO] DNS record found. Modifying the existing DNS record..."
-    RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X PUT "$CF_API_BASE/zones/${CF_ZONE_ID}/dns_records/${CF_RECORD}" \
+    DNS_RESULT=$(curl -fsSL -X PUT "$CF_API_BASE/zones/${CF_ZONE_ID}/dns_records/${CF_RECORD}" \
         -H "Authorization: Bearer $CF_TOKEN" \
         -H "Content-Type: application/json" \
-        -d "$DNS_PAYLOAD")
+        -d "$DNS_PAYLOAD" | grep -o '"success":true')
+
+    if [ -z "$DNS_RESULT" ]; then
+        echo "[ERROR] Failed to modify A record for ${CF_SERVICE}.${CF_DOMAIN}."
+        echo "[DEBUG] Retrying for detailed error..."
+        DNS_RESPONSE=$(curl -sS -X PUT "$CF_API_BASE/zones/${CF_ZONE_ID}/dns_records/${CF_RECORD}" \
+            -H "Authorization: Bearer $CF_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d "$DNS_PAYLOAD" 2>&1)
+        echo "[DEBUG] Response: $DNS_RESPONSE"
+        exit 1
+    fi
 fi
 
-if [ "$RESPONSE" -eq 200 ]; then
-    echo "[SUCCESS] A record for ${CF_SERVICE}.${CF_DOMAIN} has been updated with IP ${CF_IP}."
-else
-    echo "[ERROR] Failed to create or modify A record for ${CF_SERVICE}.${CF_DOMAIN}. HTTP status code: $RESPONSE"
-    exit 1
-fi
+echo "[SUCCESS] A record for ${CF_SERVICE}.${CF_DOMAIN} has been updated with IP ${CF_IP}."
 
 # curl -fsSL https://raw.githubusercontent.com/Mon-ius/XTPU/refs/heads/main/cloudflare/account/create-cloudflare-token.sh | sh -s -- root_token
 # curl -fsSL https://raw.githubusercontent.com/Mon-ius/XTPU/refs/heads/main/cloudflare/account/create-cloudflare-dns.sh | sh -s -- token service
