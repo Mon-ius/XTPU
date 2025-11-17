@@ -50,6 +50,7 @@ DNS_PAYLOAD='{
     "type": "A",
     "name": "'"${CF_SERVICE}.${CF_DOMAIN}"'",
     "content": "'"${CF_IP}"'",
+    "ttl": 1,
     "proxied": false
 }'
 
