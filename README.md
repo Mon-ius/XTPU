@@ -134,6 +134,8 @@ Add-on
 - bit.ly/create-sbox
 - bit.ly/create-codex
 - bit.ly/create-claude
+- bit.ly/create-gemini
+- bit.ly/create-uv
 
 All-in-One
 ```sh
@@ -162,6 +164,8 @@ curl -fsSL bit.ly/create-golang | sh
 curl -fsSL bit.ly/create-dart | sh
 curl -fsSL bit.ly/create-codex | sh
 curl -fsSL bit.ly/create-claude | sh
+curl -fsSL bit.ly/create-gemini | sh
+curl -fsSL bit.ly/create-uv | sh
 
 curl -fsSL bit.ly/create-local-user | sh -s -- test passwd
 curl -fsSL bit.ly/create-reverse-ssh | sh -s -- remote_addr remote_port service

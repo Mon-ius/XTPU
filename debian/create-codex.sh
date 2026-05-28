@@ -1,14 +1,25 @@
 #!/bin/dash
 
-export DEBIAN_FRONTEND=noninteractive
+if command -v apt-get >/dev/null 2>&1; then
+    export DEBIAN_FRONTEND=noninteractive
+    sudo -E apt-get -qq update
+    sudo -E apt-get -qq install -o Dpkg::Options::="--force-confold" -y tar curl bubblewrap
+    ARCH=$(dpkg --print-architecture)
+elif command -v dnf >/dev/null 2>&1; then
+    sudo dnf -q -y install tar curl bubblewrap
+    ARCH=$(rpm --eval '%{_arch}')
+else
+    echo "[ERROR] Neither apt-get nor dnf found"
+    exit 1
+fi
 
-sudo -E apt-get -qq update
-sudo -E apt-get -qq install -o Dpkg::Options::="--force-confold" -y tar curl bubblewrap
-
-ARCH=$(dpkg --print-architecture)
 case "$ARCH" in
-    amd64) CODEX_ARCH=x86_64 ;;
-    arm64) CODEX_ARCH=aarch64 ;;
+    amd64|x86_64) CODEX_ARCH=x86_64 ;;
+    arm64|aarch64) CODEX_ARCH=aarch64 ;;
+    ppc64le|ppc64el)
+        echo "[ERROR] codex has no upstream prebuilt binary for ppc64le"
+        echo "[INFO]  See https://github.com/openai/codex/releases for available targets"
+        exit 1 ;;
     *) echo "[ERROR] Unsupported architecture: $ARCH"; exit 1 ;;
 esac
 
