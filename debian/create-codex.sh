@@ -1,13 +1,20 @@
 #!/bin/dash
 
-if command -v apt-get >/dev/null 2>&1; then
+OS=$(uname -s)
+if [ "$OS" = "Darwin" ]; then
+    ARCH=$(uname -m)
+    BIN_DIR=/usr/local/bin
+    sudo mkdir -p "$BIN_DIR"
+elif command -v apt-get >/dev/null 2>&1; then
     export DEBIAN_FRONTEND=noninteractive
     sudo -E apt-get -qq update
     sudo -E apt-get -qq install -o Dpkg::Options::="--force-confold" -y tar curl bubblewrap
     ARCH=$(dpkg --print-architecture)
+    BIN_DIR=/usr/bin
 elif command -v dnf >/dev/null 2>&1; then
     sudo dnf -q -y install tar curl bubblewrap
     ARCH=$(rpm --eval '%{_arch}')
+    BIN_DIR=/usr/bin
 else
     echo "[ERROR] Neither apt-get nor dnf found"
     exit 1
@@ -23,13 +30,19 @@ case "$ARCH" in
     *) echo "[ERROR] Unsupported architecture: $ARCH"; exit 1 ;;
 esac
 
-CODEX="https://github.com/openai/codex/releases/latest/download/codex-${CODEX_ARCH}-unknown-linux-musl.tar.gz"
+if [ "$OS" = "Darwin" ]; then
+    CODEX_TARGET="${CODEX_ARCH}-apple-darwin"
+else
+    CODEX_TARGET="${CODEX_ARCH}-unknown-linux-musl"
+fi
+
+CODEX="https://github.com/openai/codex/releases/latest/download/codex-${CODEX_TARGET}.tar.gz"
 CODEX_TMP=$(mktemp -d)
 
 curl -fsSL -o "$CODEX_TMP/codex.tar.gz" "$CODEX"
 tar -xzf "$CODEX_TMP/codex.tar.gz" -C "$CODEX_TMP"
 
-sudo install -m 0755 "$CODEX_TMP/codex-${CODEX_ARCH}-unknown-linux-musl" /usr/bin/codex
+sudo install -m 0755 "$CODEX_TMP/codex-${CODEX_TARGET}" "$BIN_DIR/codex"
 rm -rf "$CODEX_TMP"
 
-codex --version
+"$BIN_DIR/codex" --version
