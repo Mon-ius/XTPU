@@ -13,7 +13,7 @@ _PADDING_SCHEME="WyJzdG9wPTciLCIwPTE2LTE2IiwiMT04MC0yODAiLCIyPTIwMC0zMDAsYywzMDA
 if [ -z "$1" ]; then
     echo "Usage: $0 <cloudflare_token> [service]"
     echo "Example:"
-    echo "  $0 eW91ci10b2tlbg== example WyJzdG9wPTMiLCIwPTkwMC0xNDAwIiwiMT05MDAtMTQwMCIsIjI9OTAwLTE0MDAiXQo="
+    echo "  $0 eW91ci10b2tlbg== example"
     exit 1
 fi
 
@@ -141,7 +141,6 @@ EOF
 sudo systemctl daemon-reload
 sudo systemctl enable sing-box
 sudo systemctl restart sing-box
-
 sleep 30
 
 sudo systemctl status sing-box --no-pager -l

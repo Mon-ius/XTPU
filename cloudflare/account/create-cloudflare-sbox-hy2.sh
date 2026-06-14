@@ -89,6 +89,8 @@ CONFIG_PAYLOAD=$(cat <<EOF
             "tls": {
                 "enabled": true,
                 "server_name": "$CF_SERVICE.$CF_DOMAIN",
+                "min_version": "1.2",
+                "max_version": "1.3",
                 "acme": {
                     "domain": "$CF_SERVICE.$CF_DOMAIN",
                     "email": "admin@$CF_DOMAIN",
@@ -97,6 +99,11 @@ CONFIG_PAYLOAD=$(cat <<EOF
                         "api_token": "$CF_TOKEN"
                     }
                 },
+                "cipher_suites": [
+                    "TLS_AES_128_GCM_SHA256",
+                    "TLS_AES_256_GCM_SHA384",
+                    "TLS_CHACHA20_POLY1305_SHA256"
+                ],
                 "alpn": [
                     "h3"
                 ]
@@ -133,6 +140,8 @@ EOF
 sudo systemctl daemon-reload
 sudo systemctl enable sing-box
 sudo systemctl restart sing-box
+sleep 30
+
 sudo systemctl status sing-box --no-pager -l
 else
     echo "[ERROR] Failed to create or modify A record for ${CF_SERVICE}.${CF_DOMAIN}. HTTP status code: $RESPONSE"
