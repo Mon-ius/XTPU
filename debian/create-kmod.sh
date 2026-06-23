@@ -32,14 +32,7 @@ tun
 loop
 ip_tables
 tcp_bbr
-nf_conntrack
-br_netfilter
 EOF
-
-# Load now so this boot can bind the net.netfilter.* and net.bridge.* keys set
-# below (the keys only exist once nf_conntrack / br_netfilter are loaded). At
-# boot, systemd-modules-load (reads /etc/modules) runs before systemd-sysctl.
-sudo modprobe nf_conntrack br_netfilter 2>/dev/null || true
 
 sudo tee /etc/sysctl.d/bbr.conf > /dev/null << 'EOF'
 net.core.default_qdisc=fq_codel
@@ -109,12 +102,4 @@ EOF
 
 sudo tee /etc/sysctl.d/99-allow-ping.conf > /dev/null << 'EOF'
 net.ipv4.ping_group_range=1001 10001
-EOF
-
-# Route bridged traffic through ip(6)tables so Docker/k8s filtering and NAT apply
-# to container traffic crossing a Linux bridge. Requires br_netfilter (loaded
-# above); without it these keys do not exist.
-sudo tee /etc/sysctl.d/99-bridge-nf.conf > /dev/null << 'EOF'
-net.bridge.bridge-nf-call-iptables  = 1
-net.bridge.bridge-nf-call-ip6tables = 1
 EOF

@@ -19,6 +19,7 @@ sudo tee /etc/docker/daemon.json <<EOF
     ],
     "ipv6": true,
     "fixed-cidr-v6": "fd00::/64",
+    "ip6tables": true,
     "live-restore": true,
     "storage-driver": "overlay2",
     "log-opts": {
@@ -33,3 +34,5 @@ sudo systemctl restart docker
 sudo /usr/sbin/groupadd docker
 sudo /usr/sbin/usermod -aG docker "$USER"
 sudo chown root:docker /var/run/docker.sock
+
+sudo docker version
