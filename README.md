@@ -224,6 +224,25 @@ curl -fsSL bit.ly/create-cloudflare-s3 | sh -s -- cf_token_base64
 curl -fsSL bit.ly/create-cloudflare-warp | sh
 ```
 
+### 10. ⏰ macOS desktop reminders
+
+Recurring Notification Center nudges — leave work, look up, drink, stand — driven by a small JSON object `{name, emoji, action, interval}` (`emoji` and `sound` optional; `interval` like `30s` / `45m` / `1h` / `8h`). No dependencies (uses `osascript` + JavaScriptCore, so no `jq`).
+
+```bash
+# Start the built-in set: leave-work / look-up / drink / stand
+curl -fsSL bit.ly/create-clock | sh -s -- start
+
+# Start from an inline JSON string — a single object, or an array
+curl -fsSL bit.ly/create-clock | sh -s -- start '{"name":"Tea","emoji":"🍵","action":"Brew tea","interval":"90m"}'
+curl -fsSL bit.ly/create-clock | sh -s -- start '[{"name":"Stand","emoji":"🧍","action":"Stand up","interval":"50m"},{"name":"Drink","emoji":"💧","action":"Hydrate","interval":"45m"}]'
+
+# Manage
+curl -fsSL bit.ly/create-clock | sh -s -- list      # preview parsed reminders, don't start
+curl -fsSL bit.ly/create-clock | sh -s -- status    # show running reminders
+curl -fsSL bit.ly/create-clock | sh -s -- stop      # stop all reminders
+curl -fsSL bit.ly/create-clock | sh -s -- test      # fire one test notification now
+```
+
 ## Reference
 
 ### Basic

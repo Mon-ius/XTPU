@@ -16,20 +16,21 @@
 #     "sound":    "Glass"                         # optional; "none" to silence
 #   }
 #
-# Usage:
-#   ./create-clock.sh start '<json>'        # start from an inline JSON string
-#   ./create-clock.sh start config.json     # start from a JSON file
+# Usage (run straight from a pipe, no install needed):
+#   curl -fsSL bit.ly/create-clock | sh -s -- start                 # built-in defaults
+#   curl -fsSL bit.ly/create-clock | sh -s -- start '<json>'        # inline JSON string
+#   curl -fsSL bit.ly/create-clock | sh -s -- status                # show running reminders
+#   curl -fsSL bit.ly/create-clock | sh -s -- stop                  # stop all reminders
+#
+# Or, when saved as a local file:
+#   ./create-clock.sh start '<json>'        # inline JSON string (one object or an array)
+#   ./create-clock.sh start config.json     # a JSON file
 #   ./create-clock.sh start -               # read JSON config from stdin
 #   ./create-clock.sh start                 # no config -> built-in defaults
-#   ./create-clock.sh list  '<json>'        # show parsed reminders, don't start
-#   ./create-clock.sh status                # show which reminders are running
-#   ./create-clock.sh stop                  # stop all running reminders
-#   ./create-clock.sh test                  # fire one test notification now
-#   ./create-clock.sh help                  # this help
+#   ./create-clock.sh {list|status|stop|test|help}
 #
-# The config argument accepts an inline JSON string (one object or an array),
-# a file path, or '-' for stdin. Example:
-#   ./create-clock.sh start '{"name":"Tea","emoji":"🍵","action":"Brew tea","interval":"90m"}'
+# Example inline config:
+#   ... start '{"name":"Tea","emoji":"🍵","action":"Brew tea","interval":"90m"}'
 #
 # Dependencies: none beyond a stock macOS (uses osascript + JavaScriptCore for
 # JSON parsing, so jq is NOT required). Targets bash 3.2 (the system bash).
@@ -47,8 +48,33 @@ STATE_DIR="${CREATE_CLOCK_HOME:-$HOME/.create-clock}"
 PID_FILE="$STATE_DIR/clock.pids"
 LOG_FILE="$STATE_DIR/clock.log"
 
-# Absolute path to this script, so background workers can re-invoke it.
-SELF="$(cd "$(dirname "$0")" >/dev/null 2>&1 && pwd)/$(basename "$0")"
+# A unique tag baked into every worker's argv so we can find and stop our own
+# workers (via ps / pgrep) WITHOUT depending on this script existing as a file on
+# disk. That independence is what lets the script be run straight from a pipe:
+#   curl -fsSL bit.ly/create-clock | sh -s -- start '{...}'
+WORKER_TAG="create-clock-worker"
+
+# Self-contained worker loop, launched as:
+#   bash -c "$WORKER_BODY" "$WORKER_TAG" <secs> <title> <message> <sound>
+# It needs no access to this script file. The sleep runs in the BACKGROUND and we
+# `wait` on it so a SIGTERM from `stop` is handled promptly (a trap is deferred
+# while bash blocks in a *foreground* child — the worker would otherwise keep
+# sleeping for hours after `stop`). The trap reaps the child sleep (no orphan),
+# and `wait || break` means an interrupted sleep does NOT fire a stray
+# notification on the way out. \$c stays literal so it expands at trap time.
+WORKER_BODY='
+c=
+trap "kill \$c 2>/dev/null; exit 0" TERM INT
+while :; do
+  sleep "$1" & c=$!
+  wait "$c" || break
+  if [ -n "$4" ]; then
+    osascript -e "on run {t, m, s}" -e "display notification m with title t sound name s" -e "end run" -- "$2" "$3" "$4" >/dev/null 2>&1
+  else
+    osascript -e "on run {t, m}" -e "display notification m with title t" -e "end run" -- "$2" "$3" >/dev/null 2>&1
+  fi
+done
+'
 
 # Built-in reminders used when no config is supplied.
 DEFAULT_JSON=$(cat <<'JSON'
@@ -251,7 +277,7 @@ cmd_start() {
     # Trim a leading space if there is no emoji.
     title="${title# }"
 
-    nohup "$SELF" __loop "$secs" "$title" "$action" "$sound" \
+    nohup bash -c "$WORKER_BODY" "$WORKER_TAG" "$secs" "$title" "$action" "$sound" \
       </dev/null >>"$LOG_FILE" 2>&1 &
     local pid=$!
     # No-arg disown targets the job just backgrounded; nohup already shields it
@@ -271,7 +297,7 @@ cmd_start() {
 
   notify "⏰ Clock started" "$count reminder(s) are now active." "Glass"
   note ""
-  note "$count reminder(s) running. Stop them with:  $0 stop"
+  note "$count reminder(s) running. Run the 'stop' command to end them."
 }
 
 # is_our_worker <pid> -> 0 only if <pid> is alive AND its command line is one of
@@ -285,7 +311,7 @@ is_our_worker() {
   kill -0 "$pid" 2>/dev/null || return 1
   cmd="$(ps -o command= -p "$pid" 2>/dev/null)"
   case "$cmd" in
-    *"$SELF"*__loop*) return 0 ;;
+    *"$WORKER_TAG"*) return 0 ;;
     *) return 1 ;;
   esac
 }
@@ -304,7 +330,7 @@ cmd_stop() {
   fi
   # Safety net: catch any of our workers that escaped the PID file (e.g. a
   # previous run whose state file was lost), so a restart can never leak workers.
-  for opid in $(pgrep -f "$SELF __loop" 2>/dev/null); do
+  for opid in $(pgrep -f "$WORKER_TAG" 2>/dev/null); do
     if is_our_worker "$opid"; then
       kill "$opid" 2>/dev/null || true
       stopped=$(( stopped + 1 ))
@@ -359,26 +385,14 @@ cmd_test() {
   fi
 }
 
-# Internal worker: loop forever, notifying every <secs>. Not for direct use.
-# The sleep runs in the BACKGROUND and we `wait` on it so an incoming SIGTERM is
-# handled promptly: a trap is deferred while bash blocks in a *foreground* child
-# (the worker would otherwise keep sleeping — up to hours — after `stop`), but it
-# interrupts `wait` immediately. The trap kills the child sleep (no orphan) and
-# `wait ... || break` means an interrupted sleep does NOT fire a stray
-# notification on the way out.
-cmd_loop() {
-  local secs="$1" title="$2" message="$3" sound="$4" child=""
-  trap 'kill "$child" 2>/dev/null; exit 0' TERM INT
-  while true; do
-    sleep "$secs" & child=$!
-    wait "$child" || break
-    notify "$title" "$message" "$sound"
-  done
-}
-
 cmd_help() {
-  sed -n '2,/^$/p' "$SELF" 2>/dev/null | sed 's/^# \{0,1\}//' | sed '/^#/d'
   cat <<'USAGE'
+create-clock.sh — recurring macOS reminders (leave work / look up / drink / stand).
+
+JSON schema (one object, or an array of them):
+  {"name":"Stand","emoji":"🧍","action":"Stand up","interval":"50m","sound":"Glass"}
+  emoji and sound are optional; interval is like 30s / 45m / 1h / 8h / 1d.
+
 Commands:
   start [<json>|file|-]   Start reminders in the background. The argument may be
                           an inline JSON string, a file path, '-' for stdin, or
@@ -389,12 +403,13 @@ Commands:
   test                    Fire a single test notification right now.
   help                    Show this help.
 
-Examples:
-  ./create-clock.sh start                       # leave-work / look-up / drink / stand
-  ./create-clock.sh start '{"name":"Tea","emoji":"🍵","action":"Brew tea","interval":"90m"}'
-  ./create-clock.sh start '[{"name":"Stand","emoji":"🧍","action":"Stand up","interval":"50m"}]'
+Examples (run straight from a pipe — no install needed):
+  curl -fsSL bit.ly/create-clock | sh -s -- start
+  curl -fsSL bit.ly/create-clock | sh -s -- start '{"name":"Tea","emoji":"🍵","action":"Brew tea","interval":"90m"}'
+  curl -fsSL bit.ly/create-clock | sh -s -- status
+  curl -fsSL bit.ly/create-clock | sh -s -- stop
+  # or, when saved locally:
   ./create-clock.sh start my-reminders.json
-  echo '{"name":"Tea","action":"Brew tea","interval":"90m"}' | ./create-clock.sh start -
 USAGE
 }
 
@@ -411,9 +426,8 @@ main() {
     status|st)    cmd_status ;;
     stop)         cmd_stop ;;
     test)         cmd_test ;;
-    __loop)       cmd_loop "$@" ;;
     help|-h|--help|"") cmd_help ;;
-    *)            err "Unknown command: $cmd"; err "Run '$0 help' for usage."; return 2 ;;
+    *)            err "Unknown command: $cmd"; err "Run the 'help' command for usage."; return 2 ;;
   esac
 }
 
