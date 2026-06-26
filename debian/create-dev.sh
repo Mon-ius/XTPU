@@ -11,6 +11,8 @@ fi
 sudo -E apt-get -qq install -y vim curl tmux
 sudo -E apt-get -qq install -o 'Dpkg::Options::=--force-confdef' -o 'Dpkg::Options::=--force-confmiss' -y \
     net-tools zsh locales htop git git-lfs openssl gnupg2 dnsutils tree wget bzip2 unzip proxychains4 gnutls-bin
+sudo -E apt-get -qq purge -y ufw iptables iptables-persistent netfilter-persistent 2>/dev/null || true
+sudo -E apt-get -qq autoremove -y 2>/dev/null || true
 
 git config --global http.postBuffer 524288000
 git config --global https.postBuffer 524288000
