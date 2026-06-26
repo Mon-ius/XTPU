@@ -1,22 +1,10 @@
 #!/bin/dash
 
-set +e
+export DEBIAN_FRONTEND=noninteractive
+sudo -E apt-get -qq update
+sudo -E apt-get -qq install -o Dpkg::Options::="--force-confold" -y util-linux
 
-_COUNT=16
-
-if [ -z "$1" ]; then
-    echo "Usage: $0 [count]"
-    echo "Example:"
-    echo "  $0 16"
-    exit 1
-fi
-
-COUNT="${1:-$_COUNT}"
-
-if ! command -v swapon >/dev/null 2>&1; then
-    echo "Installing swap utilities..."
-    sudo apt-get update && sudo apt-get install -y util-linux
-fi
+COUNT=8
 
 if [ -f /swapfile ]; then
     echo "Removing old swap file..."
