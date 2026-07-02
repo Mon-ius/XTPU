@@ -2,6 +2,10 @@
 
 export DEBIAN_FRONTEND=noninteractive
 
+if [ "$(id -u)" -eq 0 ]; then
+    apt-get install -qq sudo
+fi
+
 sudo -E apt-get -qq update
 sudo -E apt-get -qq -o 'Dpkg::Options::=--force-confdef' -o 'Dpkg::Options::=--force-confmiss' dist-upgrade -y
 if command -v do-release-upgrade >/dev/null 2>&1 \
